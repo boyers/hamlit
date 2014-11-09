@@ -1,0 +1,30 @@
+body {
+  background-color: #fafafa;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+  color: #333;
+
+  #header {
+    $header-height: 64px;
+    $header-border-height: 1px;
+    height: $header-height + $header-border-height;
+    border-bottom: $header-border-height solid #e2e2e2;
+    background-color: #fff;
+
+    .brand {
+      font-weight: 600;
+      font-size: 1em;
+      text-transform: uppercase;
+      line-height: $header-height;
+      margin: 0;
+
+      a {
+        color: inherit;
+
+        &:hover {
+          color: #c14141;
+        }
+      }
+    }
+  }
+}

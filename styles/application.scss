@@ -1,16 +1,18 @@
 @import 'grid';
+@import 'anchor';
+@import 'layout';
 
 body {
-  *:focus,
-  *:active {
-    outline: 0;
-  }
-
   * {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     word-wrap: break-word;
+  }
+
+  *:focus,
+  *:active {
+    outline: 0;
   }
 
   .clearfix {
@@ -27,8 +29,4 @@ body {
       clear: both;
     }
   }
-
-  font-family: 'Open Sans', sans-serif;
-  font-weight: 400;
-  color: #333;
 }

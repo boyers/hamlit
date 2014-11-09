@@ -1,0 +1,9 @@
+body {
+  a {
+    text-decoration: inherit;
+
+    &:hover {
+      color: #c14141;
+    }
+  }
+}
