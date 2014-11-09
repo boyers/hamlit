@@ -1,0 +1,6 @@
+<% locals.styles.forEach(function(path) { %>
+  <link href="<%= path %>" media="all" rel="stylesheet" />
+<% }) %>
+<% locals.scripts.forEach(function(path) { %>
+  <script src="<%= path %>"></script>
+<% }) %>
