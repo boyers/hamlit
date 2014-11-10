@@ -76,7 +76,7 @@ linters:
     max_depth: 5
 
   Shorthand:
-    enabled: true
+    enabled: false
 
   SingleLinePerSelector:
     enabled: true

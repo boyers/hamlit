@@ -10,8 +10,6 @@ var Header = React.createClass({
               </h1>
             </div>
             <div className="span6" id="nav">
-              <a href="https://twitter.com/eigenfeed"><i className="fa fa-twitter"></i></a>
-              <a href="https://www.facebook.com/eigenfeed"><i className="fa fa-facebook-square"></i></a>
               <a href="/about">About</a>
               <a href="/">Log in</a>
               <a href="/">Sign up</a>

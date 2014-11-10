@@ -1,11 +1,8 @@
-body {
-  background-color: #fafafa;
-  font-family: 'Open Sans', sans-serif;
-  font-weight: 400;
-  color: #333;
+$stack-width: 768px; // This should match grid.scss.
 
+body {
   #header {
-    $header-height: 64px;
+    $header-height: 56px;
     $header-border-height: 1px;
     border-bottom: $header-border-height solid #e2e2e2;
     background-color: #fff;
@@ -15,6 +12,10 @@ body {
       font-size: 1em;
       line-height: $header-height;
       margin: 0;
+
+      @media (max-width: ($stack-width - 1)) {
+        text-align: center;
+      }
 
       .sprite {
         vertical-align: middle;
@@ -36,11 +37,19 @@ body {
       text-align: right;
       font-size: 0.9em;
 
+      @media (max-width: ($stack-width - 1)) {
+        text-align: center;
+      }
+
       a {
         display: inline-block;
-        margin-left: 16px;
+        margin-left: 24px;
         line-height: $header-height;
         font-weight: 400;
+
+        &:first-child {
+          margin-left: 0;
+        }
       }
     }
   }
