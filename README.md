@@ -7,8 +7,9 @@ A social network inspired by [PageRank](http://en.wikipedia.org/wiki/PageRank). 
 
 Dependencies (other than the included NPM packages):
 
-- [Node.js](http://nodejs.org/)
 - [Grunt](http://gruntjs.com/)
+- [Node.js](http://nodejs.org/)
+- [PostgreSQL](http://www.postgresql.org/)
 - [Ruby](https://www.ruby-lang.org/en/)
 - [Sass](http://sass-lang.com/)
 - [SCSS-lint](https://github.com/causes/scss-lint)
@@ -17,7 +18,7 @@ After installing the above, fetch the remaining dependencies:
 
     $ npm install
 
-Finally, create the database:
+Finally, fire up PostgreSQL and create the database:
 
     $ node tasks/dbcreate.js
 
