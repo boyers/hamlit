@@ -11,7 +11,7 @@ Dependencies (other than the included NPM packages):
 - [Grunt](http://gruntjs.com/)
 - [Ruby](https://www.ruby-lang.org/en/)
 - [Sass](http://sass-lang.com/)
-- [scss-lint](https://github.com/causes/scss-lint)
+- [SCSS-lint](https://github.com/causes/scss-lint)
 
 After installing the above, fetch the remaining dependencies:
 
