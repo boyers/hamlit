@@ -1,0 +1,15 @@
+.sprite-icon {
+  $total-width: 32px / 2;
+  $total-height: 32px / 2;
+  $sprite-icon-width: 32px / 2;
+  $sprite-icon-height: 32px / 2;
+  $sprite-icon-offset-x: 0px / 2;
+  $sprite-icon-offset-y: 0px / 2;
+  display: inline-block;
+  width: $sprite-icon-width;
+  height: $sprite-icon-height;
+  background-image: url('/assets/sprites.png');
+  background-position: $sprite-icon-offset-x $sprite-icon-offset-y;
+  background-size: $total-width $total-height;
+}
+

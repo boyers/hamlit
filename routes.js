@@ -8,4 +8,12 @@ exports.config = function(app) {
       view: 'index'
     });
   });
+
+  app.get('/about', function(req, res) {
+    res.render('layout', {
+      styles: assets.getStyles(),
+      scripts: assets.getScripts(),
+      view: 'about'
+    });
+  });
 };

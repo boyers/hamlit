@@ -1,11 +1,24 @@
 module.exports = function(grunt) {
   grunt.initConfig({
+    sprite: {
+      dist: {
+        src: 'sprites/*.png',
+        destImg: 'public/assets/sprites.png',
+        destCSS: 'styles/sprites.scss',
+        imgPath: '/assets/sprites.png',
+        engine: 'pngsmith',
+        algorithm: 'binary-tree',
+        padding: 2,
+        cssFormat: 'json',
+        cssTemplate: 'config/sprites.scss.mustache'
+      }
+    },
     scsslint: {
       options: {
         config: 'config/scsslint.yml'
       },
       dist: {
-        src: ['styles/*.scss', 'styles/development/*.scss', 'styles/production/*.scss', '!styles/grid.scss']
+        src: ['styles/*.scss', 'styles/development/*.scss', 'styles/production/*.scss', '!styles/grid.scss', '!styles/sprites.scss']
       }
     },
     csslint: {
@@ -16,7 +29,7 @@ module.exports = function(grunt) {
     sass: {
       dist: {
         files: {
-          'tmp/application.css': 'styles/application.scss' // use the SCSS @import mechanism for multiple files
+          'tmp/application.css': 'styles/application.scss' // use the SCSS @import mechanism for multiple SCSS files
         }
       }
     },
@@ -30,7 +43,7 @@ module.exports = function(grunt) {
     react: {
       dist: {
         files: {
-          'tmp/templates.js': ['scripts/*.jsx']
+          'tmp/templates.js': ['views/*.jsx']
         }
       }
     },
@@ -52,13 +65,14 @@ module.exports = function(grunt) {
     }
   });
 
+  grunt.loadNpmTasks('grunt-spritesmith');
   grunt.loadNpmTasks('grunt-scss-lint');
-  grunt.loadNpmTasks('grunt-react');
   grunt.loadNpmTasks('grunt-contrib-csslint');
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-react');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.registerTask('default', ['clean:before', 'scsslint', 'csslint', 'sass', 'cssmin', 'react', 'jshint', 'uglify', 'clean:after']);
+  grunt.registerTask('default', ['clean:before', 'sprite', 'scsslint', 'csslint', 'sass', 'cssmin', 'react', 'jshint', 'uglify', 'clean:after']);
 };

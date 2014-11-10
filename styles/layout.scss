@@ -7,23 +7,40 @@ body {
   #header {
     $header-height: 64px;
     $header-border-height: 1px;
-    height: $header-height + $header-border-height;
     border-bottom: $header-border-height solid #e2e2e2;
     background-color: #fff;
 
-    .brand {
+    #brand {
       font-weight: 600;
       font-size: 1em;
-      text-transform: uppercase;
       line-height: $header-height;
       margin: 0;
 
+      .sprite {
+        vertical-align: middle;
+        position: relative;
+        top: -2px;
+      }
+
       a {
         color: inherit;
+        text-transform: uppercase;
 
         &:hover {
           color: #c14141;
         }
+      }
+    }
+
+    #nav {
+      text-align: right;
+      font-size: 0.9em;
+
+      a {
+        display: inline-block;
+        margin-left: 16px;
+        line-height: $header-height;
+        font-weight: 400;
       }
     }
   }
