@@ -96,6 +96,29 @@ form {
         }
       }
 
+      &:disabled {
+        background-color: #f4f4f4;
+        color: #666;
+
+        &::-webkit-input-placeholder {
+          color: #f4f4f4;
+          opacity: 1;
+        }
+
+        &:-moz-placeholder {
+          color: #f4f4f4;
+        }
+
+        &::-moz-placeholder {
+          color: #f4f4f4;
+          opacity: 1;
+        }
+
+        &:-ms-input-placeholder {
+          color: #f4f4f4;
+        }
+      }
+
       &:-webkit-autofill {
         -webkit-box-shadow: 0 0 0 1000px #fcfcfc inset;
       }
@@ -138,10 +161,10 @@ form {
         color: #dac6d0;
       }
 
-      &.disabled {
+      &:disabled {
         cursor: default;
-        background-color: #794e66;
-        border-bottom: 3px solid #59424d;
+        background-color: #79524e;
+        border-bottom: 3px solid #594542;
         color: #b7aeac;
       }
     }

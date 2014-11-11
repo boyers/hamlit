@@ -8,7 +8,7 @@ var LogIn = React.createClass({
         <div className="container vertical-margin">
           <div className="row">
             <div className="span4 offset4">
-              <Form title="Welcome back!">
+              <Form title="Welcome back!" submitText="Log in">
                 <div className="form-row">
                   <label htmlFor="email">Email</label>
                   <input id="email" ref="email" type="text" placeholder="hello@example.com" />
@@ -17,9 +17,6 @@ var LogIn = React.createClass({
                   <label htmlFor="password">Password</label>
                   <input id="password" type="password" placeholder="eigenpassword" />
                   <div className="form-btw"><a href="/">Forgot password?</a></div>
-                </div>
-                <div className="form-row align-right">
-                  <input type="submit" value="Log in" />
                 </div>
               </Form>
             </div>
