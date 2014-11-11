@@ -1,0 +1,155 @@
+@import 'mixins';
+
+$placeholder-color: #888;
+$placeholder-color-focus: #bbb;
+$input-height: 40px;
+
+form {
+  textarea, input {
+    background-image: none;  // hacky fix for Firefox mobile
+  }
+
+  h2 {
+    font-size: 1.4em;
+    font-weight: 400;
+    margin: 0;
+  }
+
+  hr {
+    margin: 4px 0 0 0;
+  }
+
+  .form-row {
+    margin: 24px 0 0 0;
+
+    label {
+      display: block;
+      margin-top: 8px;
+      cursor: pointer;
+      font-size: 0.9em;
+      font-weight: 600;
+    }
+
+    .form-btw {
+      margin-top: 4px;
+      color: #999;
+      font-size: 0.9em;
+    }
+
+    textarea, input[type=text], input[type=password] {
+      display: block;
+      width: 100%;
+      max-width: 300px;
+      margin-top: 6px;
+      padding: 8px 12px;
+      border: 2px solid #ddd;
+      @include border-radius(2px);
+
+      @include appearance(none);
+      background-color: #fff;
+
+      -webkit-transition-property: border-color;
+      -moz-transition-property: border-color;
+      -ms-transition-property: border-color;
+      -o-transition-property: border-color;
+      transition-property: border-color;
+      @include transition-duration(0.5s);
+
+      &::-webkit-input-placeholder {
+        color: $placeholder-color;
+        opacity: 1;
+      }
+
+      &:-moz-placeholder {
+        color: $placeholder-color;
+      }
+
+      &::-moz-placeholder {
+        color: $placeholder-color;
+        opacity: 1;
+      }
+
+      &:-ms-input-placeholder {
+        color: $placeholder-color;
+      }
+
+      &:focus {
+        border: 2px solid #c14141;
+        outline-style: none;
+
+        &::-webkit-input-placeholder {
+          color: $placeholder-color-focus;
+          opacity: 1;
+        }
+
+        &:-moz-placeholder {
+          color: $placeholder-color-focus;
+        }
+
+        &::-moz-placeholder {
+          color: $placeholder-color-focus;
+          opacity: 1;
+        }
+
+        &:-ms-input-placeholder {
+          color: $placeholder-color-focus;
+        }
+      }
+
+      &:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0 1000px #fcfcfc inset;
+      }
+    }
+
+    textarea {
+      resize: none;
+      height: 112px;
+    }
+
+    input[type=submit] {
+      display: inline-block;
+      vertical-align: middle;
+      font-weight: 400;
+      font-size: 0.9em;
+      @include border-radius(2px);
+      border-style: none;
+      padding: 8px 16px;
+      cursor: pointer;
+      background-color: #c14141;
+      border-bottom: 3px solid #862e20;
+      color: #fff0e8;
+
+      &:hover {
+        background-color: #d34747;
+        border-bottom: 3px solid #863120;
+        color: #fff0e8;
+      }
+
+      &:focus {
+        background-color: #a13636;
+        border-bottom: 3px solid #983333;
+        color: #dac6d0;
+        outline-style: none;
+      }
+
+      &:active {
+        background-color: #a13636;
+        border-bottom: 3px solid #983333;
+        color: #dac6d0;
+      }
+
+      &.disabled {
+        cursor: default;
+        background-color: #794e66;
+        border-bottom: 3px solid #59424d;
+        color: #b7aeac;
+      }
+    }
+
+    input[type=text], input[type=password], input[type=submit] {
+      height: $input-height;
+      line-height: ($input-height - 16px);
+      overflow: hidden;
+    }
+  }
+}

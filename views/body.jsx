@@ -35,8 +35,10 @@ var Body = React.createClass({
         />
         { this.state.logInVisible ? <LogIn /> : null }
         { this.state.signUpVisible ? <SignUp /> : null }
-        <div className="container">
-          { view }
+        <div className="container clearfix">
+          <div className="vertical-margin">
+            { view }
+          </div>
         </div>
       </div>
     );

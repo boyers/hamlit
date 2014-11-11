@@ -6,4 +6,8 @@
   &:hover {
     color: #c14141;
   }
+
+  &:active, &:focus {
+    color: #9d3535;
+  }
 }

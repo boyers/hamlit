@@ -1,11 +1,4 @@
-@mixin disable-text-selection {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
+@import 'mixins';
 
 * {
   -webkit-box-sizing: border-box;
@@ -20,22 +13,26 @@
 }
 
 .clearfix {
-  *zoom: 1;
+  @include clearfix;
+}
 
-  &:before,
-  &:after {
-    display: table;
-    content: '';
-    line-height: 0;
-  }
+.vertical-margin {
+  margin-top: 48px;
+  margin-bottom: 48px;
+}
 
-  &:after {
-    clear: both;
-  }
+.align-right {
+  text-align: right;
+}
+
+hr {
+  border-width: none;
+  border-top: 2px solid #eee;
+  margin: 0;
 }
 
 h2 {
-  margin: 64px 0 24px 0;
+  margin: 0 0 24px 0;
   font-size: 2em;
   font-weight: 400;
 }

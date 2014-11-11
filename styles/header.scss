@@ -29,6 +29,10 @@ $stack-width: 768px; // This should match grid.scss.
       &:hover {
         color: #c14141;
       }
+
+      &:active, &:focus {
+        color: #9d3535;
+      }
     }
   }
 
