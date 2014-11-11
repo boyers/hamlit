@@ -1,3 +1,21 @@
+/* ------- */
+/* Helpers */
+/* ------- */
+
+@mixin clearfix {
+  *zoom: 1;
+
+  &:before,
+  &:after {
+    display: table;
+    content: '';
+  }
+
+  &:after {
+    clear: both;
+  }
+}
+
 /* --------------- */
 /* Fluid container */
 /* --------------- */
@@ -36,14 +54,7 @@ $stack-width: 768px;
 
 /* Columns must be put in an element with the "row" class. */
 .row {
-  *zoom: 1;
-  &:before, &:after {
-    display: table;
-    content: "";
-  }
-  &:after {
-    clear: both;
-  }
+  @include clearfix;
 }
 
 /* Inside a ".row", add ".spanX" elements to fill the grid, where X is the number of columns to span. */
@@ -51,14 +62,7 @@ $stack-width: 768px;
 @for $i from 1 through $num-columns {
   .span#{$i} {
     float: left;
-    *zoom: 1;
-    &:before, &:after {
-      display: table;
-      content: "";
-    }
-    &:after {
-      clear: both;
-    }
+    @include clearfix;
   }
 }
 
