@@ -1,4 +1,7 @@
 var LogIn = React.createClass({
+  componentDidMount: function() {
+    $(this.refs.email.getDOMNode()).focus();
+  },
   render: function() {
     return (
       <div className="log-in clearfix">
@@ -8,7 +11,7 @@ var LogIn = React.createClass({
               <Form title="Welcome back!">
                 <div className="form-row">
                   <label htmlFor="email">Email</label>
-                  <input id="email" type="text" placeholder="hello@example.com" />
+                  <input id="email" ref="email" type="text" placeholder="hello@example.com" />
                 </div>
                 <div className="form-row">
                   <label htmlFor="password">Password</label>

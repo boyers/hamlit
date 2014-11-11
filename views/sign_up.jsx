@@ -1,4 +1,7 @@
 var SignUp = React.createClass({
+  componentDidMount: function() {
+    $(this.refs.email.getDOMNode()).focus();
+  },
   render: function() {
     return (
       <div className="sign-up clearfix">
@@ -8,7 +11,7 @@ var SignUp = React.createClass({
               <Form title="Welcome to Eigenfeed!">
                 <div className="form-row">
                   <label htmlFor="email">Email</label>
-                  <input id="email" type="text" placeholder="hello@example.com" />
+                  <input id="email" ref="email" type="text" placeholder="hello@example.com" />
                   <div className="form-btw">Don&rsquo;t worry&mdash;it&rsquo;s not public.</div>
                 </div>
                 <div className="form-row">
