@@ -1,11 +1,9 @@
-body {
-  a {
-    color: inherit;
-    text-decoration: inherit;
-    font-weight: 600;
+a {
+  color: inherit;
+  text-decoration: inherit;
+  font-weight: 600;
 
-    &:hover {
-      color: #c14141;
-    }
+  &:hover {
+    color: #c14141;
   }
 }

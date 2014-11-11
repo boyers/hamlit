@@ -1,0 +1,9 @@
+.text-button {
+  @include disable-text-selection;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    color: #c14141;
+  }
+}

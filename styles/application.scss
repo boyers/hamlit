@@ -1,34 +1,17 @@
-@import 'grid';
-@import 'global';
-@import 'anchor';
-@import 'sprites';
-@import 'header';
+// This file is used to include all other SCSS files.
 
+// Import the styles for the 'body' element.
+@import 'body';
+
+// We import these in the 'body' selector so they will be
+// more specific than our CSS reset (and thus override it).
 body {
-  * {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    word-wrap: break-word;
-  }
-
-  *:focus,
-  *:active {
-    outline: 0;
-  }
-
-  .clearfix {
-    *zoom: 1;
-
-    &:before,
-    &:after {
-      display: table;
-      content: '';
-      line-height: 0;
-    }
-
-    &:after {
-      clear: both;
-    }
-  }
+  @import 'grid';
+  @import 'global';
+  @import 'sprites';
+  @import 'anchor';
+  @import 'text_button';
+  @import 'header';
+  @import 'log_in';
+  @import 'sign_up';
 }

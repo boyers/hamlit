@@ -1,18 +1,20 @@
 var Header = React.createClass({
   render: function() {
+    var component = this;
+
     return (
-      <div id="header">
+      <div className="header">
         <div className="container">
           <div className="row">
             <div className="span6">
-              <h1 id="brand">
+              <h1 className="brand">
                 <a href="/"><Sprite name="icon" /> Eigenfeed</a>
               </h1>
             </div>
-            <div className="span6" id="nav">
+            <div className="span6 nav">
               <a href="/about">About</a>
-              <a href="/">Log in</a>
-              <a href="/">Sign up</a>
+              <TextButton onClick={ component.props.clickLogIn }>Log in</TextButton>
+              <TextButton onClick={ component.props.clickSignUp }>Sign up</TextButton>
             </div>
           </div>
         </div>

@@ -44,7 +44,7 @@ exports.getScripts = function() {
     return ['/assets/application.js'];
   }
 
-  var scripts = ['/assets/fastclick.js', '/assets/development/react.js', '/assets/jquery-2.1.1.js'];
+  var scripts = ['/assets/fastclick.js', '/assets/development/react.js', '/assets/development/jquery.js'];
 
   var files = [];
   fs.readdirSync('scripts').forEach(function(name) {

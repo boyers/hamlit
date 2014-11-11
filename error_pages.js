@@ -5,7 +5,7 @@ exports.config = function(app) {
     app.use(function(req, res, next) {
       console.error('404: ' + req.path);
       res.status(404);
-      res.render('layout', {
+      res.render('application', {
         styles: assets.getStyles(),
         scripts: assets.getScripts()
       });
@@ -14,7 +14,7 @@ exports.config = function(app) {
     app.use(function(err, req, res, next) {
       console.error(err.stack);
       res.status(500);
-      res.render('layout', {
+      res.render('application', {
         styles: assets.getStyles(),
         scripts: assets.getScripts()
       });
