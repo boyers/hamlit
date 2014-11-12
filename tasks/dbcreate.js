@@ -6,7 +6,7 @@ db.executeGlobal('CREATE DATABASE eigenfeed;', [], function(err, result) {
     process.exit(1);
     return;
   }
-
   console.log(result);
+
   process.exit(0);
 });
