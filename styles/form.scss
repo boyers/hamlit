@@ -9,6 +9,12 @@ form {
     background-image: none;  // hacky fix for Firefox mobile
   }
 
+  .form-error {
+    margin-top: 6px;
+    color: #c14141;
+    font-size: 0.9em;
+  }
+
   h2 {
     font-size: 1.4em;
     font-weight: 400;
@@ -20,19 +26,13 @@ form {
   }
 
   .form-row {
-    margin: 24px 0 0 0;
+    margin: 32px 0 0 0;
 
     label {
       display: block;
       cursor: pointer;
       font-size: 0.9em;
       font-weight: 600;
-    }
-
-    .form-error {
-      margin-top: 6px;
-      color: #c14141;
-      font-size: 0.9em;
     }
 
     .form-btw {

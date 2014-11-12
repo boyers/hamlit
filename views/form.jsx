@@ -84,11 +84,11 @@ var Form = React.createClass({
       <form onSubmit={ this.submit }>
         <h2>{ this.props.title }</h2>
         <hr />
+        { (this.state.error === null) ? null : <div className="form-error">{ this.state.error }</div> }
         { fields }
         <div className="form-row align-right">
           { this.state.submitted ? <Spinner /> : null }
           <input type="submit" ref="submit" value={ this.props.submitText } />
-          { (this.state.error === null) ? null : <div className="form-error">{ this.state.error }</div> }
         </div>
       </form>
     );
