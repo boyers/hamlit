@@ -30,8 +30,8 @@ var Form = React.createClass({
         component.setState({ submitted: false });
       }).done(function(data) {
         var i, field;
-        $(component.getDOMNode()).find('textarea:not([type="submit"]), input:not([type="submit"])').val('');
         if (data.error === null && data.validationErrors === null) {
+          $(component.getDOMNode()).find('textarea:not([type="submit"]), input:not([type="submit"])').val('');
           for (i = 0; i < component.props.fields.length; i++) {
             field = component.props.fields[i];
             component.refs[field.props.id].setError(null);
