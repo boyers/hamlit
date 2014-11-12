@@ -1,4 +1,8 @@
 var Header = React.createClass({
+  propTypes: {
+    clickLogIn: React.PropTypes.func.isRequired,
+    clickSignUp: React.PropTypes.func.isRequired
+  },
   render: function() {
     var component = this;
 

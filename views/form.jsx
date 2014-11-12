@@ -1,4 +1,17 @@
+/*
+  The endpoint should return a JSON object containing at least two fields:
+    error: null or an error String
+    validationErrors: null or an object mapping field names to error strings
+*/
+
 var Form = React.createClass({
+  propTypes: {
+    title: React.PropTypes.string.isRequired,
+    submitText: React.PropTypes.string.isRequired,
+    endpoint: React.PropTypes.string.isRequired,
+    onSuccess: React.PropTypes.func,
+    fields: React.PropTypes.arrayOf(React.PropTypes.element.isRequired).isRequired
+  },
   getInitialState: function() {
     return { submitted: false, error: null };
   },
@@ -22,7 +35,7 @@ var Form = React.createClass({
 
       $.ajax({
         type: 'POST',
-        url: component.props.url,
+        url: component.props.endpoint,
         data: data
       }).always(function() {
         $(component.refs.submit.getDOMNode()).blur();

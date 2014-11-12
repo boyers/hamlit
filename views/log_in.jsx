@@ -8,7 +8,7 @@ var LogIn = React.createClass({
         <div className="container vertical-margin">
           <div className="row">
             <div className="span4 offset4">
-              <Form ref="form" title="Welcome back!" submitText="Log in" url="/api/log_in" fields={[
+              <Form ref="form" title="Welcome back!" submitText="Log in" endpoint="/api/log_in" fields={[
                 <Input id="email" label="Email" placeholder="hello@example.com" />,
                 <Input id="password" label="Password" type="password" placeholder="eigenpassword" btw="Click &lt;a href=&quot;/&quot;>here&lt;/a&gt; if you forgot it." />
               ]} />

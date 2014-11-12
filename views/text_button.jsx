@@ -1,4 +1,7 @@
 var TextButton = React.createClass({
+  propTypes: {
+    onClick: React.PropTypes.func.isRequired
+  },
   render: function() {
     var className = this.props.className || '';
     var other = _.omit(this.props, 'className', 'tabIndex');
