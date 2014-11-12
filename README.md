@@ -9,6 +9,7 @@ Dependencies (other than the included NPM packages):
 
 - [Grunt](http://gruntjs.com/)
 - [Node.js](http://nodejs.org/)
+- [Pngcrush](http://pmt.sourceforge.net/pngcrush/)
 - [PostgreSQL](http://www.postgresql.org/)
 - [Ruby](https://www.ruby-lang.org/en/)
 - [Sass](http://sass-lang.com/)

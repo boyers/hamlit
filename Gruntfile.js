@@ -3,7 +3,7 @@ module.exports = function(grunt) {
     sprite: {
       dist: {
         src: 'sprites/*.png',
-        destImg: 'public/assets/sprites.png',
+        destImg: 'tmp/sprites.png',
         destCSS: 'styles/sprites.scss',
         imgPath: '/assets/sprites.png',
         engine: 'pngsmith',
@@ -11,6 +11,11 @@ module.exports = function(grunt) {
         padding: 2,
         cssFormat: 'json',
         cssTemplate: 'config/sprites.scss.mustache'
+      }
+    },
+    shell: {
+      dist: {
+        command: 'mkdir public/assets && pngcrush tmp/sprites.png public/assets/sprites.png'
       }
     },
     scsslint: {
@@ -66,6 +71,7 @@ module.exports = function(grunt) {
   });
 
   grunt.loadNpmTasks('grunt-spritesmith');
+  grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-scss-lint');
   grunt.loadNpmTasks('grunt-contrib-csslint');
   grunt.loadNpmTasks('grunt-contrib-sass');
@@ -74,5 +80,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.registerTask('default', ['clean:before', 'sprite', 'scsslint', 'csslint', 'sass', 'cssmin', 'react', 'jshint', 'uglify', 'clean:after']);
+  grunt.registerTask('default', ['clean:before', 'sprite', 'shell', 'scsslint', 'csslint', 'sass', 'cssmin', 'react', 'jshint', 'uglify', 'clean:after']);
 };
