@@ -15,7 +15,7 @@ module.exports = function(grunt) {
     },
     shell: {
       dist: {
-        command: 'mkdir public/assets && pngcrush tmp/sprites.png public/assets/sprites.png'
+        command: 'mkdir public/assets && pngcrush -brute tmp/sprites.png public/assets/sprites.png'
       }
     },
     scsslint: {
