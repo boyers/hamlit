@@ -19,7 +19,7 @@ Development:
 - [SCSS-lint](https://github.com/causes/scss-lint)
 - `sudo npm install -g react-tools grunt-cli`
 
-## Run
+## Deployment
 
 Development:
 
