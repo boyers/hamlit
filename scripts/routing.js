@@ -23,7 +23,7 @@ var goToRelativeURL = function(URL) {
 };
 
 window.goToURL = function(URL) {
-  if (window.makeRelativeURL(URL) === null) {
+  if (window.makeRelativeURL(URL) === null || !history.pushState) {
     window.location.href = URL;
   } else {
     goToRelativeURL(URL);
