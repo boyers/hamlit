@@ -26,12 +26,12 @@ module.exports = function(grunt) {
         config: 'config/scsslint.yml'
       },
       dist: {
-        src: ['styles/*.scss', 'styles/development/*.scss', 'styles/production/*.scss', '!styles/grid.scss', '!styles/sprites.scss']
+        src: ['styles/*.scss']
       }
     },
     csslint: {
       dist: {
-        src: ['styles/*.css', 'styles/development/*.css', 'styles/production/*.css', '!styles/normalize.css']
+        src: ['styles/*.css']
       }
     },
     sass: {
@@ -44,7 +44,7 @@ module.exports = function(grunt) {
     cssmin: {
       dist: {
         files: {
-          'public/assets/application.css': ['tmp/application.css', 'styles/*.css', 'styles/production/*.css']
+          'public/assets/application.css': ['styles/vendor/*.css', 'styles/*.css', 'tmp/application.css']
         }
       }
     },

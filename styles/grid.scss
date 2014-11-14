@@ -1,48 +1,46 @@
 @import 'mixins';
 
-/* --------------- */
-/* Fluid container */
-/* --------------- */
+// ---------------
+// Fluid container
+// ---------------
 
-/* A container (and its padding) will not grow larger than this width. */
+// A container (and its padding) will not grow larger than this width.
 $container-max-width: 1024px;
 
-/* The horizontal padding around containers. */
+// The horizontal padding around containers.
 $container-gutter: 20px;
 
-/* Add the "container" class to a block element (e.g., a div) to create a fluid container. */
+// Add the "container" class to a block element (e.g., a div) to create a fluid container.
 .container {
   width: 100%;
   max-width: $container-max-width;
-  padding-left:  $container-gutter;
+  padding-left: $container-gutter;
   padding-right: $container-gutter;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing:    border-box;
-  box-sizing:         border-box;
-  margin-left:  auto;
+  @include box-sizing(border-box);
+  margin-left: auto;
   margin-right: auto;
 }
 
-/* ---------------------- */
-/* Responsive Grid Layout */
-/* ---------------------- */
+// ----------------------
+// Responsive Grid Layout
+// ----------------------
 
-/* The spacing between columns. */
+// The spacing between columns.
 $column-gutter-width: 4%;
 
-/* The number of columns in a row. */
+// The number of columns in a row.
 $num-columns: 12;
 
-/* Columns will stack on screens less than this wide. */
+// Columns will stack on screens less than this wide.
 $stack-width: 768px;
 
-/* Columns must be put in an element with the "row" class. */
+// Columns must be put in an element with the "row" class.
 .row {
   @include clearfix;
 }
 
-/* Inside a ".row", add ".spanX" elements to fill the grid, where X is the number of columns to span. */
-/* Add ".offsetX" to ".spanX" elements to skip X columns of empty space. */
+// Inside a ".row", add ".spanX" elements to fill the grid, where X is the number of columns to span.
+// Add ".offsetX" to ".spanX" elements to skip X columns of empty space.
 @for $i from 1 through $num-columns {
   .span#{$i} {
     float: left;
@@ -53,9 +51,8 @@ $stack-width: 768px;
 @for $i from 1 through $num-columns {
   .row > .span#{$i} {
     width: (100% + $column-gutter-width) * ($i / $num-columns) - $column-gutter-width;
-    *width: (100% + $column-gutter-width) * ($i / $num-columns) - $column-gutter-width - 50% / ($stack-width / 1px);
     margin-left: $column-gutter-width;
-    *margin-left: $column-gutter-width - 50% / ($stack-width / 1px);
+
     &:first-child {
       margin-left: 0;
     }
@@ -65,10 +62,9 @@ $stack-width: 768px;
 @for $i from 1 through $num-columns {
   .row > .offset#{$i} {
     margin-left: $column-gutter-width + (100% + $column-gutter-width) * ($i / $num-columns);
-    *margin-left: $column-gutter-width + (100% + $column-gutter-width) * ($i / $num-columns) - 50% / ($stack-width / 1px);
+
     &:first-child {
       margin-left: (100% + $column-gutter-width) * ($i / $num-columns);
-      *margin-left: (100% + $column-gutter-width) * ($i / $num-columns) - 50% / ($stack-width / 1px);
     }
   }
 }
@@ -76,11 +72,10 @@ $stack-width: 768px;
 @for $i from 1 through $num-columns {
   @for $j from 1 through ($i - 1) {
     .span#{$i} > .span#{$j} {
-      $scale_factor: 100% / ((100% + $column-gutter-width) * ($i / $num-columns) - $column-gutter-width);
-      width: ((100% + $column-gutter-width) * ($j / $num-columns) - $column-gutter-width) * $scale_factor;
-      *width: ((100% + $column-gutter-width) * ($j / $num-columns) - $column-gutter-width) * $scale_factor - 50% / (($stack-width / 1px) * $num-columns / $i);
-      margin-left: $column-gutter-width * $scale_factor;
-      *margin-left: $column-gutter-width * $scale_factor - 50% / (($stack-width / 1px) * $num-columns / $i);
+      $scale-factor: 100% / ((100% + $column-gutter-width) * ($i / $num-columns) - $column-gutter-width);
+      width: ((100% + $column-gutter-width) * ($j / $num-columns) - $column-gutter-width) * $scale-factor;
+      margin-left: $column-gutter-width * $scale-factor;
+
       &:first-child {
         margin-left: 0;
       }
@@ -91,26 +86,27 @@ $stack-width: 768px;
 @for $i from 1 through $num-columns {
   @for $j from 1 through ($i - 1) {
     .span#{$i} > .offset#{$j} {
-      $scale_factor: 100% / ((100% + $column-gutter-width) * ($i / $num-columns) - $column-gutter-width);
-      margin-left: ($column-gutter-width + (100% + $column-gutter-width) * ($j / $num-columns)) * $scale_factor;
-      *margin-left: ($column-gutter-width + (100% + $column-gutter-width) * ($j / $num-columns)) * $scale_factor - 50% / (($stack-width / 1px) * $num-columns / $i);
+      $scale-factor: 100% / ((100% + $column-gutter-width) * ($i / $num-columns) - $column-gutter-width);
+      margin-left: ($column-gutter-width + (100% + $column-gutter-width) * ($j / $num-columns)) * $scale-factor;
+
       &:first-child {
-        margin-left: (100% + $column-gutter-width) * ($j / $num-columns) * $scale_factor;
-        *margin-left: (100% + $column-gutter-width) * ($j / $num-columns) * $scale_factor - 50% / (($stack-width / 1px) * $num-columns / $i);
+        margin-left: (100% + $column-gutter-width) * ($j / $num-columns) * $scale-factor;
       }
     }
   }
 }
 
-/* Stack the grid on small displays. */
+// Stack the grid on small displays.
 @media (max-width: ($stack-width - 1)) {
   @for $i from 1 through $num-columns {
     .span#{$i} {
       margin-top: inherit;
       margin-bottom: inherit;
+
       &:first-child {
         margin-top: 0;
       }
+
       &:last-child {
         margin-bottom: 0;
       }
@@ -120,19 +116,16 @@ $stack-width: 768px;
   @for $i from 1 through $num-columns {
     .row > .span#{$i} {
       width: 100%;
-      *width: 100%;
       margin-left: 0;
-      *margin-left: 0;
     }
   }
 
   @for $i from 1 through $num-columns {
     .row > .offset#{$i} {
       margin-left: 0;
-      *margin-left: 0;
+
       &:first-child {
         margin-left: 0;
-        *margin-left: 0;
       }
     }
   }
@@ -141,9 +134,7 @@ $stack-width: 768px;
     @for $j from 1 through ($i - 1) {
       .span#{$i} > .span#{$j} {
         width: 100%;
-        *width: 100%;
         margin-left: 0;
-        *margin-left: 0;
       }
     }
   }
@@ -152,38 +143,37 @@ $stack-width: 768px;
     @for $j from 1 through ($i - 1) {
       .span#{$i} > .offset#{$j} {
         margin-left: 0;
-        *margin-left: 0;
+
         &:first-child {
           margin-left: 0;
-          *margin-left: 0;
         }
       }
     }
   }
 }
 
-/* ----------------- */
-/* Responsive Styles */
-/* ----------------- */
+// -----------------
+// Responsive Styles
+// -----------------
 
 $min-width-tablet: 768px;
 $min-width-desktop: 980px;
 
-/* Phones */
+// Phones
 @media (max-width: ($min-width-tablet - 1)) {
   .phone-hidden, .tablet-visible, .desktop-visible {
     display: none;
   }
 }
 
-/* Tablets */
+// Tablets
 @media (min-width: $min-width-tablet) and (max-width: ($min-width-desktop - 1)) {
   .phone-visible, .tablet-hidden, .desktop-visible {
     display: none;
   }
 }
 
-/* Desktops */
+// Desktops
 @media (min-width: $min-width-desktop) {
   .phone-visible, .tablet-visible, .desktop-hidden {
     display: none;
