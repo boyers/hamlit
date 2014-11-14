@@ -1,12 +1,18 @@
 var assets = require('./assets');
 
 exports.config = function(app) {
-  app.get(/^\/(about)?$/, function(req, res) {
-    res.render('application', {
-      styles: assets.getStyles(),
-      scripts: assets.getScripts()
+  if (process.env.NODE_ENV === 'production') {
+    app.get(/^\/(about)?$/, function(req, res) {
+      res.sendFile(__dirname + '/public/assets/application.html');
     });
-  });
+  } else {
+    app.get(/^\/(about)?$/, function(req, res) {
+      res.render('application', {
+        styles: assets.getStyles(),
+        scripts: assets.getScripts()
+      });
+    });
+  }
 
   app.post('/api/log_in', function(req, res) {
     res.json({

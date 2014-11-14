@@ -27,7 +27,7 @@ Development:
 
 Production:
 
-    $ grunt # only needed if you changed any CSS, SCSS, JavaScript, or sprites
+    $ grunt # only needed if you changed any HTML, CSS, SCSS, JavaScript, JSX, or sprites
     $ NODE_ENV=production npm start
 
 ## Environment variables
