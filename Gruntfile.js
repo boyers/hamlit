@@ -57,13 +57,13 @@ module.exports = function(grunt) {
     },
     jshint: {
       dist: {
-        src: ['*.js', 'tasks/*.js', 'scripts/*.js', 'scripts/development/*.js', 'scripts/production/*.js', 'tmp/templates.js', '!scripts/development/react.js', '!scripts/production/react.js', '!scripts/development/jquery.js', '!scripts/production/jquery.js', '!scripts/development/underscore.js', '!scripts/production/underscore.js']
+        src: ['*.js', 'tasks/*.js', 'scripts/*.js', 'tmp/templates.js']
       }
     },
     uglify: {
       dist: {
         files: {
-          'public/assets/application.js': ['scripts/production/react.js', 'scripts/production/jquery.js', 'scripts/production/underscore.js', 'scripts/*.js', 'scripts/production/*.js', 'tmp/templates.js']
+          'public/assets/application.js': ['scripts/vendor/production/*.js', 'scripts/vendor/all/*.js', 'scripts/*.js', 'tmp/templates.js']
         }
       }
     },
