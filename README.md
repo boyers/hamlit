@@ -3,20 +3,21 @@ Eigenfeed
 
 A social network inspired by [PageRank](http://en.wikipedia.org/wiki/PageRank). For more information, visit [www.eigenfeed.com](https://www.eigenfeed.com).
 
-## Installation
+## Dependencies
 
-Dependencies (other than the included NPM packages):
+Production:
 
-- [Grunt](http://gruntjs.com/)
 - [Node.js](http://nodejs.org/)
+
+Development:
+
+- [Node.js](http://nodejs.org/)
+- [Grunt](http://gruntjs.com/)
 - [Pngcrush](http://pmt.sourceforge.net/pngcrush/)
 - [Ruby](https://www.ruby-lang.org/en/)
 - [Sass](http://sass-lang.com/)
 - [SCSS-lint](https://github.com/causes/scss-lint)
-
-After installing the above, fetch the remaining dependencies:
-
-    $ npm install
+- `sudo npm install -g react-tools grunt-cli`
 
 ## Run
 
