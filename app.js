@@ -10,6 +10,11 @@ var garnet = require('garnet');
 garnet.templateExt = '.html';
 garnet.enableCaching = (process.env.NODE_ENV === 'production');
 
+app.use(function(req, res, next) {
+  console.log('['+ (new Date()).toUTCString() +'] ' + req.path);
+  next();
+});
+
 require('./routes').config(app);
 require('./assets').config(app);
 require('./error_pages').config(app);
