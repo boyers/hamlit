@@ -7,14 +7,14 @@ exports.getStyles = function() {
     return ['/assets/application.css'];
   }
 
-  var styles = ['/assets/normalize.css'];
+  var styles = []; // If any styles must be included first, put them here.
 
   var files = [];
+  fs.readdirSync('styles/vendor').forEach(function(name) {
+    files.push('/assets/vendor/' + name);
+  });
   fs.readdirSync('styles').forEach(function(name) {
     files.push('/assets/' + name);
-  });
-  fs.readdirSync('styles/development').forEach(function(name) {
-    files.push('/assets/development/' + name);
   });
 
   files.forEach(function(name) {
@@ -44,14 +44,17 @@ exports.getScripts = function() {
     return ['/assets/application.js'];
   }
 
-  var scripts = ['/assets/fastclick.js', '/assets/development/react.js', '/assets/development/jquery.js'];
+  var scripts = []; // If any scripts must be included first, put them here.
 
   var files = [];
+  fs.readdirSync('scripts/vendor/development').forEach(function(name) {
+    files.push('/assets/vendor/development/' + name);
+  });
+  fs.readdirSync('scripts/vendor/all').forEach(function(name) {
+    files.push('/assets/vendor/all/' + name);
+  });
   fs.readdirSync('scripts').forEach(function(name) {
     files.push('/assets/' + name);
-  });
-  fs.readdirSync('scripts/development').forEach(function(name) {
-    files.push('/assets/development/' + name);
   });
   fs.readdirSync('views').forEach(function(name) {
     files.push('/assets/' + name);
