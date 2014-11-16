@@ -1,7 +1,7 @@
-Eigenfeed
-=========
+Hamlit
+======
 
-A social network inspired by [PageRank](http://en.wikipedia.org/wiki/PageRank). For more information, visit [www.eigenfeed.com](https://www.eigenfeed.com).
+A social network inspired by [PageRank](http://en.wikipedia.org/wiki/PageRank). For more information, visit [www.hamlit.com](https://www.hamlit.com).
 
 ## Dependencies
 

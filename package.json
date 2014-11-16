@@ -1,5 +1,5 @@
 {
-  "name": "eigenfeed",
+  "name": "hamlit",
   "description": "A social network inspired by PageRank.",
   "private": true,
   "dependencies": {

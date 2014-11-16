@@ -3,7 +3,7 @@ var ViewAbout = React.createClass({
     return (
       <div className="row">
         <div className="span8 offset2">
-          <h2><a href="/">Eigenfeed</a> is a self-organizing community</h2>
+          <h2><a href="/">Hamlit</a> is a self-organizing community</h2>
           <p>Lorem ipsum dolor sit amet, mel mutat mundi antiopam cu. Laudem splendide scribentur cum id, id fabulas ceteros philosophia eam. Iusto epicurei appellantur et mei, augue vocibus definitionem his ad. Esse altera scaevola usu et, id duo elitr volutpat. Stet expetenda ei usu, ad his meis democritum elaboraret, tota apeirian eloquentiam eum ei. Vis graece doctus virtute cu.</p>
           <p>Ullum lucilius his an, cum eius facer ad. Per fugit virtute no, mea mutat ubique inermis no. Virtute mandamus ei has. Ut ludus iudico torquatos quo, ex qui quaeque vulputate. Cu nam aeque clita laudem. His ea putant verear nusquam, ea etiam corrumpit est.</p>
           <p>In quot dicam salutatus usu. Vim et iuvaret consequat liberavisse, sea viris conceptam et. Duo eu soleat graece saperet. At bonorum facilisis mea. Sea eu quot salutandi aliquando, vis cu causae eripuit.</p>

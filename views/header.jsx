@@ -12,7 +12,7 @@ var Header = React.createClass({
           <div className="row">
             <div className="span6">
               <h1 className="brand">
-                <a href="/"><Sprite name="icon" /> Eigenfeed</a>
+                <a href="/"><Sprite name="icon" /> Hamlit</a>
               </h1>
             </div>
             <div className="span6 nav">

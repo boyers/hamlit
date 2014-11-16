@@ -1,7 +1,7 @@
 window.makeRelativeURL = function(URL) {
   var thisHost = /(http(s?):\/\/)?([^/]*)(\/|$)/i.exec(window.location.href)[3];
   var escapedHost = thisHost.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-  var matches = (new RegExp('^(((https?:\\/\\/)?((' + escapedHost + ')|((www\\.)?eigenfeed\\.com))(\\/|$))|\\/)', 'i')).exec(URL);
+  var matches = (new RegExp('^(((https?:\\/\\/)?((' + escapedHost + ')|((www\\.)?hamlit\\.com))(\\/|$))|\\/)', 'i')).exec(URL);
   if (matches === null) {
     return null;
   } else {
