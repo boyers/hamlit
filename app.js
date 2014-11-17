@@ -5,6 +5,9 @@ app.disable('view cache');
 app.set('view engine', 'html');
 app.engine('html', require('garnet').__express);
 
+var morgan = require('morgan');
+app.use(morgan('short'));
+
 var compression = require('compression');
 app.use(compression());
 
@@ -29,11 +32,6 @@ app.use(cookieParser(secret_key));
 var garnet = require('garnet');
 garnet.templateExt = '.html';
 garnet.enableCaching = (process.env.NODE_ENV === 'production');
-
-app.use(function(req, res, next) {
-  console.log('['+ (new Date()).toUTCString() +'] ' + req.path);
-  next();
-});
 
 require('./routes').config(app);
 require('./assets').config(app);
