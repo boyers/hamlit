@@ -1,13 +1,15 @@
+@import 'constants';
+
 .text-button {
   @include disable-text-selection;
   font-weight: 600;
   cursor: pointer;
 
   &:hover {
-    color: #c14141;
+    color: $anchor-color;
   }
 
   &:active, &:focus {
-    color: #9d3535;
+    color: $anchor-color-active;
   }
 }

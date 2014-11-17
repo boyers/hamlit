@@ -1,4 +1,5 @@
 @import 'mixins';
+@import 'constants';
 
 $placeholder-color: #999;
 $placeholder-color-focus: #ccc;
@@ -79,7 +80,7 @@ form {
       }
 
       &:focus {
-        border: 2px solid #c14141;
+        border: 2px solid $anchor-color * 1.1;
         outline-style: none;
 
         &::-webkit-input-placeholder {
@@ -143,34 +144,34 @@ form {
       border-style: none;
       padding: 8px 16px;
       cursor: pointer;
-      background-color: #c14141;
-      border-bottom: 3px solid #862e20;
-      color: #fff0e8;
-
-      &:hover {
-        background-color: #d34747;
-        border-bottom: 3px solid #863120;
-        color: #fff0e8;
-      }
+      background-color: $anchor-color;
+      border-bottom: 3px solid $anchor-color * 0.75;
+      color: $anchor-color * 0.1 + #eee;
 
       &:focus {
-        background-color: #a13636;
-        border-bottom: 3px solid #983333;
-        color: #dac6d0;
+        background-color: $anchor-color * 0.9;
+        border-bottom: 3px solid $anchor-color * 0.75;
+        color: $anchor-color * 0.1 + #ddd;
         outline-style: none;
       }
 
+      &:hover {
+        background-color: $anchor-color * 1.1;
+        border-bottom: 3px solid $anchor-color * 0.8;
+        color: $anchor-color * 0.1 + #eee;
+      }
+
       &:active {
-        background-color: #a13636;
-        border-bottom: 3px solid #983333;
-        color: #dac6d0;
+        background-color: $anchor-color-active;
+        border-bottom: 3px solid $anchor-color-active * 0.75;
+        color: $anchor-color * 0.2 + #aaa;
       }
 
       &:disabled {
         cursor: default;
-        background-color: #79524e;
-        border-bottom: 3px solid #594542;
-        color: #b7aeac;
+        background-color: $anchor-color-active * 0.2 + #999;
+        border-bottom: 3px solid $anchor-color-active * 0.2 + #888;
+        color: $anchor-color * 0.05 + #ddd;
       }
     }
 

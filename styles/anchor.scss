@@ -1,13 +1,15 @@
+@import 'constants';
+
 a {
   color: inherit;
   text-decoration: inherit;
   font-weight: 600;
 
   &:hover {
-    color: #c14141;
+    color: $anchor-color;
   }
 
   &:active, &:focus {
-    color: #9d3535;
+    color: $anchor-color-active;
   }
 }

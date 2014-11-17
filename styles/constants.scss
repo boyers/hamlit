@@ -1,0 +1,26 @@
+// The link color.
+$anchor-color: #3285bb;
+
+// The active link color.
+$anchor-color-active: #25648c;
+
+// A container (and its padding) will not grow larger than this width.
+$container-max-width: 1024px;
+
+// The horizontal padding around containers.
+$container-gutter: 20px;
+
+// The spacing between columns.
+$column-gutter-width: 4%;
+
+// The number of columns in a row.
+$num-columns: 12;
+
+// Columns will stack on screens less than this wide.
+$stack-width: 768px;
+
+// The minimum width to be considered a tablet display.
+$min-width-tablet: 768px;
+
+// The minimum width to be considered a desktop display.
+$min-width-desktop: 980px;

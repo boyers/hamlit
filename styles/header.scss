@@ -1,4 +1,4 @@
-$stack-width: 768px; // This should match grid.scss.
+@import 'constants';
 
 .header {
   $header-height: 56px;
@@ -26,11 +26,11 @@ $stack-width: 768px; // This should match grid.scss.
       color: inherit;
 
       &:hover {
-        color: #c14141;
+        color: $anchor-color;
       }
 
       &:active, &:focus {
-        color: #9d3535;
+        color: $anchor-color-active;
       }
     }
   }
