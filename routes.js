@@ -1,4 +1,5 @@
 var assets = require('./assets');
+var models = require('./models');
 
 var htmlRoutes = /^\/(about)?$/;
 
@@ -24,6 +25,16 @@ exports.config = function(app) {
   });
 
   app.post('/api/sign_up', function(req, res) {
+    var fluffy = new models.Kitten({ name: 'fluffy' });
+
+    fluffy.save(function(err, fluffy) {
+      if (err) {
+        return console.error(err);
+      }
+
+      fluffy.speak();
+    });
+
     res.json({
       error: null,
       validationErrors: {
