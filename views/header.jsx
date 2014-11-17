@@ -17,8 +17,8 @@ var Header = React.createClass({
             </div>
             <div className="span6 nav">
               <a href="/about">About</a>
-              <TextButton onClick={ component.props.clickLogIn }>Log in</TextButton>
-              <TextButton onClick={ component.props.clickSignUp }>Sign up</TextButton>
+              <TextButton onSubmit={ component.props.clickLogIn }>Log in</TextButton>
+              <TextButton onSubmit={ component.props.clickSignUp }>Sign up</TextButton>
             </div>
           </div>
         </div>

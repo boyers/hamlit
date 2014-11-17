@@ -1,12 +1,25 @@
 var TextButton = React.createClass({
   propTypes: {
-    onClick: React.PropTypes.func.isRequired
+    onSubmit: React.PropTypes.func.isRequired
   },
   render: function() {
-    var className = this.props.className || '';
-    var other = _.omit(this.props, 'className', 'tabIndex');
+    var component = this;
+    var className = component.props.className || '';
+    var other = _.omit(component.props, 'className', 'tabIndex', 'onSubmit', 'onClick', 'onKeyDown');
+    var onClick = function(e) {
+      component.props.onSubmit();
+      e.preventDefault();
+      e.stopPropagation();
+    };
+    var onKeyDown = function(e) {
+      if (e.which === 13) {
+        component.props.onSubmit();
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    };
     return (
-      <span {...other} tabIndex="0" className={ 'text-button ' + className }>{ this.props.children }</span>
+      <span {...other} tabIndex="0" className={ 'text-button ' + className } onClick={onClick} onKeyDown={onKeyDown}>{ this.props.children }</span>
     );
   }
 });

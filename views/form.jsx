@@ -53,6 +53,10 @@ var Form = React.createClass({
             component.props.onSuccess(data);
           }
         } else {
+          if (data.error !== null) {
+            component.focus();
+          }
+          component.setState({ error: data.error });
           if (data.validationErrors !== null) {
             for (var ref in data.validationErrors) {
               component.refs[ref].setError(data.validationErrors[ref]);
@@ -65,7 +69,6 @@ var Form = React.createClass({
               }
             }
           }
-          component.setState({ error: data.error });
         }
       }).fail(function() {
         component.setState({ error: 'Uh oh, there was a network error.' });
