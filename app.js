@@ -13,6 +13,19 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
+var secret_key = process.env.SECRET_KEY;
+if (!secret_key) {
+  if (process.env.NODE_ENV === 'production') {
+    console.error('Set the SECRET_KEY environment variable for production.');
+    process.exit(1);
+  } else {
+    secret_key = 'abc123';
+  }
+}
+
+var cookieParser = require('cookie-parser');
+app.use(cookieParser(secret_key));
+
 var garnet = require('garnet');
 garnet.templateExt = '.html';
 garnet.enableCaching = (process.env.NODE_ENV === 'production');

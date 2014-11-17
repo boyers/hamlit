@@ -37,3 +37,4 @@ These are the environment variables and their defaults:
 
     PORT=3000
     NODE_ENV=development
+    SECRET_KEY=abc123 (in production, the server will refuse to start without this variable set)
