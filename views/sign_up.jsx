@@ -10,8 +10,8 @@ var SignUp = React.createClass({
             <div className="span4 offset4">
               <Form ref="form" title="Welcome to Hamlit!" submitText="Sign up" endpoint="/api/sign_up" fields={[
                 <Input id="email" label="Email" placeholder="hello@example.com" btw="Don&rsquo;t worry&mdash;it won&rsquo;t be public." />,
-                <Input id="password" label="Password" type="password" placeholder="schadenfreude" btw="We&rsquo;ll trust you to pick a good one." />,
-                <Input id="verify_password" label="Verify password" type="password" placeholder="schadenfreude" />
+                <Input id="password" label="Password" type="password" placeholder="lordoftheflies1954" btw="We&rsquo;ll trust you to pick a good one." />,
+                <Input id="verify_password" label="Verify password" type="password" placeholder="lordoftheflies1954" />
               ]} />
             </div>
           </div>
