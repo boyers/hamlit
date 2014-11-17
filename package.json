@@ -3,6 +3,7 @@
   "description": "A social network inspired by PageRank.",
   "private": true,
   "dependencies": {
+    "body-parser": "^1.9.2",
     "compression": "^1.0.11",
     "express": "^4.8.5",
     "garnet": "^0.1.8",

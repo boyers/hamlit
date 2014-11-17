@@ -1,10 +1,17 @@
 var app = require('express')();
-app.use(require('compression')());
 app.disable('x-powered-by');
 app.enable('strict routing');
 app.disable('view cache');
 app.set('view engine', 'html');
 app.engine('html', require('garnet').__express);
+
+var compression = require('compression');
+app.use(compression());
+
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 
 var garnet = require('garnet');
 garnet.templateExt = '.html';
