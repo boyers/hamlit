@@ -3,7 +3,9 @@ var Body = React.createClass({
     return {
       relativeURL: null,
       logInVisible: false,
-      signUpVisible: false
+      signUpVisible: false,
+      user: null,
+      waitingForUserData: true
     };
   },
   loadRelativeURL: function(URL) {
@@ -11,6 +13,18 @@ var Body = React.createClass({
       relativeURL: window.makeRelativeURL(URL),
       logInVisible: false,
       signUpVisible: false
+    });
+  },
+  isWaitingForUserData: function() {
+    return this.state.waitingForUserData;
+  },
+  getUserData: function() {
+    return this.state.user;
+  },
+  setUserData: function(data) {
+    this.setState({
+      user: data,
+      waitingForUserData: false
     });
   },
   render: function() {
@@ -33,8 +47,8 @@ var Body = React.createClass({
           clickLogIn={ function() { component.setState({ logInVisible: !component.state.logInVisible, signUpVisible: false }); } }
           clickSignUp={ function() { component.setState({ signUpVisible: !component.state.signUpVisible, logInVisible: false }); } }
         />
-        { this.state.logInVisible ? <LogIn /> : null }
-        { this.state.signUpVisible ? <SignUp /> : null }
+        { this.state.logInVisible ? <LogIn onComplete={ function(data) { component.setState({ logInVisible: false, user: data }); } } /> : null }
+        { this.state.signUpVisible ? <SignUp onComplete={ function(data) { component.setState({ signUpVisible: false, user: data }); } } /> : null }
         <div className="container clearfix">
           <div className="vertical-margin">
             { view }

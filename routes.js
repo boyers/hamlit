@@ -17,8 +17,42 @@ var renderError = function(res, err) {
 var getUserData = function(user) {
   return {
     email: user.email
+  };
+};
+
+var auth = function(req, res, callback) {
+  if (req.signedCookies.sessionId) {
+    models.Session.where({ _id: req.signedCookies.sessionId }).findOne(function(err, session) {
+      if (err || !session) {
+        res.clearCookie('sessionId');
+        return res.json({
+          error: 'Please log in.'
+        });
+      }
+
+      if (session.data.userId) {
+        models.User.where({ _id: session.data.userId }).findOne(function(err, user) {
+          if (err || !user) {
+            return res.json({
+              error: 'Please log in.'
+            });
+          }
+
+          callback(session, user);
+        });
+      } else {
+        return res.json({
+          error: 'Please log in.'
+        });
+      }
+    });
+  } else {
+    res.clearCookie('sessionId');
+    return res.json({
+      error: 'Please log in.'
+    });
   }
-}
+};
 
 exports.config = function(app) {
   if (process.env.NODE_ENV === 'production') {
@@ -33,6 +67,26 @@ exports.config = function(app) {
       });
     });
   }
+
+  app.post('/api/get_user_data', function(req, res) {
+    auth(req, res, function(session, user) {
+      return res.json({
+        error: null,
+        user: getUserData(user)
+      });
+    });
+  });
+
+  app.post('/api/log_out', function(req, res) {
+    if (req.signedCookies.sessionId) {
+      Session.remove({ _id: req.signedCookies.sessionId }, function() {
+        res.clearCookie('sessionId');
+        return res.json({
+          error: null
+        });
+      });
+    }
+  });
 
   app.post('/api/log_in', function(req, res) {
     var email = req.body.email.replace(/^\s+|\s+$/g, '');
@@ -66,7 +120,7 @@ exports.config = function(app) {
     }
 
     models.User.where({ email: email }).findOne(function(err, user) {
-      if (err) {
+      if (err || !user) {
         return res.json({
           error: 'Invalid email or password.',
           validationErrors: { }
@@ -88,7 +142,7 @@ exports.config = function(app) {
               return renderError(res, err);
             }
 
-            res.cookie('session_id', session.id, {
+            res.cookie('sessionId', session.id, {
               signed: true,
               maxAge: constants.sessionTTL * 1000
             });
@@ -106,7 +160,7 @@ exports.config = function(app) {
           });
         }
       });
-    })
+    });
   });
 
   app.post('/api/sign_up', function(req, res) {
@@ -186,7 +240,7 @@ exports.config = function(app) {
               return renderError(res, err);
             }
 
-            res.cookie('session_id', session.id, {
+            res.cookie('sessionId', session.id, {
               signed: true,
               maxAge: constants.sessionTTL * 1000
             });

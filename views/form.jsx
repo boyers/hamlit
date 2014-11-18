@@ -46,7 +46,7 @@ var Form = React.createClass({
         $(component.getDOMNode()).find('textarea, input').prop('disabled', false);
         component.setState({ submitted: false });
       }).done(function(data) {
-        if (data.error === null && (data.validationErrors === null || $.isEmptyObject(data.validationErrors))) {
+        if (data.error === null && (!data.hasOwnProperty('validationErrors') || data.validationErrors === null || $.isEmptyObject(data.validationErrors))) {
           for (i = 0; i < component.props.fields.length; i++) {
             field = component.props.fields[i];
             component.refs[field.props.id].reset();
@@ -59,7 +59,7 @@ var Form = React.createClass({
             component.focus();
           }
           component.setState({ error: data.error });
-          if (data.validationErrors !== null) {
+          if (data.hasOwnProperty('validationErrors') && data.validationErrors !== null) {
             for (i = 0; i < component.props.fields.length; i++) {
               field = component.props.fields[i];
               component.refs[field.props.id].setError(null);

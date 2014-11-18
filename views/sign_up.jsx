@@ -1,4 +1,7 @@
 var SignUp = React.createClass({
+  propTypes: {
+    onComplete: React.PropTypes.func.isRequired
+  },
   componentDidMount: function() {
     this.refs.form.focus();
   },
@@ -8,7 +11,7 @@ var SignUp = React.createClass({
         <div className="container vertical-margin">
           <div className="row">
             <div className="span4 offset4">
-              <Form ref="form" title="Welcome to Hamlit!" submitText="Sign up" endpoint="/api/sign_up" fields={[
+              <Form ref="form" title="Welcome to Hamlit!" submitText="Sign up" endpoint="/api/sign_up" onSuccess={ this.props.onComplete } fields={[
                 <Input id="email" label="Email" placeholder="piggy@example.com" btw="Don&rsquo;t worry&mdash;it won&rsquo;t be public." />,
                 <Input id="password" label="Password" type="password" placeholder="l0rd 0f th3 fl13s" btw="Please pick a good one." />,
                 <Input id="verifyPassword" label="Verify password" type="password" placeholder="l0rd 0f th3 fl13s" btw="Just to make sure you got it right." />

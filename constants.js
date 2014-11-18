@@ -1,1 +1,1 @@
-exports.sessionTTL = 60; // seconds
+exports.sessionTTL = 60 * 60 * 24 * 30; // seconds

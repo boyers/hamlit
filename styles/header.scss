@@ -48,10 +48,10 @@
       margin-left: 24px;
       line-height: $header-height;
       font-weight: 400;
+    }
 
-      &:first-child {
-        margin-left: 0;
-      }
+    > a:first-child, > .text-button:first-child {
+      margin-left: 0;
     }
   }
 }
