@@ -10,7 +10,7 @@ var Header = React.createClass({
       console.log('log out');
     };
 
-    var nav = null;
+    var nav = <span className="nav-spinner"><Spinner /></span>;
     if (window.hasOwnProperty('bodyComponent') && !window.bodyComponent.isWaitingForUserData()) {
       if (window.bodyComponent.getUserData() === null) {
         nav = (
