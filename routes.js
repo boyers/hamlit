@@ -1,3 +1,4 @@
+var constants = require('./constants');
 var assets = require('./assets');
 var models = require('./models');
 var bcrypt = require('bcrypt');
@@ -12,6 +13,12 @@ var renderError = function(res, err) {
     validationErrors: { }
   });
 };
+
+var getUserData = function(user) {
+  return {
+    email: user.email
+  }
+}
 
 exports.config = function(app) {
   if (process.env.NODE_ENV === 'production') {
@@ -72,9 +79,25 @@ exports.config = function(app) {
         }
 
         if (result) {
-          return res.json({
-            error: null,
-            validationErrors: { }
+          var session = new models.Session({
+            data: { userId: user._id }
+          });
+
+          session.save(function(err) {
+            if (err) {
+              return renderError(res, err);
+            }
+
+            res.cookie('session_id', session.id, {
+              signed: true,
+              maxAge: constants.sessionTTL * 1000
+            });
+
+            return res.json({
+              error: null,
+              validationErrors: { },
+              user: getUserData(user)
+            });
           });
         } else {
           return res.json({
@@ -152,13 +175,27 @@ exports.config = function(app) {
                 }
               });
             }
-
-            return renderError(res, err);
           }
 
-          return res.json({
-            error: null,
-            validationErrors: { }
+          var session = new models.Session({
+            data: { userId: user._id }
+          });
+
+          session.save(function(err) {
+            if (err) {
+              return renderError(res, err);
+            }
+
+            res.cookie('session_id', session.id, {
+              signed: true,
+              maxAge: constants.sessionTTL * 1000
+            });
+
+            return res.json({
+              error: null,
+              validationErrors: { },
+              user: getUserData(user)
+            });
           });
         });
       });
