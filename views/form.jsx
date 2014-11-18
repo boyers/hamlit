@@ -17,9 +17,10 @@ var Form = React.createClass({
   },
   focus: function() {
     var firstFieldRef = this.props.fields[0].props.id;
-    $(this.refs[firstFieldRef].getInput().getDOMNode()).focus();
+    this.refs[firstFieldRef].focus();
   },
   submit: function(event) {
+    var i, field;
     var component = this;
     event.preventDefault();
     event.stopPropagation();
@@ -29,9 +30,12 @@ var Form = React.createClass({
       component.setState({ submitted: true, error: null });
 
       var data = {};
-      $(component.getDOMNode()).find('textarea:not([type="submit"]), input:not([type="submit"])').each(function(index, element) {
-        data[$(element).prop('name')] = $(element).val();
-      });
+      for (i = 0; i < component.props.fields.length; i++) {
+        field = component.props.fields[i];
+        var name = component.refs[field.props.id].props.id;
+        var value = component.refs[field.props.id].getValue();
+        data[name] = value;
+      }
 
       $.ajax({
         type: 'POST',
@@ -42,12 +46,10 @@ var Form = React.createClass({
         $(component.getDOMNode()).find('textarea, input').prop('disabled', false);
         component.setState({ submitted: false });
       }).done(function(data) {
-        var i, field;
-        if (data.error === null && data.validationErrors === null) {
-          $(component.getDOMNode()).find('textarea:not([type="submit"]), input:not([type="submit"])').val('');
+        if (data.error === null && (data.validationErrors === null || $.isEmptyObject(data.validationErrors))) {
           for (i = 0; i < component.props.fields.length; i++) {
             field = component.props.fields[i];
-            component.refs[field.props.id].setError(null);
+            component.refs[field.props.id].reset();
           }
           if (component.props.hasOwnProperty('onSuccess')) {
             component.props.onSuccess(data);
@@ -58,13 +60,17 @@ var Form = React.createClass({
           }
           component.setState({ error: data.error });
           if (data.validationErrors !== null) {
+            for (i = 0; i < component.props.fields.length; i++) {
+              field = component.props.fields[i];
+              component.refs[field.props.id].setError(null);
+            }
             for (var ref in data.validationErrors) {
               component.refs[ref].setError(data.validationErrors[ref]);
             }
             for (i = 0; i < component.props.fields.length; i++) {
               field = component.props.fields[i];
               if (data.validationErrors.hasOwnProperty(field.props.id)) {
-                $(component.refs[field.props.id].getInput().getDOMNode()).focus();
+                component.refs[field.props.id].focus();
                 break;
               }
             }

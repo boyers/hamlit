@@ -10,11 +10,18 @@ var Input = React.createClass({
   getInitialState: function() {
     return { error: null };
   },
+  focus: function() {
+    return $(this.refs.input.getDOMNode()).focus();
+  },
   setError: function(error) {
     this.setState({ error: error });
   },
-  getInput: function() {
-    return this.refs.input;
+  getValue: function() {
+    return $(this.refs.input.getDOMNode()).val();
+  },
+  reset: function() {
+    $(this.refs.input.getDOMNode()).val('');
+    this.setState({ error: null });
   },
   render: function() {
     return (
