@@ -38,6 +38,15 @@ exports.config = function(app) {
     var email = req.body.email.replace(/^\s+|\s+$/g, '');
     var password = req.body.password;
 
+    if (email === '') {
+      return res.json({
+        error: null,
+        validationErrors: {
+          email: 'Please enter an email address.'
+        }
+      });
+    }
+
     if (!/^.{1,64}@.{1,253}$/.test(email)) {
       return res.json({
         error: null,
