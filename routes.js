@@ -1,7 +1,17 @@
 var assets = require('./assets');
 var models = require('./models');
+var bcrypt = require('bcrypt');
 
 var htmlRoutes = /^\/(about)?$/;
+
+var renderError = function(res, err) {
+  console.error(err);
+
+  return res.json({
+    error: 'Something went wrong.',
+    validationErrors: { }
+  });
+};
 
 exports.config = function(app) {
   if (process.env.NODE_ENV === 'production') {
@@ -25,21 +35,63 @@ exports.config = function(app) {
   });
 
   app.post('/api/sign_up', function(req, res) {
-    var fluffy = new models.Kitten({ name: 'fluffy' });
+    var email = req.body.email.replace(/^\s+|\s+$/g, '');
+    var password = req.body.password;
 
-    fluffy.save(function(err, fluffy) {
+    if (password === '') {
+      return res.json({
+        error: null,
+        validationErrors: {
+          password: 'Please enter a password.'
+        }
+      });
+    }
+
+    if (password !== req.body.verifyPassword) {
+      return res.json({
+        error: null,
+        validationErrors: {
+          verifyPassword: 'Your passwords do not match.'
+        }
+      });
+    }
+
+    bcrypt.genSalt(10, function(err, salt) {
       if (err) {
-        return console.error(err);
+        return renderError(res, err);
       }
 
-      fluffy.speak();
-    });
+      bcrypt.hash(password, salt, function(err, hash) {
+        if (err) {
+          return renderError(res, err);
+        }
 
-    res.json({
-      error: null,
-      validationErrors: {
-        password: 'Pick a better password.'
-      }
+        var user = new models.User({
+          email: email,
+          passwordHash: hash,
+          passwordSalt: salt
+        });
+
+        user.save(function(err) {
+          if (err) {
+            if (err.code === 11000) {
+              return res.json({
+                error: null,
+                validationErrors: {
+                  email: 'That email address is already registered.'
+                }
+              });
+            }
+
+            return renderError(res, err);
+          }
+
+          return res.json({
+            error: null,
+            validationErrors: { }
+          });
+        });
+      });
     });
   });
 };

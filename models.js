@@ -1,11 +1,27 @@
 var mongoose = require('mongoose');
 
-var kittySchema = mongoose.Schema({
-    name: String
+var userSchema = mongoose.Schema({
+    email: {
+      type: String,
+      unique: true,
+      validate: function(value) {
+        return /^.{1,64}@.{1,253}$/.test(value);
+      }
+    },
+    passwordHash: {
+      type: String,
+      validate: function(value) {
+        return /^[.\/ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789$]{60}$/.test(value);
+      }
+    },
+    passwordSalt: {
+      type: String,
+      validate: function(value) {
+        return /^[.\/ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789$]{29}$/.test(value);
+      }
+    }
 });
 
-kittySchema.methods.speak = function() {
-  console.log(this.name ? "Meow name is " + this.name : "I don't have a name");
-};
+userSchema.index({ email: 1 });
 
-exports.Kitten = mongoose.model('Kitten', kittySchema);
+exports.User = mongoose.model('User', userSchema);
