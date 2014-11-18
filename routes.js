@@ -79,7 +79,7 @@ exports.config = function(app) {
 
   app.post('/api/log_out', function(req, res) {
     if (req.signedCookies.sessionId) {
-      Session.remove({ _id: req.signedCookies.sessionId }, function() {
+      models.Session.remove({ _id: req.signedCookies.sessionId }, function() {
         res.clearCookie('sessionId');
         return res.json({
           error: null

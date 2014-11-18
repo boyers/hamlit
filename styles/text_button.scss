@@ -12,4 +12,9 @@
   &:active, &:focus {
     color: $anchor-color-active;
   }
+
+  &.disabled {
+    color: $anchor-color-disabled;
+    cursor: default;
+  }
 }

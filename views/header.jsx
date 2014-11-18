@@ -3,11 +3,31 @@ var Header = React.createClass({
     clickLogIn: React.PropTypes.func.isRequired,
     clickSignUp: React.PropTypes.func.isRequired
   },
+  getInitialState: function() {
+    return {
+      loggingOut: false
+    };
+  },
   render: function() {
     var component = this;
 
     var clickLogOut = function() {
-      console.log('log out');
+      if (component.state.loggingOut === false) {
+        component.setState({
+          loggingOut: true
+        });
+        $.ajax({
+          type: 'POST',
+          url: '/api/log_out',
+          data: { }
+        }).always(function() {
+          component.setState({
+            loggingOut: false
+          });
+        }).done(function(data) {
+          window.bodyComponent.setUserData(null);
+        });
+      }
     };
 
     var nav = <span className="nav-spinner"><Spinner /></span>;
@@ -24,7 +44,7 @@ var Header = React.createClass({
         nav = (
           <span>
             <a href="/about">About</a>
-            <TextButton onSubmit={ clickLogOut }>Log out</TextButton>
+            <TextButton className={ component.state.loggingOut ? 'disabled' : '' } onSubmit={ clickLogOut }>Log out</TextButton>
           </span>
         );
       }
