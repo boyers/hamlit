@@ -28,10 +28,49 @@ exports.config = function(app) {
   }
 
   app.post('/api/log_in', function(req, res) {
-    res.json({
-      error: 'Incorrect email or password.',
-      validationErrors: null
-    });
+    var email = req.body.email.replace(/^\s+|\s+$/g, '');
+    var password = req.body.password;
+
+    if (email === '') {
+      return res.json({
+        error: null,
+        validationErrors: {
+          email: 'Please enter an email address.'
+        }
+      });
+    }
+
+    if (!/^.{1,64}@.{1,253}$/.test(email)) {
+      return res.json({
+        error: null,
+        validationErrors: {
+          email: 'That email address doesn&rsquo;t look valid.'
+        }
+      });
+    }
+
+    if (password === '') {
+      return res.json({
+        error: null,
+        validationErrors: {
+          password: 'Please enter a password.'
+        }
+      });
+    }
+
+    models.User.where({ email: email }).findOne(function(err, user) {
+      if (err) {
+        return res.json({
+          error: 'Invalid email or password.',
+          validationErrors: { }
+        });
+      }
+
+      return res.json({
+        error: null,
+        validationErrors: { }
+      });
+    })
   });
 
   app.post('/api/sign_up', function(req, res) {
