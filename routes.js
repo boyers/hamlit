@@ -66,9 +66,22 @@ exports.config = function(app) {
         });
       }
 
-      return res.json({
-        error: null,
-        validationErrors: { }
+      bcrypt.compare(password, user.passwordHash, function(err, result) {
+        if (err) {
+          return renderError(res, err);
+        }
+
+        if (result) {
+          return res.json({
+            error: null,
+            validationErrors: { }
+          });
+        } else {
+          return res.json({
+            error: 'Invalid email or password.',
+            validationErrors: { }
+          });
+        }
       });
     })
   });
