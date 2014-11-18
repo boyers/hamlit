@@ -30,7 +30,13 @@ var LogIn = React.createClass({
     component.setState({ isOpen: !component.state.isOpen });
   },
   close: function(callback) {
-    $(this.getDOMNode()).stop().slideUp(300, callback);
+    if ($(this.getDOMNode()).css('display').toLowerCase() === 'none') {
+      if (callback) {
+        callback();
+      }
+    } else {
+      $(this.getDOMNode()).stop().slideUp(300, callback);
+    }
     this.setState({ isOpen: false });
   },
   render: function() {
