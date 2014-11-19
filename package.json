@@ -11,7 +11,8 @@
     "garnet": "^0.1.8",
     "lodash": "^2.4.1",
     "mongoose": "^3.8.19",
-    "morgan": "^1.5.0"
+    "morgan": "^1.5.0",
+    "xregexp": "^2.0.0"
   },
   "devDependencies": {
     "grunt": "^0.4.5",

@@ -101,7 +101,7 @@ exports.config = function(app) {
       });
     }
 
-    if (!/^[A-Za-z0-9_]{1,32}$/.test(username)) {
+    if (!models.User.validateUsername(username)) {
       return res.json({
         error: null,
         validationErrors: {
@@ -176,7 +176,7 @@ exports.config = function(app) {
       });
     }
 
-    if (!/^[A-Za-z0-9_]{1,32}$/.test(username)) {
+    if (!models.User.validateUsername(username)) {
       return res.json({
         error: null,
         validationErrors: {

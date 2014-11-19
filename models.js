@@ -1,5 +1,6 @@
 var constants = require('./constants');
 var mongoose = require('mongoose');
+var xregexp = require('xregexp');
 
 var sessionSchema = mongoose.Schema({
   createdAt: {
@@ -16,7 +17,7 @@ var sessionSchema = mongoose.Schema({
 exports.Session = mongoose.model('Session', sessionSchema);
 
 var validateUsername = function(value) {
-  return /^[A-Za-z0-9_]+$/.test(value);
+  return xregexp.XRegExp('^([0-9_]|\\p{L}){1,32}$').test(value);
 };
 
 var userSchema = mongoose.Schema({
