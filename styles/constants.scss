@@ -1,8 +1,8 @@
 // The link color.
-$anchor-color: #3285bb;
+$anchor-color: #d75353;
 
 // The color of links as they are selected or being clicked.
-$anchor-color-active: #25648c;
+$anchor-color-active: $anchor-color * 0.75;
 
 // The color of disabled links.
 $anchor-color-disabled: #999;

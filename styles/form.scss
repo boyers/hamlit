@@ -12,7 +12,7 @@ form {
 
   .form-error {
     margin-top: 6px;
-    color: #c14141;
+    color: #cd4545;
     font-size: 0.9em;
   }
 
@@ -80,7 +80,7 @@ form {
       }
 
       &:focus {
-        border: 2px solid $anchor-color * 1.1;
+        border: 2px solid #aaa;
         outline-style: none;
 
         &::-webkit-input-placeholder {
