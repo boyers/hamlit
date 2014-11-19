@@ -1,7 +1,9 @@
 /*
-  The endpoint should return a JSON object containing at least two fields:
+  The endpoint should return a JSON object containing at least this field:
     error: null or an error String
-    validationErrors: null or an object mapping field names to error strings
+
+  And optionally this field:
+    validationErrors: an object mapping field names to error strings
 */
 
 var Form = React.createClass({

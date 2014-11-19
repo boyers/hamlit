@@ -37,7 +37,7 @@ module.exports = function(grunt) {
     sass: {
       dist: {
         files: {
-          'tmp/application.css': 'styles/application.scss' // use the SCSS @import mechanism for multiple SCSS files
+          'tmp/application.css': 'styles/application.scss' // Use the SCSS @import mechanism for multiple SCSS files.
         }
       }
     },

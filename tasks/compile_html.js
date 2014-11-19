@@ -1,4 +1,6 @@
 // Run this script from the application root.
+// It compiles views/application.html (a garnet template)
+// and puts the result in public/assets.
 
 process.env.NODE_ENV = 'production';
 var assets = require('../assets');

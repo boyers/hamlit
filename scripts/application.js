@@ -1,8 +1,8 @@
 $(function() {
-  // enable fastclick
+  // Enable fastclick.
   FastClick.attach(document.body);
 
-  // load user data
+  // Load user data if logged in.
   if (/sessionId/.test(document.cookie)) {
     $.ajax({
       type: 'POST',
