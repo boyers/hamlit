@@ -15,14 +15,16 @@ var sessionSchema = mongoose.Schema({
 
 exports.Session = mongoose.model('Session', sessionSchema);
 
+var validateUsername = function(value) {
+  return /^[A-Za-z0-9_]+$/.test(value);
+};
+
 var userSchema = mongoose.Schema({
-  email: {
+  username: {
     type: String,
     unique: true,
     required: true,
-    validate: function(value) {
-      return /^.{1,64}@.{1,253}$/.test(value);
-    }
+    validate: validateUsername
   },
   passwordHash: {
     type: String,
@@ -40,6 +42,8 @@ var userSchema = mongoose.Schema({
   }
 });
 
-userSchema.index({ email: 1 });
+userSchema.statics.validateUsername = validateUsername;
+
+userSchema.index({ username: 1 });
 
 exports.User = mongoose.model('User', userSchema);

@@ -14,7 +14,7 @@ var SignUp = React.createClass({
     var component = this;
     if (component.state.isOpen) {
       $(component.getDOMNode()).stop().slideUp(300, function() {
-        component.refs.form.focus();
+        component.refs.form.reset();
         if (callback) {
           callback();
         }
@@ -30,14 +30,19 @@ var SignUp = React.createClass({
     component.setState({ isOpen: !component.state.isOpen });
   },
   close: function(callback) {
-    if ($(this.getDOMNode()).css('display').toLowerCase() === 'none') {
+    var component = this;
+    var done = function() {
+      component.refs.form.reset();
       if (callback) {
         callback();
       }
+    };
+    if ($(component.getDOMNode()).css('display').toLowerCase() === 'none') {
+      done();
     } else {
-      $(this.getDOMNode()).stop().slideUp(300, callback);
+      $(component.getDOMNode()).stop().slideUp(300, done);
     }
-    this.setState({ isOpen: false });
+    component.setState({ isOpen: false });
   },
   render: function() {
     var component = this;
@@ -53,7 +58,7 @@ var SignUp = React.createClass({
           <div className="row">
             <div className="span4 offset4">
               <Form ref="form" title="Welcome to Hamlit!" submitText="Sign up" endpoint="/api/sign_up" onSuccess={ onComplete } fields={[
-                <Input id="email" label="Email" placeholder="piggy@example.com" btw="Don&rsquo;t worry&mdash;it won&rsquo;t be public." />,
+                <Input id="username" label="Username" placeholder="piggy" btw="You can always change it later." />,
                 <Input id="password" label="Password" type="password" placeholder="l0rd 0f th3 fl13s" btw="Please pick a good one." />,
                 <Input id="verifyPassword" label="Verify password" type="password" placeholder="l0rd 0f th3 fl13s" btw="Just to make sure you got it right." />
               ]} />

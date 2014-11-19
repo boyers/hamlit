@@ -14,7 +14,7 @@ var LogIn = React.createClass({
     var component = this;
     if (component.state.isOpen) {
       $(component.getDOMNode()).stop().slideUp(300, function() {
-        component.refs.form.focus();
+        component.refs.form.reset();
         if (callback) {
           callback();
         }
@@ -30,14 +30,19 @@ var LogIn = React.createClass({
     component.setState({ isOpen: !component.state.isOpen });
   },
   close: function(callback) {
-    if ($(this.getDOMNode()).css('display').toLowerCase() === 'none') {
+    var component = this;
+    var done = function() {
+      component.refs.form.reset();
       if (callback) {
         callback();
       }
+    };
+    if ($(component.getDOMNode()).css('display').toLowerCase() === 'none') {
+      done();
     } else {
-      $(this.getDOMNode()).stop().slideUp(300, callback);
+      $(component.getDOMNode()).stop().slideUp(300, done);
     }
-    this.setState({ isOpen: false });
+    component.setState({ isOpen: false });
   },
   render: function() {
     var component = this;
@@ -53,8 +58,8 @@ var LogIn = React.createClass({
           <div className="row">
             <div className="span4 offset4">
               <Form ref="form" title="Welcome back!" submitText="Log in" endpoint="/api/log_in" onSuccess={ onComplete } fields={[
-                <Input id="email" label="Email" placeholder="piggy@example.com" />,
-                <Input id="password" label="Password" type="password" placeholder="l0rd 0f th3 fl13s" btw="Click &lt;a href=&quot;/&quot;>here&lt;/a&gt; if you forgot it." />
+                <Input id="username" label="Username" placeholder="piggy" />,
+                <Input id="password" label="Password" type="password" placeholder="l0rd 0f th3 fl13s" />
               ]} />
             </div>
           </div>

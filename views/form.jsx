@@ -21,6 +21,12 @@ var Form = React.createClass({
     var firstFieldRef = this.props.fields[0].props.id;
     this.refs[firstFieldRef].focus();
   },
+  reset: function() {
+    for (i = 0; i < this.props.fields.length; i++) {
+      field = this.props.fields[i];
+      this.refs[field.props.id].reset();
+    }
+  },
   submit: function(event) {
     var i, field;
     var component = this;

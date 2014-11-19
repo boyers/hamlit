@@ -16,7 +16,7 @@ var renderError = function(res, err) {
 
 var getUserData = function(user) {
   return {
-    email: user.email
+    username: user.username
   };
 };
 
@@ -89,23 +89,23 @@ exports.config = function(app) {
   });
 
   app.post('/api/log_in', function(req, res) {
-    var email = req.body.email.replace(/^\s+|\s+$/g, '');
+    var username = req.body.username.replace(/^\s+|\s+$/g, '');
     var password = req.body.password;
 
-    if (email === '') {
+    if (username === '') {
       return res.json({
         error: null,
         validationErrors: {
-          email: 'Please enter an email address.'
+          username: 'Please enter your username.'
         }
       });
     }
 
-    if (!/^.{1,64}@.{1,253}$/.test(email)) {
+    if (!/^[A-Za-z0-9_]{1,32}$/.test(username)) {
       return res.json({
         error: null,
         validationErrors: {
-          email: 'That email address doesn&rsquo;t look valid.'
+          username: 'That username doesn&rsquo;t look valid. Please use only letters, digits, and underscores.'
         }
       });
     }
@@ -119,10 +119,10 @@ exports.config = function(app) {
       });
     }
 
-    models.User.where({ email: email }).findOne(function(err, user) {
+    models.User.where({ username: username }).findOne(function(err, user) {
       if (err || !user) {
         return res.json({
-          error: 'Invalid email or password.',
+          error: 'Invalid username or password.',
           validationErrors: { }
         });
       }
@@ -155,7 +155,7 @@ exports.config = function(app) {
           });
         } else {
           return res.json({
-            error: 'Invalid email or password.',
+            error: 'Invalid username or password.',
             validationErrors: { }
           });
         }
@@ -164,23 +164,23 @@ exports.config = function(app) {
   });
 
   app.post('/api/sign_up', function(req, res) {
-    var email = req.body.email.replace(/^\s+|\s+$/g, '');
+    var username = req.body.username.replace(/^\s+|\s+$/g, '');
     var password = req.body.password;
 
-    if (email === '') {
+    if (username === '') {
       return res.json({
         error: null,
         validationErrors: {
-          email: 'Please enter an email address.'
+          username: 'Please enter a username.'
         }
       });
     }
 
-    if (!/^.{1,64}@.{1,253}$/.test(email)) {
+    if (!/^[A-Za-z0-9_]{1,32}$/.test(username)) {
       return res.json({
         error: null,
         validationErrors: {
-          email: 'That email address doesn&rsquo;t look valid.'
+          username: 'That username doesn&rsquo;t look valid. Please use only letters, digits, and underscores.'
         }
       });
     }
@@ -214,7 +214,7 @@ exports.config = function(app) {
         }
 
         var user = new models.User({
-          email: email,
+          username: username,
           passwordHash: hash,
           passwordSalt: salt
         });
@@ -225,7 +225,7 @@ exports.config = function(app) {
               return res.json({
                 error: null,
                 validationErrors: {
-                  email: 'That email address is already registered.'
+                  username: 'That username is already registered.'
                 }
               });
             }
