@@ -20,6 +20,8 @@ var getUserData = function(user) {
   };
 };
 
+var bcryptRounds = 10;
+
 var auth = function(req, res, callback) {
   if (req.signedCookies.sessionId) {
     models.Session.where({ _id: req.signedCookies.sessionId }).findOne(function(err, session) {
@@ -122,7 +124,7 @@ exports.config = function(app) {
     models.User.where({ username: username }).findOne(function(err, user) {
       if (err || !user) {
         return res.json({
-          error: 'Invalid username or password.',
+          error: 'Incorrect username or password.',
           validationErrors: { }
         });
       }
@@ -155,7 +157,7 @@ exports.config = function(app) {
           });
         } else {
           return res.json({
-            error: 'Invalid username or password.',
+            error: 'Incorrect username or password.',
             validationErrors: { }
           });
         }
@@ -166,6 +168,7 @@ exports.config = function(app) {
   app.post('/api/sign_up', function(req, res) {
     var username = req.body.username.replace(/^\s+|\s+$/g, '');
     var password = req.body.password;
+    var verifyPassword = req.body.verifyPassword;
 
     if (username === '') {
       return res.json({
@@ -194,7 +197,16 @@ exports.config = function(app) {
       });
     }
 
-    if (password !== req.body.verifyPassword) {
+    if (verifyPassword === '') {
+      return res.json({
+        error: null,
+        validationErrors: {
+          verifyPassword: 'Please re-enter your password here.'
+        }
+      });
+    }
+
+    if (password !== verifyPassword) {
       return res.json({
         error: null,
         validationErrors: {
@@ -203,7 +215,7 @@ exports.config = function(app) {
       });
     }
 
-    bcrypt.genSalt(10, function(err, salt) {
+    bcrypt.genSalt(bcryptRounds, function(err, salt) {
       if (err) {
         return renderError(res, err);
       }
@@ -229,6 +241,8 @@ exports.config = function(app) {
                 }
               });
             }
+
+            return renderError(res, err);
           }
 
           var session = new models.Session({
@@ -252,6 +266,137 @@ exports.config = function(app) {
             });
           });
         });
+      });
+    });
+  });
+
+  app.post('/api/update_username', function(req, res) {
+    auth(req, res, function(session, user) {
+      var username = req.body.username.replace(/^\s+|\s+$/g, '');
+
+      if (username === '') {
+        return res.json({
+          error: null,
+          validationErrors: {
+            username: 'Please enter a username.'
+          }
+        });
+      }
+
+      if (!models.User.validateUsername(username)) {
+        return res.json({
+          error: null,
+          validationErrors: {
+            username: 'That username doesn&rsquo;t look valid. Please use only letters, digits, and underscores.'
+          }
+        });
+      }
+
+      user.username = username;
+
+      user.save(function(err) {
+        if (err) {
+          if (err.code === 11000) {
+            return res.json({
+              error: null,
+              validationErrors: {
+                username: 'That username is already taken.'
+              }
+            });
+          }
+
+          return renderError(res, err);
+        }
+
+        return res.json({
+          error: null,
+          user: getUserData(user)
+        });
+      });
+    });
+  });
+
+  app.post('/api/update_password', function(req, res) {
+    auth(req, res, function(session, user) {
+      var oldPassword = req.body.oldPassword;
+      var newPassword = req.body.newPassword;
+      var verifyPassword = req.body.verifyPassword;
+
+      if (oldPassword === '') {
+        return res.json({
+          error: null,
+          validationErrors: {
+            oldPassword: 'Please enter your old password.'
+          }
+        });
+      }
+
+      if (newPassword === '') {
+        return res.json({
+          error: null,
+          validationErrors: {
+            newPassword: 'Please enter your new password.'
+          }
+        });
+      }
+
+      if (verifyPassword === '') {
+        return res.json({
+          error: null,
+          validationErrors: {
+            verifyPassword: 'Please re-enter your new password here.'
+          }
+        });
+      }
+
+      if (newPassword !== verifyPassword) {
+        return res.json({
+          error: null,
+          validationErrors: {
+            verifyPassword: 'Your passwords do not match.'
+          }
+        });
+      }
+
+      bcrypt.compare(oldPassword, user.passwordHash, function(err, result) {
+        if (err) {
+          return renderError(res, err);
+        }
+
+        if (result) {
+          bcrypt.genSalt(bcryptRounds, function(err, salt) {
+            if (err) {
+              return renderError(res, err);
+            }
+
+            bcrypt.hash(newPassword, salt, function(err, hash) {
+              if (err) {
+                return renderError(res, err);
+              }
+
+              user.passwordHash = hash;
+              user.passwordSalt = salt;
+
+              user.save(function(err) {
+                if (err) {
+                  return renderError(res, err);
+                }
+
+                return res.json({
+                  error: null,
+                  user: getUserData(user)
+                });
+              });
+            });
+          });
+        } else {
+          return res.json({
+            error: null,
+            validationErrors: {
+              oldPassword: 'Incorrect password.'
+            }
+          });
+        }
       });
     });
   });

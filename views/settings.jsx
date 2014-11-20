@@ -82,8 +82,8 @@ var Settings = React.createClass({
                 <Input id="username" label="Username" placeholder={ username } defaultValue={ username } />
               ]} />
               <Form ref="password_form" submitText="Save password" endpoint="/api/update_password" onSuccess={ onComplete } fields={[
-                <Input id="old_password" label="Old password" type="password" placeholder="l0rd 0f th3 fl13s" btw="So we know it&rsquo;s really you." />,
-                <Input id="new_password" label="New password" type="password" placeholder="l0rd 0f th3 r1ngs" btw="Please pick a good one." />,
+                <Input id="oldPassword" label="Old password" type="password" placeholder="l0rd 0f th3 fl13s" btw="So we know it&rsquo;s really you." />,
+                <Input id="newPassword" label="New password" type="password" placeholder="l0rd 0f th3 r1ngs" btw="Please pick a good one." />,
                 <Input id="verifyPassword" label="Verify password" type="password" placeholder="l0rd 0f th3 r1ngs" btw="Just to make sure you got it right." />
               ]} />
             </div>
