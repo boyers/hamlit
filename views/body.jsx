@@ -3,7 +3,7 @@ var Body = React.createClass({
     return {
       relativeURL: null,
       user: null,
-      waitingForUserData: true
+      waitingForInitialData: true
     };
   },
   loadRelativeURL: function(URL) {
@@ -12,18 +12,20 @@ var Body = React.createClass({
     });
     this.refs.signUp.closeImmediately();
     this.refs.logIn.closeImmediately();
+    this.refs.settings.closeImmediately();
   },
-  isWaitingForUserData: function() {
-    return this.state.waitingForUserData;
-  },
-  getUserData: function() {
-    return this.state.user;
-  },
-  setUserData: function(data) {
+  // Note: This is only so application.js can log the user in on initial page load.
+  // Just use window.bodyComponent.setState(...) otherwise.
+  setUserData: function(user) {
     this.setState({
-      user: data,
-      waitingForUserData: false
+      user: user,
+      waitingForInitialData: false
     });
+  },
+  componentDidUpdate: function(prevProps, prevState) {
+    if (!this.state.user) {
+      this.refs.settings.closeImmediately();
+    }
   },
   render: function() {
     var component = this;
@@ -44,9 +46,13 @@ var Body = React.createClass({
         <Header
           clickLogIn={ function() { component.refs.signUp.close(function() { component.refs.logIn.toggle(); }); } }
           clickSignUp={ function() { component.refs.logIn.close(function() { component.refs.signUp.toggle(); }); } }
+          clickSettings={ function() { component.refs.settings.toggle(); } }
+          user={ this.state.user }
+          waitingForInitialData={ component.state.waitingForInitialData }
         />
-        <LogIn ref="logIn" onComplete={ function(data) { component.setState({ user: data }); } } />
-        <SignUp ref="signUp" onComplete={ function(data) { component.setState({ user: data }); } } />
+        <LogIn ref="logIn" />
+        <SignUp ref="signUp" />
+        <Settings ref="settings" user={ this.state.user } />
         <div className="container clearfix">
           <div className="vertical-margin">
             { view }

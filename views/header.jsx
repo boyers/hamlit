@@ -1,7 +1,10 @@
 var Header = React.createClass({
   propTypes: {
     clickLogIn: React.PropTypes.func.isRequired,
-    clickSignUp: React.PropTypes.func.isRequired
+    clickSignUp: React.PropTypes.func.isRequired,
+    clickSettings: React.PropTypes.func.isRequired,
+    user: React.PropTypes.object,
+    waitingForInitialData: React.PropTypes.bool.isRequired
   },
   getInitialState: function() {
     return {
@@ -31,20 +34,21 @@ var Header = React.createClass({
     };
 
     var nav = <span className="nav-spinner"><Spinner /></span>;
-    if (window.hasOwnProperty('bodyComponent') && !window.bodyComponent.isWaitingForUserData()) {
-      if (window.bodyComponent.getUserData() === null) {
+    if (window.hasOwnProperty('bodyComponent') && !this.props.waitingForInitialData) {
+      if (component.props.user) {
         nav = (
           <span>
             <a href="/about">About</a>
-            <TextButton onSubmit={ component.props.clickLogIn }>Log in</TextButton>
-            <TextButton onSubmit={ component.props.clickSignUp }>Sign up</TextButton>
+            <TextButton onSubmit={ component.props.clickSettings }>Settings</TextButton>
+            <TextButton className={ component.state.loggingOut ? 'disabled' : '' } onSubmit={ clickLogOut }>Log out</TextButton>
           </span>
         );
       } else {
         nav = (
           <span>
             <a href="/about">About</a>
-            <TextButton className={ component.state.loggingOut ? 'disabled' : '' } onSubmit={ clickLogOut }>Log out</TextButton>
+            <TextButton onSubmit={ component.props.clickLogIn }>Log in</TextButton>
+            <TextButton onSubmit={ component.props.clickSignUp }>Sign up</TextButton>
           </span>
         );
       }

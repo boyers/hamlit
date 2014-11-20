@@ -1,0 +1,30 @@
+.settings {
+  color: #59666c;
+  background-color: #f3fbff;
+
+  h2 {
+    font-size: 1.4em;
+    font-weight: 400;
+    margin: 0;
+  }
+
+  hr {
+    margin: 4px 0 0 0;
+    border-color: #d9edf7;
+  }
+
+  form {
+    textarea, input[type=text], input[type=password] {
+      border-color: #d5e8f2;
+      color: #59666c;
+    }
+
+    .form-error {
+      color: #e86060;
+    }
+
+    .form-row .form-btw {
+      color: #8ea2ac;
+    }
+  }
+}

@@ -1,7 +1,4 @@
 var SignUp = React.createClass({
-  propTypes: {
-    onComplete: React.PropTypes.func.isRequired
-  },
   getInitialState: function() {
     return {
       isOpen: false
@@ -52,9 +49,9 @@ var SignUp = React.createClass({
   render: function() {
     var component = this;
 
-    var onComplete = function() {
+    var onComplete = function(data) {
       component.close();
-      component.props.onComplete();
+      window.bodyComponent.setUserData(data.user);
     };
 
     return (

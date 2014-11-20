@@ -8,7 +8,7 @@
 
 var Form = React.createClass({
   propTypes: {
-    title: React.PropTypes.string.isRequired,
+    title: React.PropTypes.string,
     submitText: React.PropTypes.string.isRequired,
     endpoint: React.PropTypes.string.isRequired,
     onSuccess: React.PropTypes.func,
@@ -100,11 +100,17 @@ var Form = React.createClass({
 
     return (
       <form onSubmit={ this.submit }>
-        <h2>{ this.props.title }</h2>
-        <hr />
+        {
+          this.props.title ? (
+            <div>
+              <h2>{ this.props.title }</h2>
+              <hr />
+            </div>
+          ) : null
+        }
         { (this.state.error === null) ? null : <div className="form-error">{ this.state.error }</div> }
         { fields }
-        <div className="form-row align-right">
+        <div className="form-row form-row-submit align-right">
           <input type="submit" ref="submit" value={ this.props.submitText } />
         </div>
       </form>

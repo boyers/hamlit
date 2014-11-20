@@ -5,6 +5,7 @@ var Input = React.createClass({
     btw: React.PropTypes.string,
     name: React.PropTypes.string,
     type: React.PropTypes.string,
+    defaultValue: React.PropTypes.string,
     placeholder: React.PropTypes.string
   },
   getInitialState: function() {
@@ -20,7 +21,7 @@ var Input = React.createClass({
     return $(this.refs.input.getDOMNode()).val();
   },
   reset: function() {
-    $(this.refs.input.getDOMNode()).val('');
+    $(this.refs.input.getDOMNode()).val(this.props.defaultValue ? this.props.defaultValue : '');
     this.setState({ error: null });
   },
   render: function() {
@@ -28,7 +29,7 @@ var Input = React.createClass({
       <div className="form-row">
         <label htmlFor={ 'input-' + this.props.id }>{ this.props.label }</label>
         <div className="form-btw" dangerouslySetInnerHTML={{ __html: this.props.btw }} />
-        <input id={ 'input-' + this.props.id } name={ this.props.name || this.props.id } ref="input" type={ this.props.type || 'text' } placeholder={ this.props.placeholder || '' } />
+        <input id={ 'input-' + this.props.id } name={ this.props.name || this.props.id } ref="input" type={ this.props.type || 'text' } defaultValue={ this.props.defaultValue } placeholder={ this.props.placeholder || '' } />
         { (this.state.error === null) ? null : <div className="form-error" dangerouslySetInnerHTML={{ __html: this.state.error }} /> }
       </div>
     );
