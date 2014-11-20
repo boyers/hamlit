@@ -1,4 +1,22 @@
 .sign-up {
-  background-color: #fff;
-  border-bottom: 1px solid #e2e2e2;
+  color: #59666c;
+  background-color: #f3fbff;
+
+  hr {
+    border-color: #d9edf7;
+  }
+
+  form {
+    textarea, input[type=text], input[type=password] {
+      border-color: #d5e8f2;
+    }
+
+    .form-error {
+      color: #e86060;
+    }
+
+    .form-row .form-btw {
+      color: #8ea2ac;
+    }
+  }
 }

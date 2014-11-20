@@ -2,8 +2,8 @@
 
 .header {
   $header-height: 56px;
-  background-color: #eee;
-  color: #666;
+  background-color: #3db5ed;
+  color: #fff;
   font-size: 0.9em;
 
   .brand {
@@ -19,18 +19,6 @@
       vertical-align: middle;
       position: relative;
       top: 1px;
-    }
-
-    a {
-      color: inherit;
-
-      &:hover {
-        color: $anchor-color;
-      }
-
-      &:active, &:focus {
-        color: $anchor-color-active;
-      }
     }
   }
 
@@ -57,6 +45,10 @@
       margin-left: 24px;
       line-height: $header-height;
       font-weight: 400;
+
+      &:hover {
+        color: #ceefff;
+      }
 
       &:first-child {
         margin-left: 0;

@@ -80,7 +80,7 @@ form {
       }
 
       &:focus {
-        border: 2px solid #aaa;
+        border: 2px solid $anchor-color;
         outline-style: none;
 
         &::-webkit-input-placeholder {
