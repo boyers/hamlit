@@ -56,7 +56,7 @@ var Header = React.createClass({
           <div className="row">
             <div className="span6">
               <h1 className="brand">
-                <a href="/"><Sprite name="icon" /> Hamlit</a>
+                <a href="/"><Sprite name="icon" /> <span className="hidden">Hamlit</span></a>
               </h1>
             </div>
             <div className="span6 nav">
