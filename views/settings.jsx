@@ -75,16 +75,22 @@ var Settings = React.createClass({
       <div className="settings clearfix">
         <div className="container vertical-margin">
           <div className="row">
-            <div className="span4 offset4">
-              <h2>{ username }</h2>
+            <div className="span8 offset2">
+              <h2>Settings</h2>
               <hr />
+            </div>
+          </div>
+          <div className="row">
+            <div className="span4 offset2">
               <Form ref="username_form" submitText="Save username" endpoint="/api/update_username" onSuccess={ onComplete } fields={[
-                <Input id="username" label="Username" placeholder={ username } defaultValue={ username } />
+                <Input id="username" label="Username" placeholder={ username } defaultValue={ username } btw="You can always change it later." />
               ]} />
+            </div>
+            <div className="span4">
               <Form ref="password_form" submitText="Save password" endpoint="/api/update_password" onSuccess={ onComplete } fields={[
-                <Input id="oldPassword" label="Old password" type="password" placeholder="l0rd 0f th3 fl13s" btw="So we know it&rsquo;s really you." />,
                 <Input id="newPassword" label="New password" type="password" placeholder="l0rd 0f th3 r1ngs" btw="Please pick a good one." />,
-                <Input id="verifyPassword" label="Verify password" type="password" placeholder="l0rd 0f th3 r1ngs" btw="Just to make sure you got it right." />
+                <Input id="verifyPassword" label="Verify password" type="password" placeholder="l0rd 0f th3 r1ngs" btw="Just to make sure you got it right." />,
+                <Input id="oldPassword" label="Old password" type="password" placeholder="l0rd 0f th3 fl13s" btw="So we know it&rsquo;s really you." />
               ]} />
             </div>
           </div>

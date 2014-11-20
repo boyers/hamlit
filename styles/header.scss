@@ -63,6 +63,10 @@
       &:first-child {
         margin-left: 0;
       }
+
+      &.disabled {
+        color: #e2e2e2;
+      }
     }
   }
 }
