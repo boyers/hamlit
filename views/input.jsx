@@ -9,7 +9,10 @@ var Input = React.createClass({
     placeholder: React.PropTypes.string
   },
   getInitialState: function() {
-    return { error: null };
+    return {
+      error: null,
+      id: 'input-' + Math.random().toString(36).slice(2)
+    };
   },
   focus: function() {
     return $(this.refs.input.getDOMNode()).focus();
@@ -27,9 +30,9 @@ var Input = React.createClass({
   render: function() {
     return (
       <div className="form-row">
-        <label htmlFor={ 'input-' + this.props.id }>{ this.props.label }</label>
+        <label htmlFor={ this.state.id }>{ this.props.label }</label>
         <div className="form-btw" dangerouslySetInnerHTML={{ __html: this.props.btw }} />
-        <input id={ 'input-' + this.props.id } name={ this.props.name || this.props.id } ref="input" type={ this.props.type || 'text' } defaultValue={ this.props.defaultValue } placeholder={ this.props.placeholder || '' } />
+        <input id={ this.state.id } name={ this.props.name || this.props.id } ref="input" type={ this.props.type || 'text' } defaultValue={ this.props.defaultValue } placeholder={ this.props.placeholder || '' } />
         { (this.state.error === null) ? null : <div className="form-error" dangerouslySetInnerHTML={{ __html: this.state.error }} /> }
       </div>
     );
