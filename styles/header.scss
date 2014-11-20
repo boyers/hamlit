@@ -9,15 +9,26 @@
   .brand {
     font-size: inherit;
     line-height: $header-height;
+    display: block;
     margin: 0;
 
-    @media (max-width: ($stack-width - 1)) {
-      text-align: center;
-    }
-
-    .sprite {
+    a {
       display: block;
-      margin-left: -20px;
+
+      .sprite {
+        &:hover {
+          @include sprite-icon-hover;
+        }
+
+        &:active {
+          @include sprite-icon-active;
+        }
+
+        &, &:hover, &:active {
+          display: block;
+          margin-left: -20px;
+        }
+      }
     }
   }
 
