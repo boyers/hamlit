@@ -44,6 +44,11 @@ var LogIn = React.createClass({
     }
     component.setState({ isOpen: false });
   },
+  closeImmediately: function() {
+    this.refs.form.reset();
+    $(this.getDOMNode()).stop().css('display', 'none');
+    this.setState({ isOpen: false });
+  },
   render: function() {
     var component = this;
 

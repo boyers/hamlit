@@ -10,8 +10,8 @@ var Body = React.createClass({
     this.setState({
       relativeURL: window.makeRelativeURL(URL)
     });
-    this.refs.signUp.close();
-    this.refs.logIn.close();
+    this.refs.signUp.closeImmediately();
+    this.refs.logIn.closeImmediately();
   },
   isWaitingForUserData: function() {
     return this.state.waitingForUserData;
