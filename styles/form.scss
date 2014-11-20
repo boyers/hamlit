@@ -148,13 +148,6 @@ form {
       border-bottom: 3px solid $anchor-color * 0.75;
       color: $anchor-color * 0.1 + #eee;
 
-      &:focus {
-        background-color: $anchor-color * 0.9;
-        border-bottom: 3px solid $anchor-color * 0.75;
-        color: $anchor-color * 0.1 + #ddd;
-        outline-style: none;
-      }
-
       &:hover {
         background-color: $anchor-color * 1.1;
         border-bottom: 3px solid $anchor-color * 0.8;
