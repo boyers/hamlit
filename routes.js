@@ -225,7 +225,7 @@ exports.config = function(app) {
               return res.json({
                 error: null,
                 validationErrors: {
-                  username: 'That username is already registered.'
+                  username: 'That username is already taken.'
                 }
               });
             }
