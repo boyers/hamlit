@@ -26,6 +26,7 @@ var Form = React.createClass({
       field = this.props.fields[i];
       this.refs[field.props.id].reset();
     }
+    this.setState({ error: null });
   },
   submit: function(event) {
     var i, field;
