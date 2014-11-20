@@ -5,7 +5,7 @@ var SignUp = React.createClass({
     };
   },
   componentDidMount: function() {
-    $(this.getDOMNode()).css('display', 'none');
+    $(this.getDOMNode()).hide();
   },
   toggle: function(callback) {
     var component = this;
@@ -43,7 +43,7 @@ var SignUp = React.createClass({
   },
   closeImmediately: function() {
     this.refs.form.reset();
-    $(this.getDOMNode()).stop().css('display', 'none');
+    $(this.getDOMNode()).stop().hide();
     this.setState({ isOpen: false });
   },
   render: function() {

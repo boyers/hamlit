@@ -81,7 +81,11 @@ exports.config = function(app) {
 
   app.post('/api/log_out', function(req, res) {
     if (req.signedCookies.sessionId) {
-      models.Session.remove({ _id: req.signedCookies.sessionId }, function() {
+      models.Session.remove({ _id: req.signedCookies.sessionId }, function(err) {
+        if (err) {
+          return renderError(res, err);
+        }
+
         res.clearCookie('sessionId');
         return res.json({
           error: null
@@ -397,6 +401,27 @@ exports.config = function(app) {
             }
           });
         }
+      });
+    });
+  });
+
+  app.post('/api/delete_account', function(req, res) {
+    auth(req, res, function(session, user) {
+      session.remove(function(err) {
+        if (err) {
+          return renderError(res, err);
+        }
+
+        user.remove(function(err) {
+          if (err) {
+            return renderError(res, err);
+          }
+
+          return res.json({
+            error: null,
+            user: getUserData(user)
+          });
+        });
       });
     });
   });

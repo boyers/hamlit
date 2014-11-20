@@ -6,10 +6,13 @@
     font-size: 1.4em;
     font-weight: 400;
     margin: 0;
+
+    + hr {
+      margin: 4px 0 0 0;
+    }
   }
 
   hr {
-    margin: 4px 0 0 0;
     border-color: #d9edf7;
   }
 

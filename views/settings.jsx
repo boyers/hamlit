@@ -4,25 +4,32 @@ var Settings = React.createClass({
   },
   getInitialState: function() {
     return {
-      isOpen: false
+      isOpen: false,
+      confirmAccountDeletionOpen: false
     };
   },
   componentDidMount: function() {
-    $(this.getDOMNode()).css('display', 'none');
+    $(this.getDOMNode()).hide();
+    $(this.refs.deleteAccountForm.getDOMNode()).hide();
+  },
+  reset: function() {
+    this.refs.usernameForm.reset();
+    this.refs.passwordForm.reset();
+    $(this.refs.deleteAccountForm.getDOMNode()).hide();
+    this.setState({ confirmAccountDeletionOpen: false });
   },
   toggle: function(callback) {
     var component = this;
     if (component.state.isOpen) {
       $(component.getDOMNode()).stop().slideUp(300, function() {
-        component.refs.username_form.reset();
-        component.refs.password_form.reset();
+        component.reset();
         if (callback) {
           callback();
         }
       });
     } else {
       $(component.getDOMNode()).stop().slideDown(300, function() {
-        component.refs.username_form.focus();
+        component.refs.usernameForm.focus();
         if (callback) {
           callback();
         }
@@ -33,8 +40,7 @@ var Settings = React.createClass({
   close: function(callback) {
     var component = this;
     var done = function() {
-      component.refs.username_form.reset();
-      component.refs.password_form.reset();
+      component.reset();
       if (callback) {
         callback();
       }
@@ -47,15 +53,13 @@ var Settings = React.createClass({
     component.setState({ isOpen: false });
   },
   closeImmediately: function() {
-    this.refs.username_form.reset();
-    this.refs.password_form.reset();
-    $(this.getDOMNode()).stop().css('display', 'none');
+    this.reset();
+    $(this.getDOMNode()).stop().hide();
     this.setState({ isOpen: false });
   },
   componentDidUpdate: function(prevProps, prevState) {
     if (!_.isEqual(this.props.user, prevProps.user)) {
-      this.refs.username_form.reset();
-      this.refs.password_form.reset();
+      this.reset();
     }
   },
   render: function() {
@@ -71,6 +75,10 @@ var Settings = React.createClass({
       username = component.props.user.username;
     }
 
+    var onDeleteAccount = function(data) {
+      window.bodyComponent.setUserData(null);
+    };
+
     return (
       <div className="settings clearfix">
         <div className="container vertical-margin">
@@ -82,12 +90,24 @@ var Settings = React.createClass({
           </div>
           <div className="row">
             <div className="span4 offset2">
-              <Form ref="username_form" submitText="Save username" endpoint="/api/update_username" onSuccess={ onComplete } fields={[
+              <Form ref="usernameForm" submitText="Save username" endpoint="/api/update_username" onSuccess={ onComplete } fields={[
                 <Input id="username" label="Username" placeholder={ username } defaultValue={ username } btw="You can always change it later." />
               ]} />
+              <hr />
+              <p>
+                To delete your account, click <TextButton onSubmit={ function() {
+                  if (component.state.confirmAccountDeletionOpen) {
+                    $(component.refs.deleteAccountForm.getDOMNode()).slideUp();
+                  } else {
+                    $(component.refs.deleteAccountForm.getDOMNode()).slideDown();
+                  }
+                  component.setState({ confirmAccountDeletionOpen: !component.state.confirmAccountDeletionOpen });
+                } }>here</TextButton>.
+              </p>
+              <Form ref="deleteAccountForm" submitText="Confirm account deletion" endpoint="/api/delete_account" onSuccess={ onDeleteAccount } fields={ [] } />
             </div>
             <div className="span4">
-              <Form ref="password_form" submitText="Save password" endpoint="/api/update_password" onSuccess={ onComplete } fields={[
+              <Form ref="passwordForm" submitText="Save password" endpoint="/api/update_password" onSuccess={ onComplete } fields={[
                 <Input id="newPassword" label="New password" type="password" placeholder="l0rd 0f th3 r1ngs" btw="Please pick a good one." />,
                 <Input id="verifyPassword" label="Verify password" type="password" placeholder="l0rd 0f th3 r1ngs" btw="Just to make sure you got it right." />,
                 <Input id="oldPassword" label="Old password" type="password" placeholder="l0rd 0f th3 fl13s" btw="So we know it&rsquo;s really you." />
