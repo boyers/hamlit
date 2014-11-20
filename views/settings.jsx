@@ -52,6 +52,12 @@ var Settings = React.createClass({
     $(this.getDOMNode()).stop().css('display', 'none');
     this.setState({ isOpen: false });
   },
+  componentDidUpdate: function(prevProps, prevState) {
+    if (!_.isEqual(this.props.user, prevProps.user)) {
+      this.refs.username_form.reset();
+      this.refs.password_form.reset();
+    }
+  },
   render: function() {
     var component = this;
 
