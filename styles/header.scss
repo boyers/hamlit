@@ -21,7 +21,7 @@
         }
 
         &:active {
-          @include sprite-icon-active;
+          @include sprite-icon;
         }
 
         &, &:hover, &:active {
