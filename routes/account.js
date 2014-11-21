@@ -1,28 +1,9 @@
-var constants = require('./constants');
-var assets = require('./assets');
-var models = require('./models');
 var bcrypt = require('bcrypt');
+var constants = require('../constants');
+var models = require('../models');
+var helpers = require('./helpers');
 
-var htmlRoutes = /^\/(about)?$/;
-
-var renderError = function(res, err) {
-  console.error(err);
-
-  return res.json({
-    error: 'Something went wrong.',
-    validationErrors: { }
-  });
-};
-
-var getUserData = function(user) {
-  return {
-    username: user.username
-  };
-};
-
-var bcryptRounds = 10;
-
-var auth = function(req, res, callback) {
+exports.auth = function(req, res, callback) {
   if (req.signedCookies.sessionId) {
     models.Session.where({ _id: req.signedCookies.sessionId }).findOne(function(err, session) {
       if (err || !session) {
@@ -57,24 +38,11 @@ var auth = function(req, res, callback) {
 };
 
 exports.config = function(app) {
-  if (process.env.NODE_ENV === 'production') {
-    app.get(htmlRoutes, function(req, res) {
-      res.sendFile(__dirname + '/public/assets/application.html');
-    });
-  } else {
-    app.get(htmlRoutes, function(req, res) {
-      res.render('application', {
-        styles: assets.getStyles(),
-        scripts: assets.getScripts()
-      });
-    });
-  }
-
   app.post('/api/get_user_data', function(req, res) {
-    auth(req, res, function(session, user) {
+    exports.auth(req, res, function(session, user) {
       return res.json({
         error: null,
-        user: getUserData(user)
+        user: helpers.getUserData(user)
       });
     });
   });
@@ -106,7 +74,7 @@ exports.config = function(app) {
         usernameLowercase: username.toLowerCase()
       }, function(err, existingUser) {
       if (err) {
-        return renderError(res, err);
+        return helpers.renderAPIError(res, err);
       }
 
       if (existingUser) {
@@ -145,14 +113,14 @@ exports.config = function(app) {
         });
       }
 
-      bcrypt.genSalt(bcryptRounds, function(err, salt) {
+      bcrypt.genSalt(constants.bcryptRounds, function(err, salt) {
         if (err) {
-          return renderError(res, err);
+          return helpers.renderAPIError(res, err);
         }
 
         bcrypt.hash(password, salt, function(err, hash) {
           if (err) {
-            return renderError(res, err);
+            return helpers.renderAPIError(res, err);
           }
 
           var user = new models.User({
@@ -173,7 +141,7 @@ exports.config = function(app) {
                 });
               }
 
-              return renderError(res, err);
+              return helpers.renderAPIError(res, err);
             }
 
             var session = new models.Session({
@@ -182,7 +150,7 @@ exports.config = function(app) {
 
             session.save(function(err) {
               if (err) {
-                return renderError(res, err);
+                return helpers.renderAPIError(res, err);
               }
 
               res.cookie('sessionId', session.id, {
@@ -193,7 +161,7 @@ exports.config = function(app) {
               return res.json({
                 error: null,
                 validationErrors: { },
-                user: getUserData(user)
+                user: helpers.getUserData(user)
               });
             });
           });
@@ -234,7 +202,7 @@ exports.config = function(app) {
 
       bcrypt.compare(password, user.passwordHash, function(err, result) {
         if (err) {
-          return renderError(res, err);
+          return helpers.renderAPIError(res, err);
         }
 
         if (result) {
@@ -244,7 +212,7 @@ exports.config = function(app) {
 
           session.save(function(err) {
             if (err) {
-              return renderError(res, err);
+              return helpers.renderAPIError(res, err);
             }
 
             res.cookie('sessionId', session.id, {
@@ -255,7 +223,7 @@ exports.config = function(app) {
             return res.json({
               error: null,
               validationErrors: { },
-              user: getUserData(user)
+              user: helpers.getUserData(user)
             });
           });
         } else {
@@ -272,7 +240,7 @@ exports.config = function(app) {
     if (req.signedCookies.sessionId) {
       models.Session.remove({ _id: req.signedCookies.sessionId }, function(err) {
         if (err) {
-          return renderError(res, err);
+          return helpers.renderAPIError(res, err);
         }
 
         res.clearCookie('sessionId');
@@ -290,7 +258,7 @@ exports.config = function(app) {
         usernameLowercase: username.toLowerCase()
       }, function(err, user) {
       if (err) {
-        return renderError(res, err);
+        return helpers.renderAPIError(res, err);
       }
 
       return res.json({
@@ -301,7 +269,7 @@ exports.config = function(app) {
   });
 
   app.post('/api/update_username', function(req, res) {
-    auth(req, res, function(session, user) {
+    exports.auth(req, res, function(session, user) {
       var username = req.body.username.replace(/^\s+|\s+$/g, '');
 
       if (username === '') {
@@ -336,19 +304,19 @@ exports.config = function(app) {
             });
           }
 
-          return renderError(res, err);
+          return helpers.renderAPIError(res, err);
         }
 
         return res.json({
           error: null,
-          user: getUserData(user)
+          user: helpers.getUserData(user)
         });
       });
     });
   });
 
   app.post('/api/update_password', function(req, res) {
-    auth(req, res, function(session, user) {
+    exports.auth(req, res, function(session, user) {
       var newPassword = req.body.newPassword;
       var verifyPassword = req.body.verifyPassword;
       var oldPassword = req.body.oldPassword;
@@ -391,18 +359,18 @@ exports.config = function(app) {
 
       bcrypt.compare(oldPassword, user.passwordHash, function(err, result) {
         if (err) {
-          return renderError(res, err);
+          return helpers.renderAPIError(res, err);
         }
 
         if (result) {
-          bcrypt.genSalt(bcryptRounds, function(err, salt) {
+          bcrypt.genSalt(constants.bcryptRounds, function(err, salt) {
             if (err) {
-              return renderError(res, err);
+              return helpers.renderAPIError(res, err);
             }
 
             bcrypt.hash(newPassword, salt, function(err, hash) {
               if (err) {
-                return renderError(res, err);
+                return helpers.renderAPIError(res, err);
               }
 
               user.passwordHash = hash;
@@ -410,12 +378,12 @@ exports.config = function(app) {
 
               user.save(function(err) {
                 if (err) {
-                  return renderError(res, err);
+                  return helpers.renderAPIError(res, err);
                 }
 
                 return res.json({
                   error: null,
-                  user: getUserData(user)
+                  user: helpers.getUserData(user)
                 });
               });
             });
@@ -433,20 +401,20 @@ exports.config = function(app) {
   });
 
   app.post('/api/delete_account', function(req, res) {
-    auth(req, res, function(session, user) {
+    exports.auth(req, res, function(session, user) {
       session.remove(function(err) {
         if (err) {
-          return renderError(res, err);
+          return helpers.renderAPIError(res, err);
         }
 
         user.remove(function(err) {
           if (err) {
-            return renderError(res, err);
+            return helpers.renderAPIError(res, err);
           }
 
           return res.json({
             error: null,
-            user: getUserData(user)
+            user: helpers.getUserData(user)
           });
         });
       });

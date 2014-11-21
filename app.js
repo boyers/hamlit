@@ -52,7 +52,7 @@ db.once('open', function() {
   garnet.templateExt = '.html';
   garnet.enableCaching = (process.env.NODE_ENV === 'production');
 
-  require('./routes').config(app);
+  require('./routes/routes').config(app);
   require('./assets').config(app);
   require('./error_pages').config(app);
 
