@@ -29,12 +29,22 @@ var Input = React.createClass({
     this.setState({ error: null });
   },
   render: function() {
+    var component = this;
+
+    var onChange = function(event) {
+      component.setState({ error: null });
+
+      if (component.props.onChange) {
+        component.props.onChange(event);
+      }
+    };
+
     return (
       <div className="form-row">
-        <label htmlFor={ this.state.id }>{ this.props.label }</label>
-        <div className="form-btw" dangerouslySetInnerHTML={{ __html: this.props.btw }} />
-        <input id={ this.state.id } name={ this.props.name || this.props.id } ref="input" type={ this.props.type || 'text' } defaultValue={ this.props.defaultValue } onChange={ this.props.onChange } placeholder={ this.props.placeholder || '' } />
-        { (this.state.error === null) ? null : <div className="form-error" dangerouslySetInnerHTML={{ __html: this.state.error }} /> }
+        <label htmlFor={ component.state.id }>{ component.props.label }</label>
+        <div className="form-btw" dangerouslySetInnerHTML={{ __html: component.props.btw }} />
+        <input id={ component.state.id } name={ component.props.name || component.props.id } ref="input" type={ component.props.type || 'text' } defaultValue={ component.props.defaultValue } onChange={ onChange } placeholder={ component.props.placeholder || '' } />
+        { (component.state.error === null) ? null : <div className="form-error" dangerouslySetInnerHTML={{ __html: component.state.error }} /> }
       </div>
     );
   }
