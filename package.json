@@ -33,6 +33,7 @@
     "node": "^0.10.33"
   },
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "console": "node console.js"
   }
 }

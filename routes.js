@@ -231,6 +231,7 @@ exports.config = function(app) {
 
         var user = new models.User({
           username: username,
+          usernameLowercase: username.toLowerCase(),
           passwordHash: hash,
           passwordSalt: salt
         });
@@ -297,6 +298,7 @@ exports.config = function(app) {
       }
 
       user.username = username;
+      user.usernameLowercase = username.toLowerCase();
 
       user.save(function(err) {
         if (err) {
@@ -422,6 +424,23 @@ exports.config = function(app) {
             user: getUserData(user)
           });
         });
+      });
+    });
+  });
+
+  app.post('/api/check_username', function(req, res) {
+    var username = req.body.username.replace(/^\s+|\s+$/g, '');
+
+    var results = models.User.findOne({
+        usernameLowercase: username.toLowerCase()
+      }, function(err, user) {
+      if (err) {
+        return renderError(res, err);
+      }
+
+      return res.json({
+        error: null,
+        result: (user === null)
       });
     });
   });

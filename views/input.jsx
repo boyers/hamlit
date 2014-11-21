@@ -6,7 +6,8 @@ var Input = React.createClass({
     name: React.PropTypes.string,
     type: React.PropTypes.string,
     defaultValue: React.PropTypes.string,
-    placeholder: React.PropTypes.string
+    placeholder: React.PropTypes.string,
+    onChange: React.PropTypes.func
   },
   getInitialState: function() {
     return {
@@ -32,7 +33,7 @@ var Input = React.createClass({
       <div className="form-row">
         <label htmlFor={ this.state.id }>{ this.props.label }</label>
         <div className="form-btw" dangerouslySetInnerHTML={{ __html: this.props.btw }} />
-        <input id={ this.state.id } name={ this.props.name || this.props.id } ref="input" type={ this.props.type || 'text' } defaultValue={ this.props.defaultValue } placeholder={ this.props.placeholder || '' } />
+        <input id={ this.state.id } name={ this.props.name || this.props.id } ref="input" type={ this.props.type || 'text' } defaultValue={ this.props.defaultValue } onChange={ this.props.onChange } placeholder={ this.props.placeholder || '' } />
         { (this.state.error === null) ? null : <div className="form-error" dangerouslySetInnerHTML={{ __html: this.state.error }} /> }
       </div>
     );

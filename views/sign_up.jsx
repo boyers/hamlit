@@ -1,7 +1,8 @@
 var SignUp = React.createClass({
   getInitialState: function() {
     return {
-      isOpen: false
+      isOpen: false,
+      usernameAvailable: null
     };
   },
   componentDidMount: function() {
@@ -54,13 +55,40 @@ var SignUp = React.createClass({
       window.bodyComponent.setUserData(data.user);
     };
 
+    var onChangeUsername = debounce(function(event) {
+      var username = component.refs.form.refs.username.getValue().replace(/^\s+|\s+$/g, '');
+
+      if (username === '') {
+        component.setState({ usernameAvailable: null });
+      } else {
+        $.ajax({
+          type: 'POST',
+          url: '/api/check_username',
+          data: {
+            username: username
+          }
+        }).done(function(data) {
+          component.setState({ usernameAvailable: data.result });
+        });
+      }
+    });
+
+    var usernameBtw = 'You can always change it later.';
+    if (component.state.usernameAvailable !== null) {
+      if (component.state.usernameAvailable) {
+        usernameBtw = 'Looks good!';
+      } else {
+        usernameBtw = 'That username is taken.';
+      }
+    }
+
     return (
       <div className="sign-up clearfix">
         <div className="container vertical-margin">
           <div className="row">
             <div className="span4 offset4">
               <Form ref="form" title="Welcome to Hamlit!" submitText="Sign up" endpoint="/api/sign_up" onSuccess={ onComplete } fields={[
-                <Input id="username" label="Username" placeholder="piggy" btw="You can always change it later." />,
+                <Input id="username" label="Username" onChange={ onChangeUsername } placeholder="piggy" btw={ usernameBtw } />,
                 <Input id="password" label="Password" type="password" placeholder="l0rd 0f th3 fl13s" btw="Please pick a good one." />,
                 <Input id="verifyPassword" label="Verify password" type="password" placeholder="l0rd 0f th3 fl13s" btw="Just to make sure you got it right." />
               ]} />

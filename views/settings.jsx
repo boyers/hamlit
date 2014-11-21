@@ -1,10 +1,11 @@
 var Settings = React.createClass({
   propTypes: {
-    user: React.PropTypes.object
+    user: React.PropTypes.object,
   },
   getInitialState: function() {
     return {
       isOpen: false,
+      usernameAvailable: null,
       confirmAccountDeletionOpen: false
     };
   },
@@ -75,9 +76,36 @@ var Settings = React.createClass({
       username = component.props.user.username;
     }
 
+    var onChangeUsername = debounce(function(event) {
+      var newUsername = component.refs.usernameForm.refs.username.getValue().replace(/^\s+|\s+$/g, '');
+
+      if (newUsername === '' || newUsername.toLowerCase() === username.toLowerCase()) {
+        component.setState({ usernameAvailable: null });
+      } else {
+        $.ajax({
+          type: 'POST',
+          url: '/api/check_username',
+          data: {
+            username: newUsername
+          }
+        }).done(function(data) {
+          component.setState({ usernameAvailable: data.result });
+        });
+      }
+    });
+
     var onDeleteAccount = function(data) {
       window.bodyComponent.setUserData(null);
     };
+
+    var usernameBtw = 'You can always change it later.';
+    if (component.state.usernameAvailable !== null) {
+      if (component.state.usernameAvailable) {
+        usernameBtw = 'Looks good!';
+      } else {
+        usernameBtw = 'That username is taken.';
+      }
+    }
 
     return (
       <div className="settings clearfix">
@@ -91,7 +119,7 @@ var Settings = React.createClass({
           <div className="row">
             <div className="span4 offset2">
               <Form ref="usernameForm" submitText="Save username" endpoint="/api/update_username" onSuccess={ onComplete } fields={[
-                <Input id="username" label="Username" placeholder={ username } defaultValue={ username } btw="You can always change it later." />
+                <Input id="username" label="Username" onChange={ onChangeUsername } placeholder={ username } defaultValue={ username } btw={ usernameBtw } />
               ]} />
               <hr />
               <p>

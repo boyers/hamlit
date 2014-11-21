@@ -1,2 +1,4 @@
 .DS_Store
-run.sh
+run_console.sh
+run_dev.sh
+run_prod.sh
