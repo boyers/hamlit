@@ -91,10 +91,11 @@ exports.config = function(app) {
       res.set('Content-Type', 'text/css');
       var name = req.params[0];
       if (path.extname(name) === '.scss') {
-        var fullPath = __dirname + '/styles/' + name;
+        var fullPath = path.resolve(__dirname, '..', 'styles', name);
         res.send(sass.renderSync({ file: fullPath }));
       } else {
-        res.sendFile(__dirname + '/styles/' + name + '.css');
+        var fullPath = path.resolve(__dirname, '..', 'styles', name + '.css');
+        res.sendFile(fullPath);
       }
     });
 
@@ -102,14 +103,15 @@ exports.config = function(app) {
       res.set('Content-Type', 'application/javascript');
       var name = req.params[0];
       if (path.extname(name) === '.jsx') {
-        var fullPath = __dirname + '/views/' + name;
+        var fullPath = path.resolve(__dirname, '..', 'views', name);
         var fileData = fs.readFileSync(fullPath, { encoding: 'utf8' });
         res.send(reactTools.transform(fileData, {}));
       } else {
-        res.sendFile(__dirname + '/scripts/' + name + '.js');
+        var fullPath = path.resolve(__dirname, '..', 'scripts', name + '.js');
+        res.sendFile(fullPath);
       }
     });
   }
 
-  app.use('/', express.static(__dirname + '/public'));
+  app.use('/', express.static(path.resolve(__dirname, '..', 'public')));
 };

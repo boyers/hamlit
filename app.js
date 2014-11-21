@@ -53,8 +53,6 @@ db.once('open', function() {
   garnet.enableCaching = (process.env.NODE_ENV === 'production');
 
   require('./routes/routes').config(app);
-  require('./assets').config(app);
-  require('./error_pages').config(app);
 
   var server = app.listen(process.env.PORT || 3000, function() {
     console.log('Listening on port %d.', server.address().port);

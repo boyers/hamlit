@@ -1,4 +1,4 @@
-var assets = require('../assets');
+var assets = require('./assets');
 var htmlRoutes = /^\/(about)?$/;
 
 exports.config = function(app) {
