@@ -5,3 +5,6 @@ exports.sessionTTL = 60 * 60 * 24 * 30;
 
 // How difficult it is to hash passwords.
 exports.bcryptRounds = 10;
+
+// The "trust proxy" setting for Express.
+exports.trustProxy = true;

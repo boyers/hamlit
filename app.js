@@ -1,3 +1,5 @@
+var constants = require('./constants');
+
 var database_url = process.env.DATABASE_URL;
 if (!database_url) {
   if (process.env.NODE_ENV === 'production') {
@@ -20,15 +22,15 @@ db.once('open', function() {
   var app = require('express')();
   app.disable('x-powered-by');
   app.enable('strict routing');
+  app.set('trust proxy', constants.trustProxy);
   app.disable('view cache');
   app.set('view engine', 'html');
   app.engine('html', require('garnet').__express);
 
   app.use(function(req, res, next) {
     if (process.env.NODE_ENV === 'production') {
-      // Enforce HTTPS on Heroku.
-      if (req.headers['x-forwarded-proto'].toLowerCase() !== 'https') {
-        res.redirect('https://' + req.get('host') + req.url);
+      if (req.protocol.toLowerCase() !== 'https') {
+        res.redirect(301, 'https://' + req.hostname + req.url);
       } else {
         next();
       }
