@@ -18,6 +18,13 @@
   display: none;
 }
 
+.fixed-top {
+  width: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+
 .vertical-margin {
   margin-top: 48px;
   margin-bottom: 48px;
@@ -45,4 +52,13 @@ h2 {
 
 p {
   margin: 16px 0 0 0;
+}
+
+.blue {
+  color: #59666c;
+  background-color: #f3fbff;
+
+  hr {
+    border-color: #d9edf7;
+  }
 }

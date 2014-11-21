@@ -178,3 +178,23 @@ form {
     }
   }
 }
+
+.blue form {
+  textarea, input[type=text], input[type=password] {
+    border-color: #d5e8f2;
+    color: #59666c;
+
+    &:disabled {
+      background-color: #f3fbff;
+      color: #999;
+    }
+  }
+
+  .form-error {
+    color: #e86060;
+  }
+
+  .form-row .form-btw {
+    color: #8ea2ac;
+  }
+}

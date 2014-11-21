@@ -10,7 +10,11 @@ var models = _.merge(
 exports.auth = function(req, res, callback) {
   if (req.signedCookies.sessionId) {
     models.Session.where({ _id: req.signedCookies.sessionId }).findOne(function(err, session) {
-      if (err || !session) {
+      if (err) {
+        return helpers.renderAPIError(res, err);
+      }
+
+      if (!session) {
         res.clearCookie('sessionId');
         return res.json({
           error: 'Please log in.'
@@ -19,7 +23,11 @@ exports.auth = function(req, res, callback) {
 
       if (session.data.userId) {
         models.User.where({ _id: session.data.userId }).findOne(function(err, user) {
-          if (err || !user) {
+          if (err) {
+            return helpers.renderAPIError(res, err);
+          }
+
+          if (!user) {
             return res.json({
               error: 'Please log in.'
             });
@@ -197,7 +205,11 @@ exports.config = function(app) {
     }
 
     models.User.where({ usernameLowercase: username.toLowerCase() }).findOne(function(err, user) {
-      if (err || !user) {
+      if (err) {
+        return helpers.renderAPIError(res, err);
+      }
+
+      if (!user) {
         return res.json({
           error: 'Incorrect username or password.',
           validationErrors: { }

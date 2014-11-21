@@ -22,14 +22,14 @@ var Settings = React.createClass({
   toggle: function(callback) {
     var component = this;
     if (component.state.isOpen) {
-      $(component.getDOMNode()).stop().slideUp(300, function() {
+      $(component.getDOMNode()).stop().slideUp(window.constants.animationDuration, function() {
         component.reset();
         if (callback) {
           callback();
         }
       });
     } else {
-      $(component.getDOMNode()).stop().slideDown(300, function() {
+      $(component.getDOMNode()).stop().slideDown(window.constants.animationDuration, function() {
         component.refs.usernameForm.focus();
         if (callback) {
           callback();
@@ -49,7 +49,7 @@ var Settings = React.createClass({
     if ($(component.getDOMNode()).css('display').toLowerCase() === 'none') {
       done();
     } else {
-      $(component.getDOMNode()).stop().slideUp(300, done);
+      $(component.getDOMNode()).stop().slideUp(window.constants.animationDuration, done);
     }
     component.setState({ isOpen: false });
   },
@@ -108,7 +108,7 @@ var Settings = React.createClass({
     }
 
     return (
-      <div className="settings clearfix">
+      <div className="settings blue clearfix">
         <div className="container vertical-margin">
           <div className="row">
             <div className="span8 offset2">

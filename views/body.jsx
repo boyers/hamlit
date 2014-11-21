@@ -43,16 +43,19 @@ var Body = React.createClass({
 
     return (
       <div>
-        <Header
-          clickLogIn={ function() { component.refs.signUp.close(function() { component.refs.logIn.toggle(); }); } }
-          clickSignUp={ function() { component.refs.logIn.close(function() { component.refs.signUp.toggle(); }); } }
-          clickSettings={ function() { component.refs.settings.toggle(); } }
-          user={ this.state.user }
-          waitingForInitialData={ component.state.waitingForInitialData }
-        />
-        <LogIn ref="logIn" />
-        <SignUp ref="signUp" />
-        <Settings ref="settings" user={ this.state.user } />
+        <div className="header-spacer" />
+        <div className="fixed-top">
+          <Header
+            clickLogIn={ function() { component.refs.signUp.close(function() { component.refs.logIn.toggle(); }); } }
+            clickSignUp={ function() { component.refs.logIn.close(function() { component.refs.signUp.toggle(); }); } }
+            clickSettings={ function() { component.refs.settings.toggle(); } }
+            user={ component.state.user }
+            waitingForInitialData={ component.state.waitingForInitialData }
+          />
+          <LogIn ref="logIn" />
+          <SignUp ref="signUp" />
+          <Settings ref="settings" user={ component.state.user } />
+        </div>
         <div className="container clearfix">
           <div className="vertical-margin">
             { view }

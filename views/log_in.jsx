@@ -10,14 +10,14 @@ var LogIn = React.createClass({
   toggle: function(callback) {
     var component = this;
     if (component.state.isOpen) {
-      $(component.getDOMNode()).stop().slideUp(300, function() {
+      $(component.getDOMNode()).stop().slideUp(window.constants.animationDuration, function() {
         component.refs.form.reset();
         if (callback) {
           callback();
         }
       });
     } else {
-      $(component.getDOMNode()).stop().slideDown(300, function() {
+      $(component.getDOMNode()).stop().slideDown(window.constants.animationDuration, function() {
         component.refs.form.focus();
         if (callback) {
           callback();
@@ -37,7 +37,7 @@ var LogIn = React.createClass({
     if ($(component.getDOMNode()).css('display').toLowerCase() === 'none') {
       done();
     } else {
-      $(component.getDOMNode()).stop().slideUp(300, done);
+      $(component.getDOMNode()).stop().slideUp(window.constants.animationDuration, done);
     }
     component.setState({ isOpen: false });
   },
@@ -55,7 +55,7 @@ var LogIn = React.createClass({
     };
 
     return (
-      <div className="log-in clearfix">
+      <div className="blue clearfix">
         <div className="container vertical-margin">
           <div className="row">
             <div className="span4 offset4">

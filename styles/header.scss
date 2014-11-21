@@ -1,7 +1,12 @@
 @import 'constants';
 
+$header-height: 56px;
+
+.header-spacer {
+  height: $header-height;
+}
+
 .header {
-  $header-height: 56px;
   background-color: #3db5ed;
   color: #fff;
   font-size: 0.9em;
