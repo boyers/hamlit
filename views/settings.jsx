@@ -107,8 +107,15 @@ var Settings = React.createClass({
       }
     }
 
+    var onKeyDown = function(event) {
+      if (event.keyCode === 27) {
+        component.close();
+        event.stopPropagation();
+      }
+    };
+
     return (
-      <div className="settings blue clearfix">
+      <div className="settings blue clearfix" onKeyDown={ onKeyDown }>
         <div className="container vertical-margin">
           <div className="row">
             <div className="span8 offset2">
