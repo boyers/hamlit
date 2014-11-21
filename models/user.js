@@ -1,20 +1,5 @@
-var constants = require('./constants');
 var mongoose = require('mongoose');
 var xregexp = require('xregexp');
-
-var sessionSchema = mongoose.Schema({
-  createdAt: {
-    type: Date,
-    default: Date.now,
-    expires: constants.sessionTTL
-  },
-  data: {
-    type: mongoose.Schema.Types.Mixed,
-    default: { }
-  }
-});
-
-exports.Session = mongoose.model('Session', sessionSchema);
 
 var validateUsername = function(value) {
   return value && xregexp.XRegExp('^([0-9_]|\\p{L}){1,32}$').test(value);

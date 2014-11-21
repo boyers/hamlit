@@ -1,7 +1,11 @@
+var _ = require('lodash');
 var bcrypt = require('bcrypt');
 var constants = require('../constants');
-var models = require('../models');
 var helpers = require('./helpers');
+var models = _.merge(
+  require('../models/session.js'),
+  require('../models/user.js')
+);
 
 exports.auth = function(req, res, callback) {
   if (req.signedCookies.sessionId) {
