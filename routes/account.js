@@ -192,7 +192,7 @@ exports.config = function(app) {
       });
     }
 
-    models.User.where({ username: username }).findOne(function(err, user) {
+    models.User.where({ usernameLowercase: username.toLowerCase() }).findOne(function(err, user) {
       if (err || !user) {
         return res.json({
           error: 'Incorrect username or password.',
