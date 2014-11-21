@@ -132,9 +132,9 @@ var Settings = React.createClass({
               <p>
                 To delete your account, click <TextButton onSubmit={ function() {
                   if (component.state.confirmAccountDeletionOpen) {
-                    $(component.refs.deleteAccountForm.getDOMNode()).slideUp();
+                    $(component.refs.deleteAccountForm.getDOMNode()).slideUp(window.constants.animationDuration);
                   } else {
-                    $(component.refs.deleteAccountForm.getDOMNode()).slideDown();
+                    $(component.refs.deleteAccountForm.getDOMNode()).slideDown(window.constants.animationDuration);
                   }
                   component.setState({ confirmAccountDeletionOpen: !component.state.confirmAccountDeletionOpen });
                 } }>here</TextButton>.
