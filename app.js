@@ -24,6 +24,19 @@ db.once('open', function() {
   app.set('view engine', 'html');
   app.engine('html', require('garnet').__express);
 
+  app.use(function(req, res, next) {
+    if (process.env.NODE_ENV === 'production') {
+      // Enforce HTTPS on Heroku.
+      if (req.headers['x-forwarded-proto'].toLowerCase() !== 'https') {
+        res.redirect('https://' + req.get('host') + req.url);
+      } else {
+        next();
+      }
+    } else {
+      next();
+    }
+  });
+
   var morgan = require('morgan');
   app.use(morgan('short'));
 
