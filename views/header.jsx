@@ -28,7 +28,9 @@ var Header = React.createClass({
             loggingOut: false
           });
         }).done(function(data) {
-          window.bodyComponent.setUserData(null);
+          if (data.error === null) {
+            window.bodyComponent.setUserData(null);
+          }
         });
       }
     };
