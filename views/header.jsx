@@ -40,7 +40,7 @@ var Header = React.createClass({
       if (component.props.user) {
         nav = (
           <span>
-            <a href="/about">About</a>
+            <a href={ '/' + component.props.user.username }>{ component.props.user.username }</a>
             <TextButton onSubmit={ component.props.clickSettings }>Settings</TextButton>
             <TextButton className={ component.state.loggingOut ? 'disabled' : '' } onSubmit={ clickLogOut }>Log out</TextButton>
           </span>
