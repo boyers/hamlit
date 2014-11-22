@@ -19,6 +19,8 @@ $header-height: 56px;
 
     a {
       display: block;
+      width: 73px;
+      margin-left: -20px;
 
       .sprite {
         &:hover {
@@ -31,7 +33,6 @@ $header-height: 56px;
 
         &, &:hover, &:active {
           display: block;
-          margin-left: -20px;
         }
       }
     }
