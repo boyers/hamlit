@@ -1,3 +1,4 @@
+var path = require('path');
 var assets = require('./assets');
 
 exports.config = function(app) {
@@ -5,20 +6,14 @@ exports.config = function(app) {
     app.use(function(req, res, next) {
       console.error('['+ (new Date()).toUTCString() +'] 404: ' + req.path);
       res.status(404);
-      res.render('application', {
-        styles: assets.getStyles(),
-        scripts: assets.getScripts()
-      });
+      res.sendFile(path.resolve(__dirname, '..', 'public/assets/application.html'));
     });
 
     app.use(function(err, req, res, next) {
       console.error('['+ (new Date()).toUTCString() +'] error:');
       console.error(err.stack);
       res.status(500);
-      res.render('application', {
-        styles: assets.getStyles(),
-        scripts: assets.getScripts()
-      });
+      res.sendFile(path.resolve(__dirname, '..', 'public/assets/application.html'));
     });
   }
 };
