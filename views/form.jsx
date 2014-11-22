@@ -12,10 +12,19 @@ var Form = React.createClass({
     submitText: React.PropTypes.string.isRequired,
     endpoint: React.PropTypes.string.isRequired,
     onSuccess: React.PropTypes.func,
-    fields: React.PropTypes.arrayOf(React.PropTypes.element.isRequired).isRequired
+    fields: React.PropTypes.arrayOf(React.PropTypes.element.isRequired).isRequired,
+    disabled: React.PropTypes.bool
   },
   getInitialState: function() {
     return { submitted: false, error: null };
+  },
+  componentDidMount: function() {
+    if (this.props.disabled === true) {
+      $(this.getDOMNode()).find('textarea, input').prop('disabled', true);
+    }
+  },
+  componentDidUpdate: function(prevProps, prevState) {
+    $(this.getDOMNode()).find('textarea, input').prop('disabled', this.props.disabled === true);
   },
   focus: function() {
     var firstFieldRef = this.props.fields[0].props.id;
@@ -29,6 +38,10 @@ var Form = React.createClass({
     this.setState({ error: null });
   },
   submit: function(event) {
+    if (this.props.disabled === true) {
+      return;
+    }
+
     var i, field;
     var component = this;
     event.preventDefault();

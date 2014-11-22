@@ -6,18 +6,16 @@ var Settings = React.createClass({
     return {
       isOpen: false,
       usernameAvailable: null,
-      confirmAccountDeletionOpen: false
+      confirmingAccountDeletion: false
     };
   },
   componentDidMount: function() {
     $(this.getDOMNode()).hide();
-    $(this.refs.deleteAccountForm.getDOMNode()).hide();
   },
   reset: function() {
     this.refs.usernameForm.reset();
     this.refs.passwordForm.reset();
-    $(this.refs.deleteAccountForm.getDOMNode()).hide();
-    this.setState({ confirmAccountDeletionOpen: false });
+    this.setState({ confirmingAccountDeletion: false });
   },
   toggle: function(callback) {
     var component = this;
@@ -131,15 +129,10 @@ var Settings = React.createClass({
               <hr />
               <p>
                 To delete your account, click <TextButton onSubmit={ function() {
-                  if (component.state.confirmAccountDeletionOpen) {
-                    $(component.refs.deleteAccountForm.getDOMNode()).slideUp(window.constants.animationDuration);
-                  } else {
-                    $(component.refs.deleteAccountForm.getDOMNode()).slideDown(window.constants.animationDuration);
-                  }
-                  component.setState({ confirmAccountDeletionOpen: !component.state.confirmAccountDeletionOpen });
+                  component.setState({ confirmingAccountDeletion: !component.state.confirmingAccountDeletion });
                 } }>here</TextButton>.
               </p>
-              <Form ref="deleteAccountForm" submitText="Confirm account deletion" endpoint="/api/delete_account" onSuccess={ onDeleteAccount } fields={ [] } />
+              <Form ref="deleteAccountForm" submitText="Confirm account deletion" endpoint="/api/delete_account" disabled={ !component.state.confirmingAccountDeletion } onSuccess={ onDeleteAccount } fields={ [] } />
             </div>
             <div className="span4">
               <Form ref="passwordForm" submitText="Save password" endpoint="/api/update_password" onSuccess={ onComplete } fields={[
