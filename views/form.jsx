@@ -24,7 +24,7 @@ var Form = React.createClass({
     }
   },
   componentDidUpdate: function(prevProps, prevState) {
-    $(this.getDOMNode()).find('textarea, input').prop('disabled', this.props.disabled === true);
+    $(this.getDOMNode()).find('textarea, input').prop('disabled', this.props.disabled === true || this.state.submitted);
   },
   focus: function() {
     var firstFieldRef = this.props.fields[0].props.id;
