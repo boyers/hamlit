@@ -83,7 +83,7 @@ exports.config = function(app) {
     }
 
     models.User.findOne({
-        usernameLowercase: username.toLowerCase()
+        normalizedUsername: models.User.getNormalizedUsername(username)
       }, function(err, existingUser) {
       if (err) {
         return helpers.renderAPIError(res, err);
@@ -137,7 +137,7 @@ exports.config = function(app) {
 
           var user = new models.User({
             username: username,
-            usernameLowercase: username.toLowerCase(),
+            normalizedUsername: models.User.getNormalizedUsername(username),
             passwordHash: hash,
             passwordSalt: salt
           });
@@ -204,7 +204,7 @@ exports.config = function(app) {
       });
     }
 
-    models.User.where({ usernameLowercase: username.toLowerCase() }).findOne(function(err, user) {
+    models.User.where({ normalizedUsername: models.User.getNormalizedUsername(username) }).findOne(function(err, user) {
       if (err) {
         return helpers.renderAPIError(res, err);
       }
@@ -271,7 +271,7 @@ exports.config = function(app) {
     var username = req.body.username.replace(/^\s+|\s+$/g, '');
 
     models.User.findOne({
-        usernameLowercase: username.toLowerCase()
+        normalizedUsername: models.User.getNormalizedUsername(username)
       }, function(err, user) {
       if (err) {
         return helpers.renderAPIError(res, err);
@@ -307,7 +307,7 @@ exports.config = function(app) {
       }
 
       user.username = username;
-      user.usernameLowercase = username.toLowerCase();
+      user.normalizedUsername = models.User.getNormalizedUsername(username);
 
       user.save(function(err) {
         if (err) {

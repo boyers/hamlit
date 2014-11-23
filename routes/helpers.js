@@ -9,6 +9,7 @@ exports.renderAPIError = function(res, err) {
 
 exports.getUserData = function(user) {
   return {
-    username: user.username
+    username: user.username,
+    normalizedUsername: user.normalizedUsername
   };
 };
