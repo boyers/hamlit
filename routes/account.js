@@ -77,7 +77,7 @@ exports.config = function(app) {
       return res.json({
         error: null,
         validationErrors: {
-          username: models.User.usernameValidationError
+          username: 'Invalid username.'
         }
       });
     }
@@ -197,10 +197,8 @@ exports.config = function(app) {
 
     if (!models.User.validateUsername(username)) {
       return res.json({
-        error: null,
-        validationErrors: {
-          username: models.User.usernameValidationError
-        }
+        error: 'Incorrect username or password.',
+        validationErrors: { }
       });
     }
 
@@ -338,7 +336,7 @@ exports.config = function(app) {
         return res.json({
           error: null,
           validationErrors: {
-            username: models.User.usernameValidationError
+            username: 'Invalid username.'
           }
         });
       }
