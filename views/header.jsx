@@ -29,7 +29,7 @@ var Header = React.createClass({
           });
         }).done(function(data) {
           if (data.error === null) {
-            window.bodyComponent.setUserData(null);
+            window.bodyComponent.setState({ user: null });
           }
         });
       }

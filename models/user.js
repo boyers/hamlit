@@ -2,11 +2,31 @@ var mongoose = require('mongoose');
 var xregexp = require('xregexp');
 
 var validateUsername = function(value) {
-  return value && xregexp.XRegExp('^([0-9_ \-]|\\p{L}){1,32}$').test(value);
+  // Make sure value is a string.
+  if (typeof value !== 'string' && !(value instanceof String)) {
+    return false;
+  }
+
+  // encodeURIComponent (used by getNormalizedUsername) fails if
+  // value contains an unpaired surrogate.
+  try {
+    encodeURIComponent(value);
+  }
+  catch (e) {
+    return false;
+  }
+
+  // Allow 1-32 letters, digits, underscores, dashes, and spaces.
+  // Leading and trailing spaces are not allowed.
+  return xregexp.XRegExp('^([0-9_\-]|\\p{L})(([0-9_ \-]|\\p{L}){0,30}([0-9_\-]|\\p{L}))?$').test(value);
 };
 
+// Note: This function will fail if username is not valid.
 var getNormalizedUsername = function(username) {
-  return username.toLowerCase().replace(/\s+/g, '');
+  if (!validateUsername(username)) {
+    throw 'Invalid username.';
+  }
+  return encodeURIComponent(username.toLowerCase().replace(/\s+/g, ''));
 };
 
 var userSchema = mongoose.Schema({
@@ -37,12 +57,13 @@ var userSchema = mongoose.Schema({
 });
 
 userSchema.path('normalizedUsername').validate(function(value) {
-  return (value === getNormalizedUsername(this.username));
+  return (validateUsername(this.username) && value === getNormalizedUsername(this.username));
 });
 
 userSchema.index({ normalizedUsername: 1 });
 
 userSchema.statics.validateUsername = validateUsername;
 userSchema.statics.getNormalizedUsername = getNormalizedUsername;
+userSchema.statics.usernameValidationError = 'That username doesn&rsquo;t look valid. Please use only letters, digits, underscores, dashes, and spaces. Usernames cannot be longer than 32 characters.';
 
 exports.User = mongoose.model('User', userSchema);

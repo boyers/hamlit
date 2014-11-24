@@ -5,7 +5,7 @@ var Settings = React.createClass({
   getInitialState: function() {
     return {
       isOpen: false,
-      usernameAvailable: null,
+      usernameBtw: 'You can always change it later.',
       confirmingAccountDeletion: false
     };
   },
@@ -15,7 +15,10 @@ var Settings = React.createClass({
   reset: function() {
     this.refs.usernameForm.reset();
     this.refs.passwordForm.reset();
-    this.setState({ confirmingAccountDeletion: false });
+    this.setState({
+      confirmingAccountDeletion: false,
+      usernameBtw: 'You can always change it later.'
+    });
   },
   toggle: function(callback) {
     var component = this;
@@ -66,44 +69,40 @@ var Settings = React.createClass({
 
     var onComplete = function(data) {
       component.close();
-      window.bodyComponent.setUserData(data.user);
+      window.bodyComponent.setState({ user: data.user });
     };
 
-    var username = null;
+    var oldUsername = null;
     if (component.props.user) {
-      username = component.props.user.username;
+      oldUsername = component.props.user.username;
     }
 
     var onChangeUsername = debounce(function(event) {
-      var newUsername = component.refs.usernameForm.refs.username.getValue().replace(/^\s+|\s+$/g, '');
+      var username = component.refs.usernameForm.refs.username.getValue();
 
-      if (newUsername === '' || newUsername.toLowerCase() === username.toLowerCase()) {
-        component.setState({ usernameAvailable: null });
+      if (username === '') {
+        component.setState({ usernameBtw: 'You can always change it later.' });
       } else {
         $.ajax({
           type: 'POST',
           url: '/api/check_username',
           data: {
-            username: newUsername
+            username: username,
+            oldUsername: oldUsername
           }
         }).done(function(data) {
-          component.setState({ usernameAvailable: data.result });
+          if (data.error !== null) {
+            component.setState({ usernameBtw: data.error });
+          } else {
+            if (data.result === true) {
+              component.setState({ usernameBtw: 'Looks good!' });
+            } else {
+              component.setState({ usernameBtw: 'You can always change it later.' });
+            }
+          }
         });
       }
     });
-
-    var onDeleteAccount = function(data) {
-      window.bodyComponent.setUserData(null);
-    };
-
-    var usernameBtw = 'You can always change it later.';
-    if (component.state.usernameAvailable !== null) {
-      if (component.state.usernameAvailable) {
-        usernameBtw = 'Looks good!';
-      } else {
-        usernameBtw = 'That username is taken.';
-      }
-    }
 
     var onKeyDown = function(event) {
       if (event.keyCode === 27) {
@@ -124,7 +123,7 @@ var Settings = React.createClass({
           <div className="row">
             <div className="span4 offset2">
               <Form ref="usernameForm" submitText="Save username" endpoint="/api/update_username" onSuccess={ onComplete } fields={[
-                <Input id="username" label="Username" onChange={ onChangeUsername } placeholder={ username } defaultValue={ username } btw={ usernameBtw } />
+                <Input id="username" label="Username" onChange={ onChangeUsername } placeholder={ oldUsername } defaultValue={ oldUsername } btw={ component.state.usernameBtw } />
               ]} />
               <hr />
               <p>
@@ -132,7 +131,7 @@ var Settings = React.createClass({
                   component.setState({ confirmingAccountDeletion: !component.state.confirmingAccountDeletion });
                 } }>here</TextButton>.
               </p>
-              <Form ref="deleteAccountForm" submitText="Confirm account deletion" endpoint="/api/delete_account" disabled={ !component.state.confirmingAccountDeletion } onSuccess={ onDeleteAccount } fields={ [] } />
+              <Form ref="deleteAccountForm" submitText="Confirm account deletion" endpoint="/api/delete_account" disabled={ !component.state.confirmingAccountDeletion } onSuccess={ onComplete } fields={ [] } />
             </div>
             <div className="span4">
               <Form ref="passwordForm" submitText="Save password" endpoint="/api/update_password" onSuccess={ onComplete } fields={[

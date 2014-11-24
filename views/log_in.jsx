@@ -51,7 +51,7 @@ var LogIn = React.createClass({
 
     var onComplete = function(data) {
       component.close();
-      window.bodyComponent.setUserData(data.user);
+      window.bodyComponent.setState({ user: data.user });
     };
 
     var onKeyDown = function(event) {

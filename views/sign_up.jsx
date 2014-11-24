@@ -2,7 +2,7 @@ var SignUp = React.createClass({
   getInitialState: function() {
     return {
       isOpen: false,
-      usernameAvailable: null
+      usernameBtw: 'You can always change it later.'
     };
   },
   componentDidMount: function() {
@@ -52,14 +52,14 @@ var SignUp = React.createClass({
 
     var onComplete = function(data) {
       component.close();
-      window.bodyComponent.setUserData(data.user);
+      window.bodyComponent.setState({ user: data.user });
     };
 
     var onChangeUsername = debounce(function(event) {
-      var username = component.refs.form.refs.username.getValue().replace(/^\s+|\s+$/g, '');
+      var username = component.refs.form.refs.username.getValue();
 
       if (username === '') {
-        component.setState({ usernameAvailable: null });
+        component.setState({ usernameBtw: 'You can always change it later.' });
       } else {
         $.ajax({
           type: 'POST',
@@ -68,19 +68,18 @@ var SignUp = React.createClass({
             username: username
           }
         }).done(function(data) {
-          component.setState({ usernameAvailable: data.result });
+          if (data.error !== null) {
+            component.setState({ usernameBtw: data.error });
+          } else {
+            if (data.result === true) {
+              component.setState({ usernameBtw: 'Looks good!' });
+            } else {
+              component.setState({ usernameBtw: 'You can always change it later.' });
+            }
+          }
         });
       }
     });
-
-    var usernameBtw = 'You can always change it later.';
-    if (component.state.usernameAvailable !== null) {
-      if (component.state.usernameAvailable) {
-        usernameBtw = 'Looks good!';
-      } else {
-        usernameBtw = 'That username is taken.';
-      }
-    }
 
     var onKeyDown = function(event) {
       if (event.keyCode === 27) {
@@ -95,7 +94,7 @@ var SignUp = React.createClass({
           <div className="row">
             <div className="span4 offset4">
               <Form ref="form" title="Welcome to Hamlit!" submitText="Sign up" endpoint="/api/sign_up" onSuccess={ onComplete } fields={[
-                <Input id="username" label="Username" onChange={ onChangeUsername } placeholder="piggy" btw={ usernameBtw } />,
+                <Input id="username" label="Username" onChange={ onChangeUsername } placeholder="piggy" btw={ component.state.usernameBtw } />,
                 <Input id="password" label="Password" type="password" placeholder="l0rd 0f th3 fl13s" btw="Please pick a good one." />,
                 <Input id="verifyPassword" label="Verify password" type="password" placeholder="l0rd 0f th3 fl13s" btw="Just to make sure you got it right." />
               ]} />

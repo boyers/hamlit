@@ -77,7 +77,7 @@ exports.config = function(app) {
       return res.json({
         error: null,
         validationErrors: {
-          username: 'That username doesn&rsquo;t look valid. Please use only letters, digits, and underscores.'
+          username: models.User.usernameValidationError
         }
       });
     }
@@ -195,6 +195,15 @@ exports.config = function(app) {
       });
     }
 
+    if (!models.User.validateUsername(username)) {
+      return res.json({
+        error: null,
+        validationErrors: {
+          username: models.User.usernameValidationError
+        }
+      });
+    }
+
     if (password === '') {
       return res.json({
         error: null,
@@ -269,17 +278,45 @@ exports.config = function(app) {
 
   app.post('/api/check_username', function(req, res) {
     var username = req.body.username.replace(/^\s+|\s+$/g, '');
+    var oldUsername = req.body.oldUsername ? req.body.oldUsername.replace(/^\s+|\s+$/g, '') : null;
+
+    if (!models.User.validateUsername(username)) {
+      return res.json({
+        error: models.User.usernameValidationError,
+        result: false
+      });
+    }
+
+    if (oldUsername !== null) {
+      if (!models.User.validateUsername(oldUsername)) {
+        return helpers.renderAPIError(res, err);
+      }
+
+      if (models.User.getNormalizedUsername(username) === models.User.getNormalizedUsername(oldUsername)) {
+        return res.json({
+          error: null,
+          result: null
+        });
+      }
+    }
 
     models.User.findOne({
         normalizedUsername: models.User.getNormalizedUsername(username)
-      }, function(err, user) {
+    }, function(err, user) {
       if (err) {
         return helpers.renderAPIError(res, err);
       }
 
+      if (user) {
+        return res.json({
+          error: 'That username is already taken.',
+          result: false
+        });
+      }
+
       return res.json({
         error: null,
-        result: (user === null)
+        result: true
       });
     });
   });
@@ -301,7 +338,7 @@ exports.config = function(app) {
         return res.json({
           error: null,
           validationErrors: {
-            username: 'That username doesn&rsquo;t look valid. Please use only letters, digits, and underscores.'
+            username: models.User.usernameValidationError
           }
         });
       }
@@ -430,7 +467,7 @@ exports.config = function(app) {
 
           return res.json({
             error: null,
-            user: helpers.getUserData(user)
+            user: null
           });
         });
       });
