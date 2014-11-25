@@ -17,6 +17,9 @@ var validateUsername = function(value) {
     return false;
   }
 
+  // Normalize to NFC (for XRegExp).
+  value = unorm.nfc(value);
+
   // Allow 1-32 letters, digits, underscores, dashes, and spaces.
   // Leading and trailing spaces are not allowed.
   return xregexp.XRegExp('^([0-9_\-]|\\p{L})(([0-9_ \-]|\\p{L}){0,30}([0-9_\-]|\\p{L}))?$').test(value);
