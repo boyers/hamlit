@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var xregexp = require('xregexp');
+var unorm = require('unorm');
 
 var validateUsername = function(value) {
   // Make sure value is a string.
@@ -26,7 +27,7 @@ var getNormalizedUsername = function(username) {
   if (!validateUsername(username)) {
     throw 'Invalid username.';
   }
-  return encodeURIComponent(username.toLowerCase().replace(/\s+/g, ''));
+  return encodeURIComponent(unorm.nfc(username).toLowerCase().replace(/\s+/g, ''));
 };
 
 var userSchema = mongoose.Schema({
