@@ -3,40 +3,16 @@ var Body = React.createClass({
     return {
       relativeURL: null,
       loggedInUser: null,
-      waitingForAuthData: true,
-      waitingForPageData: true
+      waitingForAuthData: true
     };
   },
   loadRelativeURL: function(URL) {
-    var component = this;
-
-    component.setState({
-      relativeURL: window.makeRelativeURL(URL),
-      waitingForPageData: true
+    this.setState({
+      relativeURL: window.makeRelativeURL(URL)
     });
-    component.refs.signUp.closeImmediately();
-    component.refs.logIn.closeImmediately();
-    component.refs.settings.closeImmediately();
-
-    if (URL === '/') {
-      window.api('/api/home', { }, function(data) {
-        component.setState({
-          waitingForPageData: false
-        });
-      }, function() {
-        //
-      });
-    } else {
-      window.api('/api/user', {
-        username: decodeURIComponent(URL.slice(1))
-      }, function(data) {
-        component.setState({
-          waitingForPageData: false
-        });
-      }, function() {
-        //
-      });
-    }
+    this.refs.signUp.closeImmediately();
+    this.refs.logIn.closeImmediately();
+    this.refs.settings.closeImmediately();
   },
   componentDidMount: function() {
     var component = this;
@@ -69,11 +45,11 @@ var Body = React.createClass({
     var component = this;
 
     var view = <Spinner />;
-    if (!this.state.waitingForPageData && this.state.relativeURL !== null) {
+    if (this.state.relativeURL !== null) {
       if (this.state.relativeURL === '/') {
-        view = React.createElement(ViewIndex, { });
+        view = React.createElement(Feed, { });
       } else {
-        view = React.createElement(User, { username: this.state.relativeURL.slice(1) });
+        view = React.createElement(User, { username: decodeURIComponent(this.state.relativeURL.slice(1)) });
       }
     }
 

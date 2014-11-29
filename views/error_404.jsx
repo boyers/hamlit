@@ -1,4 +1,4 @@
-var View404 = React.createClass({
+var Error404 = React.createClass({
   render: function() {
     return (
       <div>

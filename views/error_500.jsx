@@ -1,4 +1,4 @@
-var View500 = React.createClass({
+var Error500 = React.createClass({
   render: function() {
     return (
       <div>
