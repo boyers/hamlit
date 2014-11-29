@@ -3,7 +3,7 @@ var Header = React.createClass({
     clickLogIn: React.PropTypes.func.isRequired,
     clickSignUp: React.PropTypes.func.isRequired,
     clickSettings: React.PropTypes.func.isRequired,
-    user: React.PropTypes.object,
+    loggedInUser: React.PropTypes.object,
     waitingForAuthData: React.PropTypes.bool.isRequired
   },
   getInitialState: function() {
@@ -29,7 +29,7 @@ var Header = React.createClass({
           });
         }).done(function(data) {
           if (data.error === null) {
-            window.bodyComponent.setState({ user: null });
+            window.bodyComponent.setState({ loggedInUser: null });
           }
         });
       }
@@ -37,10 +37,10 @@ var Header = React.createClass({
 
     var nav = <span className="nav-spinner"><Spinner /></span>;
     if (!this.props.waitingForAuthData) {
-      if (component.props.user) {
+      if (component.props.loggedInUser) {
         nav = (
           <span>
-            <a href={ '/' + component.props.user.normalizedUsername }>{ component.props.user.username }</a>
+            <a href={ '/' + component.props.loggedInUser.normalizedUsername }>{ component.props.loggedInUser.username }</a>
             <TextButton onSubmit={ component.props.clickSettings }>Settings</TextButton>
             <TextButton className={ component.state.loggingOut ? 'disabled' : '' } onSubmit={ clickLogOut }>Log out</TextButton>
           </span>

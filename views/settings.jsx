@@ -1,6 +1,6 @@
 var Settings = React.createClass({
   propTypes: {
-    user: React.PropTypes.object,
+    loggedInUser: React.PropTypes.object,
   },
   getInitialState: function() {
     return {
@@ -60,7 +60,7 @@ var Settings = React.createClass({
     this.setState({ isOpen: false });
   },
   componentDidUpdate: function(prevProps, prevState) {
-    if (!_.isEqual(this.props.user, prevProps.user)) {
+    if (!_.isEqual(this.props.loggedInUser, prevProps.loggedInUser)) {
       this.reset();
     }
   },
@@ -69,12 +69,12 @@ var Settings = React.createClass({
 
     var onComplete = function(data) {
       component.close();
-      window.bodyComponent.setState({ user: data.user });
+      window.bodyComponent.setState({ loggedInUser: data.user });
     };
 
     var oldUsername = null;
-    if (component.props.user) {
-      oldUsername = component.props.user.username;
+    if (component.props.loggedInUser) {
+      oldUsername = component.props.loggedInUser.username;
     }
 
     var onChangeUsername = debounce(function(event) {

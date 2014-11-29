@@ -2,36 +2,66 @@ var Body = React.createClass({
   getInitialState: function() {
     return {
       relativeURL: null,
-      user: null,
-      waitingForAuthData: true
+      loggedInUser: null,
+      waitingForAuthData: true,
+      waitingForPageData: true
     };
   },
   loadRelativeURL: function(URL) {
-    this.setState({
-      relativeURL: window.makeRelativeURL(URL)
+    var component = this;
+
+    component.setState({
+      relativeURL: window.makeRelativeURL(URL),
+      waitingForPageData: true
     });
-    this.refs.signUp.closeImmediately();
-    this.refs.logIn.closeImmediately();
-    this.refs.settings.closeImmediately();
+    component.refs.signUp.closeImmediately();
+    component.refs.logIn.closeImmediately();
+    component.refs.settings.closeImmediately();
+
+    if (URL === '/') {
+      $.ajax({
+        type: 'POST',
+        url: '/api/home',
+        data: { }
+      }).done(function(data) {
+        if (!data.error) {
+          component.setState({
+            waitingForPageData: false
+          });
+        }
+      });
+    } else {
+      $.ajax({
+        type: 'POST',
+        url: '/api/user',
+        data: { username: URL.slice(1) }
+      }).done(function(data) {
+        if (!data.error) {
+          component.setState({
+            waitingForPageData: false
+          });
+        }
+      });
+    }
   },
   // Note: This is only so application.js can log the user in on initial page load.
   // Just use window.bodyComponent.setState(...) otherwise.
   setUserData: function(user) {
     this.setState({
-      user: user,
+      loggedInUser: user,
       waitingForAuthData: false
     });
   },
   componentDidUpdate: function(prevProps, prevState) {
-    if (!this.state.user) {
+    if (!this.state.loggedInUser) {
       this.refs.settings.closeImmediately();
     }
   },
   render: function() {
     var component = this;
 
-    var view = null;
-    if (this.state.relativeURL !== null) {
+    var view = <Spinner />;
+    if (!this.state.waitingForPageData && this.state.relativeURL !== null) {
       if (this.state.relativeURL === '/') {
         view = React.createElement(ViewIndex, { });
       } else {
@@ -47,12 +77,12 @@ var Body = React.createClass({
             clickLogIn={ function() { component.refs.signUp.close(function() { component.refs.logIn.toggle(); }); } }
             clickSignUp={ function() { component.refs.logIn.close(function() { component.refs.signUp.toggle(); }); } }
             clickSettings={ function() { component.refs.settings.toggle(); } }
-            user={ component.state.user }
+            loggedInUser={ component.state.loggedInUser }
             waitingForAuthData={ component.state.waitingForAuthData }
           />
           <LogIn ref="logIn" />
           <SignUp ref="signUp" />
-          <Settings ref="settings" user={ component.state.user } />
+          <Settings ref="settings" loggedInUser={ component.state.loggedInUser } />
         </div>
         <div className="container clearfix">
           <div className="vertical-margin">

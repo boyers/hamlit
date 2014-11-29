@@ -52,7 +52,7 @@ var SignUp = React.createClass({
 
     var onComplete = function(data) {
       component.close();
-      window.bodyComponent.setState({ user: data.user });
+      window.bodyComponent.setState({ loggedInUser: data.user });
     };
 
     var onChangeUsername = debounce(function(event) {
