@@ -15,13 +15,10 @@ database.connect(function() {
   app.use(function(req, res, next) {
     if (process.env.NODE_ENV === 'production') {
       if (req.protocol.toLowerCase() !== 'https') {
-        res.redirect(301, 'https://' + req.hostname + req.url);
-      } else {
-        next();
+        return res.redirect(301, 'https://' + req.hostname + req.url);
       }
-    } else {
-      next();
     }
+    next();
   });
 
   var morgan = require('morgan');
@@ -43,13 +40,11 @@ database.connect(function() {
         return undefined;
       }
     });
-    req.params = _.cloneDeep(req.params, function(value) {
-      if (_.isString(value)) {
-        return unorm.nfc(value);
-      } else {
-        return undefined;
-      }
-    });
+
+    if (req.url !== unorm.nfc(req.url)) {
+      return res.redirect('https://' + req.hostname + unorm.nfc(req.url));
+    }
+
     next();
   });
 
