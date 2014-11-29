@@ -1,3 +1,5 @@
+var _ = require('lodash');
+var unorm = require('unorm');
 var constants = require('./constants');
 var database = require('./database');
 
@@ -32,6 +34,17 @@ database.connect(function() {
   app.use(bodyParser.urlencoded({
     extended: true
   }));
+
+  app.use(function(req, res, next) {
+    req.body = _.cloneDeep(req.body, function(value) {
+      if (_.isString(value)) {
+        return unorm.nfc(value);
+      } else {
+        return undefined;
+      }
+    });
+    next();
+  });
 
   var secret_key = process.env.SECRET_KEY;
   if (!secret_key) {

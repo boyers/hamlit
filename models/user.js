@@ -1,10 +1,11 @@
+var _ = require('lodash');
 var mongoose = require('mongoose');
 var xregexp = require('xregexp');
 var unorm = require('unorm');
 
 var validateUsername = function(value) {
   // Make sure value is a string.
-  if (typeof value !== 'string' && !(value instanceof String)) {
+  if (!_.isString(value)) {
     return false;
   }
 
@@ -12,13 +13,14 @@ var validateUsername = function(value) {
   // value contains an unpaired surrogate.
   try {
     encodeURIComponent(value);
-  }
-  catch (e) {
+  } catch (e) {
     return false;
   }
 
-  // Normalize to NFC (for XRegExp).
-  value = unorm.nfc(value);
+  // Make sure the value is normalized to NFC.
+  if (value !== unorm.nfc(value)) {
+    return false;
+  }
 
   // Allow 1-32 letters, digits, underscores, dashes, and spaces.
   // Leading and trailing spaces are not allowed.
@@ -30,7 +32,8 @@ var getNormalizedUsername = function(username) {
   if (!validateUsername(username)) {
     throw 'Invalid username.';
   }
-  return encodeURIComponent(unorm.nfc(username).toLowerCase().replace(/\s+/g, ''));
+
+  return encodeURIComponent(username.toLowerCase().replace(/\s+/g, ''));
 };
 
 var userSchema = mongoose.Schema({
@@ -48,16 +51,12 @@ var userSchema = mongoose.Schema({
   passwordHash: {
     type: String,
     required: true,
-    validate: function(value) {
-      return /^[.\/ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789$]{60}$/.test(value);
-    }
+    match: /^[.\/ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789$]{60}$/
   },
   passwordSalt: {
     type: String,
     required: true,
-    validate: function(value) {
-      return /^[.\/ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789$]{29}$/.test(value);
-    }
+    match: /^[.\/ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789$]{29}$/
   }
 });
 
