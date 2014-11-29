@@ -40,7 +40,7 @@ var Header = React.createClass({
       if (component.props.loggedInUser) {
         nav = (
           <span>
-            <a href={ '/' + component.props.loggedInUser.normalizedUsername }>{ component.props.loggedInUser.username }</a>
+            <a href={ '/' + encodeURIComponent(component.props.loggedInUser.normalizedUsername) }>{ component.props.loggedInUser.username }</a>
             <TextButton onSubmit={ component.props.clickSettings }>Settings</TextButton>
             <TextButton className={ component.state.loggingOut ? 'disabled' : '' } onSubmit={ clickLogOut }>Log out</TextButton>
           </span>

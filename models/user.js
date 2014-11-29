@@ -19,7 +19,7 @@ var getNormalizedUsername = function(username) {
     throw 'Invalid username.';
   }
 
-  return encodeURIComponent(helpers.strip(username.toLowerCase()));
+  return username.toLowerCase().replace(/\s+/g, '');
 };
 
 var userSchema = mongoose.Schema({

@@ -17,22 +17,16 @@ exports.config = function(app) {
   });
 
   app.get('/:username', function(req, res, next) {
-    var UnnormalizedUsername = helpers.strip(req.params.username);
+    var username = req.params.username;
 
-    if (!models.User.validateUsername(UnnormalizedUsername)) {
-      return next();
-    }
-
-    var normalizedUsername = models.User.getNormalizedUsername(UnnormalizedUsername);
-
-    models.User.findOne({ normalizedUsername: normalizedUsername }, function(err, user) {
+    models.User.findOne({ normalizedUsername: username }, function(err, user) {
       if (err) {
         throw err;
       }
 
       if (user) {
-        var url = '/' + user.normalizedUsername;
-        if (url !== req.url) {
+        var url = '/' + encodeURIComponent(user.normalizedUsername);
+        if (username !== user.normalizedUsername) {
           return res.redirect(url);
         }
 

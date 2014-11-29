@@ -19,28 +19,22 @@ var Body = React.createClass({
     component.refs.settings.closeImmediately();
 
     if (URL === '/') {
-      $.ajax({
-        type: 'POST',
-        url: '/api/home',
-        data: { }
-      }).done(function(data) {
-        if (!data.error) {
-          component.setState({
-            waitingForPageData: false
-          });
-        }
+      window.api('/api/home', { }, function(data) {
+        component.setState({
+          waitingForPageData: false
+        });
+      }, function() {
+        //
       });
     } else {
-      $.ajax({
-        type: 'POST',
-        url: '/api/user',
-        data: { username: URL.slice(1) }
-      }).done(function(data) {
-        if (!data.error) {
-          component.setState({
-            waitingForPageData: false
-          });
-        }
+      window.api('/api/user', {
+        username: decodeURIComponent(URL.slice(1))
+      }, function(data) {
+        component.setState({
+          waitingForPageData: false
+        });
+      }, function() {
+        //
       });
     }
   },
@@ -54,8 +48,8 @@ var Body = React.createClass({
   },
   componentDidUpdate: function(prevProps, prevState) {
     // After logging in or out, do a virtual page reload.
-    if ((this.state.loggedInUser === null) !== (prevState.loggedInUser === null)) {
-      this.loadRelativeURL(this.state.relativeURL);
+    if ((this.state.loggedInUser === null) !== (prevState.loggedInUser === null) || prevState.waitingForAuthData) {
+      this.loadRelativeURL(makeRelativeURL(window.location.href));
     }
   },
   render: function() {

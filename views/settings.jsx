@@ -85,25 +85,21 @@ var Settings = React.createClass({
     var onChangeUsername = debounce(function(event) {
       var username = component.refs.usernameForm.refs.username.getValue();
 
-      if (username === '') {
+      if (/^\s*$/.test(username)) {
         component.setState({ usernameBtw: 'You can always change it later.' });
       } else {
-        $.ajax({
-          type: 'POST',
-          url: '/api/check_username',
-          data: {
-            username: username,
-            oldUsername: oldUsername
-          }
-        }).done(function(data) {
-          if (data.error !== null) {
-            component.setState({ usernameBtw: data.error });
+        window.api('/api/check_username', {
+          username: username,
+          oldUsername: oldUsername
+        }, function(data) {
+          if (data.changed) {
+            component.setState({ usernameBtw: 'Looks good!' });
           } else {
-            if (data.result === true) {
-              component.setState({ usernameBtw: 'Looks good!' });
-            } else {
-              component.setState({ usernameBtw: 'You can always change it later.' });
-            }
+            component.setState({ usernameBtw: 'You can always change it later.' });
+          }
+        }, function(data) {
+          if (data) {
+            component.setState({ usernameBtw: data.error });
           }
         });
       }

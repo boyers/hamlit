@@ -17,24 +17,16 @@ exports.config = function(app) {
 
   app.post('/api/user', function(req, res) {
     account.auth(req, res, function(session, user) {
-      var UnnormalizedUsername = helpers.strip(req.body.username);
+      var username = req.body.username;
 
-      if (!models.User.validateUsername(UnnormalizedUsername)) {
-        return res.json({
-          error: 'That user does not exist.'
-        });
-      }
-
-      var normalizedUsername = models.User.getNormalizedUsername(UnnormalizedUsername);
-
-      models.User.findOne({ normalizedUsername: normalizedUsername }, function(err, user) {
+      models.User.findOne({ normalizedUsername: username }, function(err, user) {
         if (err) {
           throw err;
         }
 
         if (user) {
-          var url = '/' + normalizedUsername;
-          if (url !== req.url) {
+          var url = '/' + encodeURIComponent(user.normalizedUsername);
+          if (username !== user.normalizedUsername) {
             return res.json({
               redirect: url
             });

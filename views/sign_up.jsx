@@ -57,24 +57,16 @@ var SignUp = React.createClass({
     var onChangeUsername = debounce(function(event) {
       var username = component.refs.form.refs.username.getValue();
 
-      if (username === '') {
+      if (/^\s*$/.test(username)) {
         component.setState({ usernameBtw: 'You can always change it later.' });
       } else {
-        $.ajax({
-          type: 'POST',
-          url: '/api/check_username',
-          data: {
-            username: username
-          }
-        }).done(function(data) {
-          if (data.error !== null) {
+        window.api('/api/check_username', {
+          username: username
+        }, function(data) {
+          component.setState({ usernameBtw: 'Looks good!' });
+        }, function(data) {
+          if (data) {
             component.setState({ usernameBtw: data.error });
-          } else {
-            if (data.result === true) {
-              component.setState({ usernameBtw: 'Looks good!' });
-            } else {
-              component.setState({ usernameBtw: 'You can always change it later.' });
-            }
           }
         });
       }

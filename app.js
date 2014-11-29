@@ -43,6 +43,13 @@ database.connect(function() {
         return undefined;
       }
     });
+    req.params = _.cloneDeep(req.params, function(value) {
+      if (_.isString(value)) {
+        return unorm.nfc(value);
+      } else {
+        return undefined;
+      }
+    });
     next();
   });
 

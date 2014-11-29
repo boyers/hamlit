@@ -280,8 +280,7 @@ exports.config = function(app) {
 
     if (!models.User.validateUsername(username)) {
       return res.json({
-        error: models.User.usernameValidationError,
-        result: false
+        error: models.User.usernameValidationError
       });
     }
 
@@ -295,7 +294,7 @@ exports.config = function(app) {
       if (models.User.getNormalizedUsername(username) === models.User.getNormalizedUsername(oldUsername)) {
         return res.json({
           error: null,
-          result: null
+          changed: false
         });
       }
     }
@@ -309,14 +308,13 @@ exports.config = function(app) {
 
       if (user) {
         return res.json({
-          error: 'That username is already taken.',
-          result: false
+          error: 'That username is already taken.'
         });
       }
 
       return res.json({
         error: null,
-        result: true
+        changed: true
       });
     });
   });

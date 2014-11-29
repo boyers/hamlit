@@ -34,10 +34,6 @@ window.onpopstate = function(event) {
   onLoadRelativeURL(window.location.href);
 };
 
-$(function() {
-  onLoadRelativeURL(window.location.href);
-});
-
 $(document).on('click', 'a', function(event) {
   window.goToURL(this.href);
   return false;
