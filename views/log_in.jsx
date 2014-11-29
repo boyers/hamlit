@@ -50,7 +50,6 @@ var LogIn = React.createClass({
     var component = this;
 
     var onComplete = function(data) {
-      component.close();
       window.bodyComponent.setState({ loggedInUser: data.user });
     };
 

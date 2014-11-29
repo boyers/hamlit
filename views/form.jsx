@@ -22,6 +22,10 @@ var Form = React.createClass({
     if (this.props.disabled === true) {
       $(this.getDOMNode()).find('textarea, input').prop('disabled', true);
     }
+    for (var i = 0; i < this.props.fields.length; i++) {
+      var field = this.props.fields[i].props.id;
+      this.refs[field].setForm(this);
+    }
   },
   componentDidUpdate: function(prevProps, prevState) {
     $(this.getDOMNode()).find('textarea, input').prop('disabled', this.props.disabled === true || this.state.submitted);
@@ -30,10 +34,13 @@ var Form = React.createClass({
     var firstFieldRef = this.props.fields[0].props.id;
     this.refs[firstFieldRef].focus();
   },
+  clearFormError: function() {
+    this.setState({ error: null });
+  },
   reset: function() {
     for (i = 0; i < this.props.fields.length; i++) {
-      field = this.props.fields[i];
-      this.refs[field.props.id].reset();
+      var field = this.props.fields[i].props.id;
+      this.refs[field].reset();
     }
     this.setState({ error: null });
   },
@@ -53,53 +60,49 @@ var Form = React.createClass({
 
       var data = {};
       for (i = 0; i < component.props.fields.length; i++) {
-        field = component.props.fields[i];
-        var name = component.refs[field.props.id].props.id;
-        var value = component.refs[field.props.id].getValue();
+        field = component.props.fields[i].props.id;
+        var name = component.refs[field].props.id;
+        var value = component.refs[field].getValue();
         data[name] = value;
       }
 
-      $.ajax({
-        type: 'POST',
-        url: component.props.endpoint,
-        data: data
-      }).always(function() {
+      var always = function() {
         $(component.refs.submit.getDOMNode()).blur();
         $(component.getDOMNode()).find('textarea, input').prop('disabled', false);
         component.setState({ submitted: false });
-      }).done(function(data) {
-        if (data.error === null && (!data.hasOwnProperty('validationErrors') || data.validationErrors === null || $.isEmptyObject(data.validationErrors))) {
-          for (i = 0; i < component.props.fields.length; i++) {
-            field = component.props.fields[i];
-            component.refs[field.props.id].reset();
-          }
-          if (component.props.hasOwnProperty('onSuccess')) {
-            component.props.onSuccess(data);
-          }
+      };
+
+      window.api(component.props.endpoint, data, function(data) {
+        always();
+        component.reset();
+        if (component.props.onSuccess) {
+          component.props.onSuccess(data);
+        }
+      }, function(data) {
+        always();
+        if (data === null) {
+          component.setState({ error: 'Uh oh, something went wrong.' });
         } else {
-          if (data.error !== null) {
-            component.focus();
-          }
           component.setState({ error: data.error });
-          if (data.hasOwnProperty('validationErrors') && data.validationErrors !== null) {
+          var found = false;
+          if (data.validationErrors) {
             for (i = 0; i < component.props.fields.length; i++) {
-              field = component.props.fields[i];
-              component.refs[field.props.id].setError(null);
-            }
-            for (var ref in data.validationErrors) {
-              component.refs[ref].setError(data.validationErrors[ref]);
-            }
-            for (i = 0; i < component.props.fields.length; i++) {
-              field = component.props.fields[i];
-              if (data.validationErrors.hasOwnProperty(field.props.id)) {
-                component.refs[field.props.id].focus();
-                break;
+              field = component.props.fields[i].props.id;
+              if (data.validationErrors[field]) {
+                component.refs[field].setError(data.validationErrors[field]);
+                if (!found) {
+                  component.refs[field].focus();
+                  found = true;
+                }
+              } else {
+                component.refs[field].setError(null);
               }
             }
           }
+          if (!found) {
+            component.focus();
+          }
         }
-      }).fail(function() {
-        component.setState({ error: 'Uh oh, there was a network error.' });
       });
     }
   },

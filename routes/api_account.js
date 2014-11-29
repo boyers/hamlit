@@ -12,7 +12,7 @@ exports.auth = function(req, res, callback) {
   if (req.signedCookies.sessionId) {
     models.Session.findOne({ _id: req.signedCookies.sessionId }, function(err, session) {
       if (err) {
-        return apiHelpers.renderAPIError(res, err);
+        throw err;
       }
 
       if (!session) {
@@ -28,7 +28,7 @@ exports.auth = function(req, res, callback) {
       if (session.data.userId) {
         models.User.findOne({ _id: session.data.userId }, function(err, user) {
           if (err) {
-            return apiHelpers.renderAPIError(res, err);
+            throw err;
           }
 
           if (!user) {
@@ -70,16 +70,16 @@ exports.config = function(app) {
 
     if (username === '') {
       return res.json({
-        error: null,
+        error: 'Please fix the error(s) below.',
         validationErrors: {
-          username: 'Please enter a username.'
+          username: 'Enter a username.'
         }
       });
     }
 
     if (!models.User.validateUsername(username)) {
       return res.json({
-        error: null,
+        error: 'Please fix the error(s) below.',
         validationErrors: {
           username: 'Invalid username.'
         }
@@ -90,12 +90,12 @@ exports.config = function(app) {
         normalizedUsername: models.User.getNormalizedUsername(username)
       }, function(err, existingUser) {
       if (err) {
-        return apiHelpers.renderAPIError(res, err);
+        throw err;
       }
 
       if (existingUser) {
         return res.json({
-          error: null,
+          error: 'Please fix the error(s) below.',
           validationErrors: {
             username: 'That username is already taken.'
           }
@@ -104,25 +104,25 @@ exports.config = function(app) {
 
       if (password === '') {
         return res.json({
-          error: null,
+          error: 'Please fix the error(s) below.',
           validationErrors: {
-            password: 'Please enter a password.'
+            password: 'Enter a password.'
           }
         });
       }
 
       if (verifyPassword === '') {
         return res.json({
-          error: null,
+          error: 'Please fix the error(s) below.',
           validationErrors: {
-            verifyPassword: 'Please re-enter your password here.'
+            verifyPassword: 'Re-enter your password here.'
           }
         });
       }
 
       if (password !== verifyPassword) {
         return res.json({
-          error: null,
+          error: 'Please fix the error(s) below.',
           validationErrors: {
             verifyPassword: 'Your passwords do not match.'
           }
@@ -131,12 +131,12 @@ exports.config = function(app) {
 
       bcrypt.genSalt(constants.bcryptRounds, function(err, salt) {
         if (err) {
-          return apiHelpers.renderAPIError(res, err);
+          throw err;
         }
 
         bcrypt.hash(password, salt, function(err, hash) {
           if (err) {
-            return apiHelpers.renderAPIError(res, err);
+            throw err;
           }
 
           var user = new models.User({
@@ -150,14 +150,14 @@ exports.config = function(app) {
             if (err) {
               if (err.code === 11000) {
                 return res.json({
-                  error: null,
+                  error: 'Please fix the error(s) below.',
                   validationErrors: {
                     username: 'That username is already taken.'
                   }
                 });
               }
 
-              return apiHelpers.renderAPIError(res, err);
+              throw err;
             }
 
             var session = new models.Session({
@@ -166,7 +166,7 @@ exports.config = function(app) {
 
             session.save(function(err) {
               if (err) {
-                return apiHelpers.renderAPIError(res, err);
+                throw err;
               }
 
               res.cookie('sessionId', session.id, {
@@ -176,7 +176,6 @@ exports.config = function(app) {
 
               return res.json({
                 error: null,
-                validationErrors: { },
                 user: apiHelpers.getUserData(user)
               });
             });
@@ -192,9 +191,9 @@ exports.config = function(app) {
 
     if (username === '') {
       return res.json({
-        error: null,
+        error: 'Please fix the error(s) below.',
         validationErrors: {
-          username: 'Please enter your username.'
+          username: 'Enter your username.'
         }
       });
     }
@@ -208,28 +207,27 @@ exports.config = function(app) {
 
     if (password === '') {
       return res.json({
-        error: null,
+        error: 'Please fix the error(s) below.',
         validationErrors: {
-          password: 'Please enter a password.'
+          password: 'Enter your password.'
         }
       });
     }
 
     models.User.findOne({ normalizedUsername: models.User.getNormalizedUsername(username) }, function(err, user) {
       if (err) {
-        return apiHelpers.renderAPIError(res, err);
+        throw err;
       }
 
       if (!user) {
         return res.json({
-          error: 'Incorrect username or password.',
-          validationErrors: { }
+          error: 'Incorrect username or password.'
         });
       }
 
       bcrypt.compare(password, user.passwordHash, function(err, result) {
         if (err) {
-          return apiHelpers.renderAPIError(res, err);
+          throw err;
         }
 
         if (result) {
@@ -239,7 +237,7 @@ exports.config = function(app) {
 
           session.save(function(err) {
             if (err) {
-              return apiHelpers.renderAPIError(res, err);
+              throw err;
             }
 
             res.cookie('sessionId', session.id, {
@@ -249,14 +247,12 @@ exports.config = function(app) {
 
             return res.json({
               error: null,
-              validationErrors: { },
               user: apiHelpers.getUserData(user)
             });
           });
         } else {
           return res.json({
-            error: 'Incorrect username or password.',
-            validationErrors: { }
+            error: 'Incorrect username or password.'
           });
         }
       });
@@ -267,7 +263,7 @@ exports.config = function(app) {
     if (req.signedCookies.sessionId) {
       models.Session.remove({ _id: req.signedCookies.sessionId }, function(err) {
         if (err) {
-          return apiHelpers.renderAPIError(res, err);
+          throw err;
         }
 
         res.clearCookie('sessionId');
@@ -291,7 +287,9 @@ exports.config = function(app) {
 
     if (oldUsername !== null) {
       if (!models.User.validateUsername(oldUsername)) {
-        return apiHelpers.renderAPIError(res, err);
+        return res.json({
+          error: 'Invalid old username.'
+        });
       }
 
       if (models.User.getNormalizedUsername(username) === models.User.getNormalizedUsername(oldUsername)) {
@@ -306,7 +304,7 @@ exports.config = function(app) {
         normalizedUsername: models.User.getNormalizedUsername(username)
     }, function(err, user) {
       if (err) {
-        return apiHelpers.renderAPIError(res, err);
+        throw err;
       }
 
       if (user) {
@@ -329,16 +327,16 @@ exports.config = function(app) {
 
       if (username === '') {
         return res.json({
-          error: null,
+          error: 'Please fix the error(s) below.',
           validationErrors: {
-            username: 'Please enter a username.'
+            username: 'Enter a username.'
           }
         });
       }
 
       if (!models.User.validateUsername(username)) {
         return res.json({
-          error: null,
+          error: 'Please fix the error(s) below.',
           validationErrors: {
             username: 'Invalid username.'
           }
@@ -352,14 +350,14 @@ exports.config = function(app) {
         if (err) {
           if (err.code === 11000) {
             return res.json({
-              error: null,
+              error: 'Please fix the error(s) below.',
               validationErrors: {
                 username: 'That username is already taken.'
               }
             });
           }
 
-          return apiHelpers.renderAPIError(res, err);
+          throw err;
         }
 
         return res.json({
@@ -378,25 +376,25 @@ exports.config = function(app) {
 
       if (newPassword === '') {
         return res.json({
-          error: null,
+          error: 'Please fix the error(s) below.',
           validationErrors: {
-            newPassword: 'Please enter your new password.'
+            newPassword: 'Enter your new password.'
           }
         });
       }
 
       if (verifyPassword === '') {
         return res.json({
-          error: null,
+          error: 'Please fix the error(s) below.',
           validationErrors: {
-            verifyPassword: 'Please re-enter your new password here.'
+            verifyPassword: 'Re-enter your new password here.'
           }
         });
       }
 
       if (newPassword !== verifyPassword) {
         return res.json({
-          error: null,
+          error: 'Please fix the error(s) below.',
           validationErrors: {
             verifyPassword: 'Your passwords do not match.'
           }
@@ -405,27 +403,27 @@ exports.config = function(app) {
 
       if (oldPassword === '') {
         return res.json({
-          error: null,
+          error: 'Please fix the error(s) below.',
           validationErrors: {
-            oldPassword: 'Please enter your old password.'
+            oldPassword: 'Enter your old password.'
           }
         });
       }
 
       bcrypt.compare(oldPassword, user.passwordHash, function(err, result) {
         if (err) {
-          return apiHelpers.renderAPIError(res, err);
+          throw err;
         }
 
         if (result) {
           bcrypt.genSalt(constants.bcryptRounds, function(err, salt) {
             if (err) {
-              return apiHelpers.renderAPIError(res, err);
+              throw err;
             }
 
             bcrypt.hash(newPassword, salt, function(err, hash) {
               if (err) {
-                return apiHelpers.renderAPIError(res, err);
+                throw err;
               }
 
               user.passwordHash = hash;
@@ -433,7 +431,7 @@ exports.config = function(app) {
 
               user.save(function(err) {
                 if (err) {
-                  return apiHelpers.renderAPIError(res, err);
+                  throw err;
                 }
 
                 return res.json({
@@ -445,7 +443,7 @@ exports.config = function(app) {
           });
         } else {
           return res.json({
-            error: null,
+            error: 'Please fix the error(s) below.',
             validationErrors: {
               oldPassword: 'Incorrect password.'
             }
@@ -459,17 +457,16 @@ exports.config = function(app) {
     exports.auth(req, res, function(session, user) {
       session.remove(function(err) {
         if (err) {
-          return apiHelpers.renderAPIError(res, err);
+          throw err;
         }
 
         user.remove(function(err) {
           if (err) {
-            return apiHelpers.renderAPIError(res, err);
+            throw err;
           }
 
           return res.json({
-            error: null,
-            user: null
+            error: null
           });
         });
       });

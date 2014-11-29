@@ -12,11 +12,15 @@ var Input = React.createClass({
   getInitialState: function() {
     return {
       error: null,
-      id: 'input-' + Math.random().toString(36).slice(2)
+      id: 'input-' + Math.random().toString(36).slice(2),
+      form: null
     };
   },
   focus: function() {
     return $(this.refs.input.getDOMNode()).focus();
+  },
+  setForm: function(form) {
+    this.setState({ form: form });
   },
   setError: function(error) {
     this.setState({ error: error });
@@ -36,6 +40,10 @@ var Input = React.createClass({
 
       if (component.props.onChange) {
         component.props.onChange(event);
+      }
+
+      if (component.state.form) {
+        component.state.form.clearFormError();
       }
     };
 

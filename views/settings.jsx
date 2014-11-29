@@ -72,6 +72,11 @@ var Settings = React.createClass({
       window.bodyComponent.setState({ loggedInUser: data.user });
     };
 
+    var onCompleteDeleteAccount = function(data) {
+      component.close();
+      window.bodyComponent.setState({ loggedInUser: null });
+    };
+
     var oldUsername = null;
     if (component.props.loggedInUser) {
       oldUsername = component.props.loggedInUser.username;
@@ -131,7 +136,7 @@ var Settings = React.createClass({
                   component.setState({ confirmingAccountDeletion: !component.state.confirmingAccountDeletion });
                 } }>here</TextButton>.
               </p>
-              <Form ref="deleteAccountForm" submitText="Confirm account deletion" endpoint="/api/delete_account" disabled={ !component.state.confirmingAccountDeletion } onSuccess={ onComplete } fields={ [] } />
+              <Form ref="deleteAccountForm" submitText="Confirm account deletion" endpoint="/api/delete_account" disabled={ !component.state.confirmingAccountDeletion } onSuccess={ onCompleteDeleteAccount } fields={ [] } />
             </div>
             <div className="span4">
               <Form ref="passwordForm" submitText="Save password" endpoint="/api/update_password" onSuccess={ onComplete } fields={[

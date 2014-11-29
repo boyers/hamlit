@@ -53,8 +53,9 @@ var Body = React.createClass({
     });
   },
   componentDidUpdate: function(prevProps, prevState) {
-    if (!this.state.loggedInUser) {
-      this.refs.settings.closeImmediately();
+    // After logging in or out, do a virtual page reload.
+    if ((this.state.loggedInUser === null) !== (prevState.loggedInUser === null)) {
+      this.loadRelativeURL(this.state.relativeURL);
     }
   },
   render: function() {

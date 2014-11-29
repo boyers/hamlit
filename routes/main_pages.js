@@ -25,17 +25,17 @@ exports.config = function(app) {
 
     var normalizedUsername = models.User.getNormalizedUsername(UnnormalizedUsername);
 
-    var url = '/' + normalizedUsername;
-    if (url !== req.url) {
-      return res.redirect(url);
-    }
-
     models.User.findOne({ normalizedUsername: normalizedUsername }, function(err, user) {
       if (err) {
         throw err;
       }
 
       if (user) {
+        var url = '/' + user.normalizedUsername;
+        if (url !== req.url) {
+          return res.redirect(url);
+        }
+
         if (process.env.NODE_ENV === 'production') {
           res.sendFile(path.resolve(__dirname, '..', 'public/assets/application.html'));
         } else {
