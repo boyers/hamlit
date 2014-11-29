@@ -3,7 +3,7 @@ var Body = React.createClass({
     return {
       relativeURL: null,
       user: null,
-      waitingForInitialData: true
+      waitingForAuthData: true
     };
   },
   loadRelativeURL: function(URL) {
@@ -19,7 +19,7 @@ var Body = React.createClass({
   setUserData: function(user) {
     this.setState({
       user: user,
-      waitingForInitialData: false
+      waitingForAuthData: false
     });
   },
   componentDidUpdate: function(prevProps, prevState) {
@@ -32,12 +32,10 @@ var Body = React.createClass({
 
     var view = null;
     if (this.state.relativeURL !== null) {
-      if (/^\/$/.test(this.state.relativeURL)) {
+      if (this.state.relativeURL === '/') {
         view = React.createElement(ViewIndex, { });
-      } else if (/^\/about$/.test(this.state.relativeURL)) {
-        view = React.createElement(ViewAbout, { });
       } else {
-        view = React.createElement(View404, { });
+        view = React.createElement(User, { username: this.state.relativeURL.slice(1) });
       }
     }
 
@@ -50,7 +48,7 @@ var Body = React.createClass({
             clickSignUp={ function() { component.refs.logIn.close(function() { component.refs.signUp.toggle(); }); } }
             clickSettings={ function() { component.refs.settings.toggle(); } }
             user={ component.state.user }
-            waitingForInitialData={ component.state.waitingForInitialData }
+            waitingForAuthData={ component.state.waitingForAuthData }
           />
           <LogIn ref="logIn" />
           <SignUp ref="signUp" />

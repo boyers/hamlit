@@ -10,7 +10,7 @@ var models = _.merge(
 
 exports.auth = function(req, res, callback) {
   if (req.signedCookies.sessionId) {
-    models.Session.where({ _id: req.signedCookies.sessionId }).findOne(function(err, session) {
+    models.Session.findOne({ _id: req.signedCookies.sessionId }, function(err, session) {
       if (err) {
         return apiHelpers.renderAPIError(res, err);
       }
@@ -26,7 +26,7 @@ exports.auth = function(req, res, callback) {
       session.save();
 
       if (session.data.userId) {
-        models.User.where({ _id: session.data.userId }).findOne(function(err, user) {
+        models.User.findOne({ _id: session.data.userId }, function(err, user) {
           if (err) {
             return apiHelpers.renderAPIError(res, err);
           }
@@ -215,7 +215,7 @@ exports.config = function(app) {
       });
     }
 
-    models.User.where({ normalizedUsername: models.User.getNormalizedUsername(username) }).findOne(function(err, user) {
+    models.User.findOne({ normalizedUsername: models.User.getNormalizedUsername(username) }, function(err, user) {
       if (err) {
         return apiHelpers.renderAPIError(res, err);
       }
