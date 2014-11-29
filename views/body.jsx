@@ -38,13 +38,26 @@ var Body = React.createClass({
       });
     }
   },
-  // Note: This is only so application.js can log the user in on initial page load.
-  // Just use window.bodyComponent.setState(...) otherwise.
-  setUserData: function(user) {
-    this.setState({
-      loggedInUser: user,
-      waitingForAuthData: false
-    });
+  componentDidMount: function() {
+    var component = this;
+    if (/sessionId/.test(document.cookie)) {
+      window.api('/api/get_user_data', { }, function(data) {
+        component.setState({
+          loggedInUser: data.user,
+          waitingForAuthData: false
+        });
+      }, function() {
+        component.setState({
+          loggedInUser: null,
+          waitingForAuthData: false
+        });
+      });
+    } else {
+      component.setState({
+        loggedInUser: null,
+        waitingForAuthData: false
+      });
+    }
   },
   componentDidUpdate: function(prevProps, prevState) {
     // After logging in or out, do a virtual page reload.
