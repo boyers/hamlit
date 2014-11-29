@@ -42,7 +42,8 @@ var userSchema = mongoose.Schema({
   normalizedUsername: {
     type: String,
     unique: true,
-    required: true
+    required: true,
+    index: true
   },
   passwordHash: {
     type: String,
@@ -63,8 +64,6 @@ var userSchema = mongoose.Schema({
 userSchema.path('normalizedUsername').validate(function(value) {
   return (validateUsername(this.username) && value === getNormalizedUsername(this.username));
 });
-
-userSchema.index({ normalizedUsername: 1 });
 
 userSchema.statics.validateUsername = validateUsername;
 userSchema.statics.getNormalizedUsername = getNormalizedUsername;

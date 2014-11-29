@@ -21,6 +21,9 @@ exports.auth = function(req, res, callback) {
         });
       }
 
+      session.lastAccessed = Date.now();
+      session.save();
+
       if (session.data.userId) {
         models.User.where({ _id: session.data.userId }).findOne(function(err, user) {
           if (err) {
@@ -167,7 +170,7 @@ exports.config = function(app) {
 
               res.cookie('sessionId', session.id, {
                 signed: true,
-                maxAge: constants.sessionTTL * 1000
+                maxAge: constants.sessionTTL
               });
 
               return res.json({
@@ -240,7 +243,7 @@ exports.config = function(app) {
 
             res.cookie('sessionId', session.id, {
               signed: true,
-              maxAge: constants.sessionTTL * 1000
+              maxAge: constants.sessionTTL
             });
 
             return res.json({
