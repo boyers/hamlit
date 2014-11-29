@@ -1,7 +1,8 @@
 var _ = require('lodash');
 var bcrypt = require('bcrypt');
 var constants = require('../constants');
-var helpers = require('./helpers');
+var helpers = require('../helpers');
+var apiHelpers = require('./api_helpers');
 var models = _.merge(
   require('../models/session.js'),
   require('../models/user.js')
@@ -11,7 +12,7 @@ exports.auth = function(req, res, callback) {
   if (req.signedCookies.sessionId) {
     models.Session.where({ _id: req.signedCookies.sessionId }).findOne(function(err, session) {
       if (err) {
-        return helpers.renderAPIError(res, err);
+        return apiHelpers.renderAPIError(res, err);
       }
 
       if (!session) {
@@ -27,7 +28,7 @@ exports.auth = function(req, res, callback) {
       if (session.data.userId) {
         models.User.where({ _id: session.data.userId }).findOne(function(err, user) {
           if (err) {
-            return helpers.renderAPIError(res, err);
+            return apiHelpers.renderAPIError(res, err);
           }
 
           if (!user) {
@@ -57,13 +58,13 @@ exports.config = function(app) {
     exports.auth(req, res, function(session, user) {
       return res.json({
         error: null,
-        user: helpers.getUserData(user)
+        user: apiHelpers.getUserData(user)
       });
     });
   });
 
   app.post('/api/sign_up', function(req, res) {
-    var username = req.body.username.replace(/^\s+|\s+$/g, '');
+    var username = helpers.strip(req.body.username);
     var password = req.body.password;
     var verifyPassword = req.body.verifyPassword;
 
@@ -89,7 +90,7 @@ exports.config = function(app) {
         normalizedUsername: models.User.getNormalizedUsername(username)
       }, function(err, existingUser) {
       if (err) {
-        return helpers.renderAPIError(res, err);
+        return apiHelpers.renderAPIError(res, err);
       }
 
       if (existingUser) {
@@ -130,12 +131,12 @@ exports.config = function(app) {
 
       bcrypt.genSalt(constants.bcryptRounds, function(err, salt) {
         if (err) {
-          return helpers.renderAPIError(res, err);
+          return apiHelpers.renderAPIError(res, err);
         }
 
         bcrypt.hash(password, salt, function(err, hash) {
           if (err) {
-            return helpers.renderAPIError(res, err);
+            return apiHelpers.renderAPIError(res, err);
           }
 
           var user = new models.User({
@@ -156,7 +157,7 @@ exports.config = function(app) {
                 });
               }
 
-              return helpers.renderAPIError(res, err);
+              return apiHelpers.renderAPIError(res, err);
             }
 
             var session = new models.Session({
@@ -165,7 +166,7 @@ exports.config = function(app) {
 
             session.save(function(err) {
               if (err) {
-                return helpers.renderAPIError(res, err);
+                return apiHelpers.renderAPIError(res, err);
               }
 
               res.cookie('sessionId', session.id, {
@@ -176,7 +177,7 @@ exports.config = function(app) {
               return res.json({
                 error: null,
                 validationErrors: { },
-                user: helpers.getUserData(user)
+                user: apiHelpers.getUserData(user)
               });
             });
           });
@@ -186,7 +187,7 @@ exports.config = function(app) {
   });
 
   app.post('/api/log_in', function(req, res) {
-    var username = req.body.username.replace(/^\s+|\s+$/g, '');
+    var username = helpers.strip(req.body.username);
     var password = req.body.password;
 
     if (username === '') {
@@ -216,7 +217,7 @@ exports.config = function(app) {
 
     models.User.where({ normalizedUsername: models.User.getNormalizedUsername(username) }).findOne(function(err, user) {
       if (err) {
-        return helpers.renderAPIError(res, err);
+        return apiHelpers.renderAPIError(res, err);
       }
 
       if (!user) {
@@ -228,7 +229,7 @@ exports.config = function(app) {
 
       bcrypt.compare(password, user.passwordHash, function(err, result) {
         if (err) {
-          return helpers.renderAPIError(res, err);
+          return apiHelpers.renderAPIError(res, err);
         }
 
         if (result) {
@@ -238,7 +239,7 @@ exports.config = function(app) {
 
           session.save(function(err) {
             if (err) {
-              return helpers.renderAPIError(res, err);
+              return apiHelpers.renderAPIError(res, err);
             }
 
             res.cookie('sessionId', session.id, {
@@ -249,7 +250,7 @@ exports.config = function(app) {
             return res.json({
               error: null,
               validationErrors: { },
-              user: helpers.getUserData(user)
+              user: apiHelpers.getUserData(user)
             });
           });
         } else {
@@ -266,7 +267,7 @@ exports.config = function(app) {
     if (req.signedCookies.sessionId) {
       models.Session.remove({ _id: req.signedCookies.sessionId }, function(err) {
         if (err) {
-          return helpers.renderAPIError(res, err);
+          return apiHelpers.renderAPIError(res, err);
         }
 
         res.clearCookie('sessionId');
@@ -278,8 +279,8 @@ exports.config = function(app) {
   });
 
   app.post('/api/check_username', function(req, res) {
-    var username = req.body.username.replace(/^\s+|\s+$/g, '');
-    var oldUsername = req.body.oldUsername ? req.body.oldUsername.replace(/^\s+|\s+$/g, '') : null;
+    var username = helpers.strip(req.body.username);
+    var oldUsername = req.body.oldUsername ? helpers.strip(req.body.oldUsername) : null;
 
     if (!models.User.validateUsername(username)) {
       return res.json({
@@ -290,7 +291,7 @@ exports.config = function(app) {
 
     if (oldUsername !== null) {
       if (!models.User.validateUsername(oldUsername)) {
-        return helpers.renderAPIError(res, err);
+        return apiHelpers.renderAPIError(res, err);
       }
 
       if (models.User.getNormalizedUsername(username) === models.User.getNormalizedUsername(oldUsername)) {
@@ -305,7 +306,7 @@ exports.config = function(app) {
         normalizedUsername: models.User.getNormalizedUsername(username)
     }, function(err, user) {
       if (err) {
-        return helpers.renderAPIError(res, err);
+        return apiHelpers.renderAPIError(res, err);
       }
 
       if (user) {
@@ -324,7 +325,7 @@ exports.config = function(app) {
 
   app.post('/api/update_username', function(req, res) {
     exports.auth(req, res, function(session, user) {
-      var username = req.body.username.replace(/^\s+|\s+$/g, '');
+      var username = helpers.strip(req.body.username);
 
       if (username === '') {
         return res.json({
@@ -358,12 +359,12 @@ exports.config = function(app) {
             });
           }
 
-          return helpers.renderAPIError(res, err);
+          return apiHelpers.renderAPIError(res, err);
         }
 
         return res.json({
           error: null,
-          user: helpers.getUserData(user)
+          user: apiHelpers.getUserData(user)
         });
       });
     });
@@ -413,18 +414,18 @@ exports.config = function(app) {
 
       bcrypt.compare(oldPassword, user.passwordHash, function(err, result) {
         if (err) {
-          return helpers.renderAPIError(res, err);
+          return apiHelpers.renderAPIError(res, err);
         }
 
         if (result) {
           bcrypt.genSalt(constants.bcryptRounds, function(err, salt) {
             if (err) {
-              return helpers.renderAPIError(res, err);
+              return apiHelpers.renderAPIError(res, err);
             }
 
             bcrypt.hash(newPassword, salt, function(err, hash) {
               if (err) {
-                return helpers.renderAPIError(res, err);
+                return apiHelpers.renderAPIError(res, err);
               }
 
               user.passwordHash = hash;
@@ -432,12 +433,12 @@ exports.config = function(app) {
 
               user.save(function(err) {
                 if (err) {
-                  return helpers.renderAPIError(res, err);
+                  return apiHelpers.renderAPIError(res, err);
                 }
 
                 return res.json({
                   error: null,
-                  user: helpers.getUserData(user)
+                  user: apiHelpers.getUserData(user)
                 });
               });
             });
@@ -458,12 +459,12 @@ exports.config = function(app) {
     exports.auth(req, res, function(session, user) {
       session.remove(function(err) {
         if (err) {
-          return helpers.renderAPIError(res, err);
+          return apiHelpers.renderAPIError(res, err);
         }
 
         user.remove(function(err) {
           if (err) {
-            return helpers.renderAPIError(res, err);
+            return apiHelpers.renderAPIError(res, err);
           }
 
           return res.json({

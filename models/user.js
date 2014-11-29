@@ -1,30 +1,16 @@
-var _ = require('lodash');
 var mongoose = require('mongoose');
 var xregexp = require('xregexp');
-var unorm = require('unorm');
+var helpers = require('../helpers');
 
 var validateUsername = function(value) {
-  // Make sure value is a string.
-  if (!_.isString(value)) {
-    return false;
-  }
-
-  // encodeURIComponent (used by getNormalizedUsername) fails if
-  // value contains an unpaired surrogate.
-  try {
-    encodeURIComponent(value);
-  } catch (e) {
-    return false;
-  }
-
-  // Make sure the value is normalized to NFC.
-  if (value !== unorm.nfc(value)) {
+  // Make sure value is a valid, normalized string.
+  if (!helpers.isNormalizedString(value)) {
     return false;
   }
 
   // Allow 1-32 letters, digits, underscores, dashes, and spaces.
-  // Leading and trailing spaces are not allowed.
-  return xregexp.XRegExp('^([0-9_\-]|\\p{L})(([0-9_ \-]|\\p{L}){0,30}([0-9_\-]|\\p{L}))?$').test(value);
+  // Leading and trailing whitespace is not allowed.
+  return xregexp.XRegExp('^([0-9_\\-\\p{L}])(([0-9_\\-\\p{L}\\s]){0,30}([0-9_\\-\\p{L}]))?$').test(value);
 };
 
 // Note: This function will fail if username is not valid.
@@ -33,7 +19,7 @@ var getNormalizedUsername = function(username) {
     throw 'Invalid username.';
   }
 
-  return encodeURIComponent(username.toLowerCase().replace(/\s+/g, ''));
+  return encodeURIComponent(helpers.strip(username.toLowerCase()));
 };
 
 var userSchema = mongoose.Schema({
