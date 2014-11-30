@@ -33,6 +33,8 @@ var Composer = React.createClass({
       if (component.state.form) {
         component.state.form.clearFormError();
       }
+
+      return true;
     });
   },
   setForm: function(form) {
