@@ -1,4 +1,7 @@
 var Feed = React.createClass({
+  propTypes: {
+    loggedInUser: React.PropTypes.object
+  },
   getInitialState: function() {
     return {
       loading: true,
@@ -15,7 +18,7 @@ var Feed = React.createClass({
   },
   componentDidUpdate: function(prevProps, prevState) {
     var component = this;
-    if (prevProps.username !== component.props.username) {
+    if (!_.isEqual(prevProps, component.props)) {
       window.api('/api/home', { }, function(data) {
         component.setState({ loading: false, broken: false });
       }, function() {

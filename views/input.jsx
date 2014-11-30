@@ -3,7 +3,6 @@ var Input = React.createClass({
     id: React.PropTypes.string.isRequired,
     label: React.PropTypes.string.isRequired,
     btw: React.PropTypes.string,
-    name: React.PropTypes.string,
     type: React.PropTypes.string,
     defaultValue: React.PropTypes.string,
     placeholder: React.PropTypes.string,
@@ -13,14 +12,18 @@ var Input = React.createClass({
     return {
       error: null,
       id: 'input-' + Math.random().toString(36).slice(2),
-      form: null
+      form: null,
+      disabled: false
     };
+  },
+  setForm: function(form) {
+    this.setState({ form: form });
   },
   focus: function() {
     return $(this.refs.input.getDOMNode()).focus();
   },
-  setForm: function(form) {
-    this.setState({ form: form });
+  setDisabled: function(disabled) {
+    this.setState({ disabled: disabled });
   },
   setError: function(error) {
     this.setState({ error: error });
@@ -51,7 +54,7 @@ var Input = React.createClass({
       <div className="form-row">
         <label htmlFor={ component.state.id }>{ component.props.label }</label>
         <div className="form-btw" dangerouslySetInnerHTML={{ __html: component.props.btw }} />
-        <input id={ component.state.id } name={ component.props.name || component.props.id } ref="input" type={ component.props.type || 'text' } defaultValue={ component.props.defaultValue } onChange={ onChange } placeholder={ component.props.placeholder || '' } />
+        <input id={ component.state.id } ref="input" type={ component.props.type || 'text' } defaultValue={ component.props.defaultValue } onChange={ onChange } placeholder={ component.props.placeholder || '' } disabled={ component.state.disabled } />
         { (component.state.error === null) ? null : <div className="form-error" dangerouslySetInnerHTML={{ __html: component.state.error }} /> }
       </div>
     );

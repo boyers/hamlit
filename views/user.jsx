@@ -1,32 +1,33 @@
 var User = React.createClass({
   propTypes: {
-    username: React.PropTypes.string.isRequired
+    loggedInUser: React.PropTypes.object,
+    normalizedUsername: React.PropTypes.string.isRequired
   },
   getInitialState: function() {
     return {
       loading: true,
-      nonexistent: false
+      user: null
     };
   },
   componentDidMount: function() {
     var component = this;
     window.api('/api/user', {
-      username: this.props.username
+      username: this.props.normalizedUsername
     }, function(data) {
-      component.setState({ loading: false, nonexistent: false });
+      component.setState({ loading: false, user: data.user });
     }, function() {
-      component.setState({ loading: false, nonexistent: true });
+      component.setState({ loading: false, user: null });
     });
   },
   componentDidUpdate: function(prevProps, prevState) {
     var component = this;
-    if (prevProps.username !== component.props.username) {
+    if (!_.isEqual(prevProps, component.props)) {
       window.api('/api/user', {
-        username: this.props.username
+        username: this.props.normalizedUsername
       }, function(data) {
-        component.setState({ loading: false, nonexistent: false });
+        component.setState({ loading: false, user: data.user });
       }, function() {
-        component.setState({ loading: false, nonexistent: true });
+        component.setState({ loading: false, user: null });
       });
     }
   },
@@ -39,9 +40,31 @@ var User = React.createClass({
       return <Spinner />;
     }
 
+    var userToUser = null;
+    if (this.props.loggedInUser && this.state.user) {
+      userToUser = (
+        <div>
+          <div>
+            <Username
+              username={ this.props.loggedInUser.username }
+              normalizedUsername={ this.props.loggedInUser.normalizedUsername }
+            />
+            <i className="fa fa-caret-right user-to-user" />
+            <Username
+              username={ this.state.user.username }
+              normalizedUsername={ this.state.user.normalizedUsername }
+            />
+          </div>
+          <Form ref="form" submitText="Submit" endpoint="/api/submit" onSuccess={ function() { } } fields={[
+            <Composer id="content" label="Got something to contribute?" placeholder="piggy" defaultValue="testing default value" btw="Hello world" />
+          ]} />
+        </div>
+      );
+    }
+
     return (
       <div>
-        { this.props.username }
+        { userToUser }
       </div>
     );
   }

@@ -6,10 +6,6 @@ $placeholder-color-focus: #ccc;
 $input-height: 40px;
 
 form {
-  textarea, input {
-    background-image: none;  // Hacky fix for Firefox mobile.
-  }
-
   .form-error {
     margin-top: 6px;
     color: #cd4545;
@@ -46,7 +42,7 @@ form {
       font-size: 0.9em;
     }
 
-    textarea, input[type=text], input[type=password] {
+    input[type=text], input[type=password], .composer {
       display: block;
       width: 100%;
       margin-top: 6px;
@@ -105,7 +101,7 @@ form {
         }
       }
 
-      &:disabled {
+      &:disabled, &.disabled {
         background-color: #f4f4f4;
         color: #666;
 
@@ -127,15 +123,21 @@ form {
           color: #f4f4f4;
         }
       }
-
-      &:-webkit-autofill {
-        -webkit-box-shadow: 0 0 0 1000px #fcfcfc inset;
-      }
     }
 
-    textarea {
-      resize: none;
-      height: 112px;
+    .composer {
+      min-height: 80px;
+
+      &:empty {
+        &:before {
+          content: attr(data-placeholder);
+          color: $placeholder-color;
+        }
+
+        &:focus:before {
+          color: $placeholder-color-focus;
+        }
+      }
     }
 
     input[type=submit] {
@@ -180,13 +182,31 @@ form {
 }
 
 .blue form {
-  textarea, input[type=text], input[type=password] {
+  input[type=text], input[type=password], .composer {
     border-color: #d5e8f2;
     color: #59666c;
 
-    &:disabled {
+    &:disabled, &.disabled {
       background-color: #f3fbff;
       color: #999;
+
+      &::-webkit-input-placeholder {
+        color: #f3fbff;
+        opacity: 1;
+      }
+
+      &:-moz-placeholder {
+        color: #f3fbff;
+      }
+
+      &::-moz-placeholder {
+        color: #f3fbff;
+        opacity: 1;
+      }
+
+      &:-ms-input-placeholder {
+        color: #f3fbff;
+      }
     }
   }
 

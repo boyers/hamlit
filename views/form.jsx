@@ -19,16 +19,17 @@ var Form = React.createClass({
     return { submitted: false, error: null };
   },
   componentDidMount: function() {
-    if (this.props.disabled === true) {
-      $(this.getDOMNode()).find('textarea, input').prop('disabled', true);
-    }
     for (var i = 0; i < this.props.fields.length; i++) {
       var field = this.props.fields[i].props.id;
       this.refs[field].setForm(this);
+      this.refs[field].setDisabled(this.props.disabled === true);
     }
   },
   componentDidUpdate: function(prevProps, prevState) {
-    $(this.getDOMNode()).find('textarea, input').prop('disabled', this.props.disabled === true || this.state.submitted);
+    for (var i = 0; i < this.props.fields.length; i++) {
+      var field = this.props.fields[i].props.id;
+      this.refs[field].setDisabled(this.props.disabled === true || this.state.submitted);
+    }
   },
   focus: function() {
     var firstFieldRef = this.props.fields[0].props.id;
@@ -55,7 +56,10 @@ var Form = React.createClass({
     event.stopPropagation();
 
     if (!component.state.submitted) {
-      $(component.getDOMNode()).find('textarea, input').prop('disabled', true);
+      for (i = 0; i < component.props.fields.length; i++) {
+        field = component.props.fields[i].props.id;
+        component.refs[field].setDisabled(true);
+      }
       component.setState({ submitted: true, error: null });
 
       var data = {};
@@ -67,9 +71,12 @@ var Form = React.createClass({
       }
 
       var always = function() {
-        $(component.refs.submit.getDOMNode()).blur();
-        $(component.getDOMNode()).find('textarea, input').prop('disabled', false);
+        for (var j = 0; j < component.props.fields.length; j++) {
+          var myField = component.props.fields[j].props.id;
+          component.refs[myField].setDisabled(component.props.disabled === true);
+        }
         component.setState({ submitted: false });
+        $(component.refs.submit.getDOMNode()).blur();
       };
 
       window.api(component.props.endpoint, data, function(data) {

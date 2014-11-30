@@ -47,9 +47,14 @@ var Body = React.createClass({
     var view = <Spinner />;
     if (this.state.relativeURL !== null) {
       if (this.state.relativeURL === '/') {
-        view = React.createElement(Feed, { });
+        view = React.createElement(Feed, {
+          loggedInUser: this.state.loggedInUser
+        });
       } else {
-        view = React.createElement(User, { username: decodeURIComponent(this.state.relativeURL.slice(1)) });
+        view = React.createElement(User, {
+          loggedInUser: this.state.loggedInUser,
+          normalizedUsername: decodeURIComponent(this.state.relativeURL.slice(1))
+        });
       }
     }
 
@@ -69,8 +74,12 @@ var Body = React.createClass({
           <Settings ref="settings" loggedInUser={ component.state.loggedInUser } />
         </div>
         <div className="container clearfix">
-          <div className="vertical-margin">
-            { view }
+          <div className="row">
+            <div className="span8 offset2">
+              <div className="vertical-margin">
+                { view }
+              </div>
+            </div>
           </div>
         </div>
       </div>
