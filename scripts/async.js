@@ -8,7 +8,9 @@
 // DOM nodes. To prevent that, we cancel the tasks
 // when we delete relevant DOM nodes.
 
-window.asyncTasks = { };
+// Can't use an object here, because only strings can be
+// used as keys of objects.
+window.asyncTasks = [];
 
 // Register an async task.
 // canceler is a callback that cancels the async operation.
@@ -21,19 +23,30 @@ window.registerAsyncTask = function(timeout, group, canceler) {
   if (_.isFunction(group)) {
     group = group();
   }
+
   var guid = window.createGUID();
-  if (!window.asyncTasks[group]) {
-    window.asyncTasks[group] = { };
+
+  var i = _.findIndex(window.asyncTasks, function(pair) {
+    return pair[0] === group;
+  });
+  if (i === -1) {
+    i = window.asyncTasks.push([group, { }]) - 1;
   }
-  window.asyncTasks[group][guid] = canceler;
+
+  window.asyncTasks[i][1][guid] = canceler;
+
   setTimeout(function() {
-    if (window.asyncTasks[group]) {
-      if (window.asyncTasks[group][guid]) {
-        window.asyncTasks[group][guid]();
-        delete window.asyncTasks[group][guid];
+    var j = _.findIndex(window.asyncTasks, function(pair) {
+      return pair[0] === group;
+    });
+
+    if (j !== -1) {
+      if (window.asyncTasks[j][1][guid]) {
+        window.asyncTasks[j][1][guid]();
+        delete window.asyncTasks[j][1][guid];
       }
-      if (_.isEmpty(window.asyncTasks[group])) {
-        delete window.asyncTasks[group];
+      if (_.isEmpty(window.asyncTasks[j][1])) {
+        window.asyncTasks.splice(j, 1);
       }
     }
   }, timeout + 100);
@@ -45,10 +58,15 @@ window.stopAsyncTasks = function(group) {
   if (_.isFunction(group)) {
     group = group();
   }
-  if (window.asyncTasks[group]) {
-    _.forIn(window.asyncTasks[group], function(canceler) {
+
+  var i = _.findIndex(window.asyncTasks, function(pair) {
+    return pair[0] === group;
+  });
+
+  if (i !== -1) {
+    _.forIn(window.asyncTasks[i][1], function(canceler) {
       canceler();
     });
-    delete window.asyncTasks[group];
+    window.asyncTasks.splice(i, 1);
   }
 };
