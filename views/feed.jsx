@@ -39,8 +39,14 @@ var Feed = React.createClass({
     }
 
     return (
-      <div>
-        Feed
+      <div className="container clearfix">
+        <div className="row">
+          <div className="span8 offset2">
+            <div className="vertical-margin">
+              Feed
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

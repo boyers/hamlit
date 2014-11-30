@@ -20,12 +20,18 @@ var SignUp = React.createClass({
           callback();
         }
       });
+      window.registerAsyncTask(window.constants.animationDuration, component, function() {
+        $(component.getDOMNode()).stop();
+      });
     } else {
       $(component.getDOMNode()).stop().slideDown(window.constants.animationDuration, function() {
         component.refs.form.focus();
         if (callback) {
           callback();
         }
+      });
+      window.registerAsyncTask(window.constants.animationDuration, component, function() {
+        $(component.getDOMNode()).stop();
       });
     }
     component.setState({ isOpen: !component.state.isOpen });
@@ -42,6 +48,9 @@ var SignUp = React.createClass({
       done();
     } else {
       $(component.getDOMNode()).stop().slideUp(window.constants.animationDuration, done);
+      window.registerAsyncTask(window.constants.animationDuration, component, function() {
+        $(component.getDOMNode()).stop();
+      });
     }
     component.setState({ isOpen: false });
   },

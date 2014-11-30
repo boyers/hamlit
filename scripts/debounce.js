@@ -12,8 +12,9 @@ window.debounce = function(asyncGroup, callback, delay) {
       callback.apply(this, args);
       timeout = null;
     }), delay);
+    var timeoutCapture = timeout;
     window.registerAsyncTask(delay, asyncGroup, function() {
-      clearInterval(timeout);
+      clearInterval(timeoutCapture);
     });
   };
 };
