@@ -15,6 +15,7 @@ var User = React.createClass({
       username: this.props.normalizedUsername
     }, function(data) {
       component.setState({ loading: false, user: data.user });
+      component.refs.form.focus();
     }, function() {
       component.setState({ loading: false, user: null });
     });
@@ -26,6 +27,7 @@ var User = React.createClass({
         username: this.props.normalizedUsername
       }, function(data) {
         component.setState({ loading: false, user: data.user });
+        component.refs.form.focus();
       }, function() {
         component.setState({ loading: false, user: null });
       });
