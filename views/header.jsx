@@ -19,18 +19,17 @@ var Header = React.createClass({
         component.setState({
           loggingOut: true
         });
-        $.ajax({
-          type: 'POST',
-          url: '/api/log_out',
-          data: { }
-        }).always(function() {
-          component.setState({
-            loggingOut: false
-          });
-        }).done(function(data) {
+        window.api('/api/log_out', { }, function(data) {
           if (data.error === null) {
             window.bodyComponent.setState({ loggedInUser: null });
           }
+          component.setState({
+            loggingOut: false
+          });
+        }, function(data) {
+          component.setState({
+            loggingOut: false
+          });
         });
       }
     };
