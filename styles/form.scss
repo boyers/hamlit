@@ -130,7 +130,8 @@ form {
     }
 
     .composer {
-      min-height: 80px;
+      min-height: 42px;
+      cursor: text;
 
       &:empty {
         &:before {

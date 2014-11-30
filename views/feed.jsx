@@ -32,7 +32,7 @@ var Feed = React.createClass({
     }
 
     if (this.state.loading) {
-      return <Spinner />;
+      return <div className="big-spinner-container"><Spinner /></div>;
     }
 
     return (

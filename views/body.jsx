@@ -73,15 +73,7 @@ var Body = React.createClass({
           <SignUp ref="signUp" />
           <Settings ref="settings" loggedInUser={ component.state.loggedInUser } />
         </div>
-        <div className="container clearfix">
-          <div className="row">
-            <div className="span8 offset2">
-              <div className="vertical-margin">
-                { view }
-              </div>
-            </div>
-          </div>
-        </div>
+        { view }
       </div>
     );
   }

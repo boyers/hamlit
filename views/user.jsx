@@ -34,32 +34,40 @@ var User = React.createClass({
     }
   },
   render: function() {
-    if (this.state.nonexistent) {
-      return <Error404 />;
+    if (this.state.loading) {
+      return <div className="big-spinner-container"><Spinner /></div>;
     }
 
-    if (this.state.loading) {
-      return <Spinner />;
+    if (!this.state.user) {
+      return <Error404 />;
     }
 
     var userToUser = null;
     if (this.props.loggedInUser && this.state.user) {
       userToUser = (
-        <div>
-          <div>
-            <Username
-              username={ this.props.loggedInUser.username }
-              normalizedUsername={ this.props.loggedInUser.normalizedUsername }
-            />
-            <i className="fa fa-caret-right user-to-user" />
-            <Username
-              username={ this.state.user.username }
-              normalizedUsername={ this.state.user.normalizedUsername }
-            />
+        <div className="blue">
+          <div className="container clearfix">
+            <div className="row">
+              <div className="span8 offset2">
+                <div className="vertical-margin">
+                  <div>
+                    <Username
+                      username={ this.props.loggedInUser.username }
+                      normalizedUsername={ this.props.loggedInUser.normalizedUsername }
+                    />
+                    <i className="fa fa-caret-right user-to-user" />
+                    <Username
+                      username={ this.state.user.username }
+                      normalizedUsername={ this.state.user.normalizedUsername }
+                    />
+                  </div>
+                  <Form ref="form" submitText="Post" endpoint="/api/submit" onSuccess={ function() { } } fields={[
+                    <Composer id="content" placeholder="Hello, world!" />
+                  ]} />
+                </div>
+              </div>
+            </div>
           </div>
-          <Form ref="form" submitText="Post" endpoint="/api/submit" onSuccess={ function() { } } fields={[
-            <Composer id="content" placeholder="Hello, world!" />
-          ]} />
         </div>
       );
     }
