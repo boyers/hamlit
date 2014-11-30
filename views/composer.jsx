@@ -1,7 +1,7 @@
 var Composer = React.createClass({
   propTypes: {
     id: React.PropTypes.string.isRequired,
-    label: React.PropTypes.string.isRequired,
+    label: React.PropTypes.string,
     btw: React.PropTypes.string,
     defaultValue: React.PropTypes.string,
     placeholder: React.PropTypes.string,
@@ -17,7 +17,9 @@ var Composer = React.createClass({
   },
   componentDidMount: function() {
     var component = this;
-    $(component.refs.placeholder.getDOMNode()).click(component.focus);
+    if (component.refs.label) {
+      $(component.refs.label.getDOMNode()).click(component.focus);
+    }
     $(component.refs.input.getDOMNode()).text(component.props.defaultValue);
     $(component.refs.input.getDOMNode()).change(function(event) {
       component.setState({ error: null });
@@ -149,10 +151,10 @@ var Composer = React.createClass({
   render: function() {
     return (
       <div className="form-row">
-        <label ref="placeholder">{ this.props.label }</label>
+        { this.props.label ? <label ref="label">{ this.props.label }</label> : null }
         <div className="form-btw" dangerouslySetInnerHTML={{ __html: this.props.btw }} />
         <div className={ 'composer' + (this.state.disabled ? ' disabled' : '') } contentEditable={ !this.state.disabled } id={ this.state.id } ref="input" data-placeholder={ this.props.placeholder || '' } />
-        { (this.state.error === null) ? null : <div className="form-error" dangerouslySetInnerHTML={{ __html: this.state.error }} /> }
+        { this.state.error ? <div className="form-error" dangerouslySetInnerHTML={{ __html: this.state.error }} /> : null }
       </div>
     );
   }

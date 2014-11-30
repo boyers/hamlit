@@ -57,8 +57,8 @@ var User = React.createClass({
               normalizedUsername={ this.state.user.normalizedUsername }
             />
           </div>
-          <Form ref="form" submitText="Submit" endpoint="/api/submit" onSuccess={ function() { } } fields={[
-            <Composer id="content" label="Got something to contribute?" placeholder="piggy" defaultValue="testing default value" btw="Hello world" />
+          <Form ref="form" submitText="Post" endpoint="/api/submit" onSuccess={ function() { } } fields={[
+            <Composer id="content" placeholder="Hello, world!" />
           ]} />
         </div>
       );

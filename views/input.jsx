@@ -1,7 +1,7 @@
 var Input = React.createClass({
   propTypes: {
     id: React.PropTypes.string.isRequired,
-    label: React.PropTypes.string.isRequired,
+    label: React.PropTypes.string,
     btw: React.PropTypes.string,
     type: React.PropTypes.string,
     defaultValue: React.PropTypes.string,
@@ -52,10 +52,10 @@ var Input = React.createClass({
 
     return (
       <div className="form-row">
-        <label htmlFor={ component.state.id }>{ component.props.label }</label>
+        { component.props.label ? <label htmlFor={ component.state.id }>{ component.props.label }</label> : null }
         <div className="form-btw" dangerouslySetInnerHTML={{ __html: component.props.btw }} />
         <input id={ component.state.id } ref="input" type={ component.props.type || 'text' } defaultValue={ component.props.defaultValue } onChange={ onChange } placeholder={ component.props.placeholder || '' } disabled={ component.state.disabled } />
-        { (component.state.error === null) ? null : <div className="form-error" dangerouslySetInnerHTML={{ __html: component.state.error }} /> }
+        { component.state.error ? <div className="form-error" dangerouslySetInnerHTML={{ __html: component.state.error }} /> : null }
       </div>
     );
   }
