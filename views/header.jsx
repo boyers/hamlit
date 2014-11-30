@@ -12,7 +12,7 @@ var Header = React.createClass({
     };
   },
   componentWillUnmount: function() {
-    window.stopAsyncTasks(this);
+    window.stopAsyncTasks(this.getDOMNode());
   },
   render: function() {
     var component = this;
@@ -22,7 +22,7 @@ var Header = React.createClass({
         component.setState({
           loggingOut: true
         });
-        window.api('/api/log_out', component, { }, function(data) {
+        window.api('/api/log_out', component.getDOMNode(), { }, function(data) {
           if (data.error === null) {
             window.bodyComponent.setState({ loggedInUser: null });
           }

@@ -15,8 +15,12 @@ window.asyncTasks = { };
 // It should be idempotent. To prevent memory leaks, async
 // tasks are automatically killed after timeout milliseconds.
 // group is any hashable value, which is used to identify
-// related async tasks with each other.
+// related async tasks with each other. It can also be a function;
+// in that case, the function will be called to get the group.
 window.registerAsyncTask = function(timeout, group, canceler) {
+  if (_.isFunction(group)) {
+    group = group();
+  }
   var guid = window.createGUID();
   if (!window.asyncTasks[group]) {
     window.asyncTasks[group] = { };
@@ -38,6 +42,9 @@ window.registerAsyncTask = function(timeout, group, canceler) {
 // Cancels all async tasks for a group. Call this when
 // deleting DOM nodes that are referenced by these tasks.
 window.stopAsyncTasks = function(group) {
+  if (_.isFunction(group)) {
+    group = group();
+  }
   if (window.asyncTasks[group]) {
     _.forIn(window.asyncTasks[group], function(canceler) {
       canceler();

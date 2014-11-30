@@ -10,19 +10,19 @@ var Feed = React.createClass({
   },
   componentDidMount: function() {
     var component = this;
-    window.api('/api/home', component, { }, function(data) {
+    window.api('/api/home', component.getDOMNode(), { }, function(data) {
       component.setState({ loading: false, broken: false });
     }, function() {
       component.setState({ loading: false, broken: true });
     });
   },
   componentWillUnmount: function() {
-    window.stopAsyncTasks(this);
+    window.stopAsyncTasks(this.getDOMNode());
   },
   componentDidUpdate: function(prevProps, prevState) {
     var component = this;
     if (!_.isEqual(prevProps, component.props)) {
-      window.api('/api/home', component, { }, function(data) {
+      window.api('/api/home', component.getDOMNode(), { }, function(data) {
         component.setState({ loading: false, broken: false });
       }, function() {
         component.setState({ loading: false, broken: true });

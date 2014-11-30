@@ -11,7 +11,7 @@ var User = React.createClass({
   },
   componentDidMount: function() {
     var component = this;
-    window.api('/api/user', component, {
+    window.api('/api/user', component.getDOMNode(), {
       username: this.props.normalizedUsername
     }, function(data) {
       component.setState({ loading: false, user: data.user });
@@ -21,12 +21,12 @@ var User = React.createClass({
     });
   },
   componentWillUnmount: function() {
-    window.stopAsyncTasks(this);
+    window.stopAsyncTasks(this.getDOMNode());
   },
   componentDidUpdate: function(prevProps, prevState) {
     var component = this;
     if (!_.isEqual(prevProps, component.props)) {
-      window.api('/api/user', component, {
+      window.api('/api/user', component.getDOMNode(), {
         username: this.props.normalizedUsername
       }, function(data) {
         component.setState({ loading: false, user: data.user });

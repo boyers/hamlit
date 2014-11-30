@@ -9,7 +9,7 @@ var SignUp = React.createClass({
     $(this.getDOMNode()).hide();
   },
   componentWillUnmount: function() {
-    window.stopAsyncTasks(this);
+    window.stopAsyncTasks(this.getDOMNode());
   },
   toggle: function(callback) {
     var component = this;
@@ -20,7 +20,7 @@ var SignUp = React.createClass({
           callback();
         }
       });
-      window.registerAsyncTask(window.constants.animationDuration, component, function() {
+      window.registerAsyncTask(window.constants.animationDuration, component.getDOMNode(), function() {
         $(component.getDOMNode()).stop();
       });
     } else {
@@ -30,7 +30,7 @@ var SignUp = React.createClass({
           callback();
         }
       });
-      window.registerAsyncTask(window.constants.animationDuration, component, function() {
+      window.registerAsyncTask(window.constants.animationDuration, component.getDOMNode(), function() {
         $(component.getDOMNode()).stop();
       });
     }
@@ -48,7 +48,7 @@ var SignUp = React.createClass({
       done();
     } else {
       $(component.getDOMNode()).stop().slideUp(window.constants.animationDuration, done);
-      window.registerAsyncTask(window.constants.animationDuration, component, function() {
+      window.registerAsyncTask(window.constants.animationDuration, component.getDOMNode(), function() {
         $(component.getDOMNode()).stop();
       });
     }
@@ -66,13 +66,13 @@ var SignUp = React.createClass({
       window.bodyComponent.setState({ loggedInUser: data.user });
     };
 
-    var onChangeUsername = debounce(component, function(event) {
+    var onChangeUsername = debounce(component.getDOMNode, function(event) {
       var username = component.refs.form.refs.username.getValue();
 
       if (/^\s*$/.test(username)) {
         component.setState({ usernameBtw: 'You can always change it later.' });
       } else {
-        window.api('/api/check_username', component, {
+        window.api('/api/check_username', component.getDOMNode(), {
           username: username
         }, function(data) {
           component.setState({ usernameBtw: 'Looks good!' });

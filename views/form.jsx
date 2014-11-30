@@ -26,7 +26,7 @@ var Form = React.createClass({
     }
   },
   componentWillUnmount: function() {
-    window.stopAsyncTasks(this);
+    window.stopAsyncTasks(this.getDOMNode());
   },
   componentDidUpdate: function(prevProps, prevState) {
     for (var i = 0; i < this.props.fields.length; i++) {
@@ -42,7 +42,7 @@ var Form = React.createClass({
     this.setState({ error: null });
   },
   reset: function() {
-    window.stopAsyncTasks(this);
+    window.stopAsyncTasks(this.getDOMNode());
     for (i = 0; i < this.props.fields.length; i++) {
       var field = this.props.fields[i].props.id;
       this.refs[field].reset();
@@ -83,7 +83,7 @@ var Form = React.createClass({
         $(component.refs.submit.getDOMNode()).blur();
       };
 
-      window.api(component.props.endpoint, component, data, function(data) {
+      window.api(component.props.endpoint, component.getDOMNode(), data, function(data) {
         always();
         component.reset();
         if (component.props.onSuccess) {

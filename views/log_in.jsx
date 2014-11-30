@@ -7,7 +7,9 @@ var LogIn = React.createClass({
   componentDidMount: function() {
     $(this.getDOMNode()).hide();
   },
-  componentWillUnmount: window.stopAsyncTasks,
+  componentWillUnmount: function() {
+    window.stopAsyncTasks(this.getDOMNode());
+  },
   toggle: function(callback) {
     var component = this;
     if (component.state.isOpen) {
@@ -17,7 +19,7 @@ var LogIn = React.createClass({
           callback();
         }
       });
-      window.registerAsyncTask(window.constants.animationDuration, component, function() {
+      window.registerAsyncTask(window.constants.animationDuration, component.getDOMNode(), function() {
         $(component.getDOMNode()).stop();
       });
     } else {
@@ -27,7 +29,7 @@ var LogIn = React.createClass({
           callback();
         }
       });
-      window.registerAsyncTask(window.constants.animationDuration, component, function() {
+      window.registerAsyncTask(window.constants.animationDuration, component.getDOMNode(), function() {
         $(component.getDOMNode()).stop();
       });
     }
@@ -45,7 +47,7 @@ var LogIn = React.createClass({
       done();
     } else {
       $(component.getDOMNode()).stop().slideUp(window.constants.animationDuration, done);
-      window.registerAsyncTask(window.constants.animationDuration, component, function() {
+      window.registerAsyncTask(window.constants.animationDuration, component.getDOMNode(), function() {
         $(component.getDOMNode()).stop();
       });
     }

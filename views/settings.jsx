@@ -13,7 +13,7 @@ var Settings = React.createClass({
     $(this.getDOMNode()).hide();
   },
   componentWillUnmount: function() {
-    window.stopAsyncTasks(this);
+    window.stopAsyncTasks(this.getDOMNode());
   },
   reset: function() {
     this.refs.usernameForm.reset();
@@ -32,7 +32,7 @@ var Settings = React.createClass({
           callback();
         }
       });
-      window.registerAsyncTask(window.constants.animationDuration, component, function() {
+      window.registerAsyncTask(window.constants.animationDuration, component.getDOMNode(), function() {
         $(component.getDOMNode()).stop();
       });
     } else {
@@ -42,7 +42,7 @@ var Settings = React.createClass({
           callback();
         }
       });
-      window.registerAsyncTask(window.constants.animationDuration, component, function() {
+      window.registerAsyncTask(window.constants.animationDuration, component.getDOMNode(), function() {
         $(component.getDOMNode()).stop();
       });
     }
@@ -60,7 +60,7 @@ var Settings = React.createClass({
       done();
     } else {
       $(component.getDOMNode()).stop().slideUp(window.constants.animationDuration, done);
-      window.registerAsyncTask(window.constants.animationDuration, component, function() {
+      window.registerAsyncTask(window.constants.animationDuration, component.getDOMNode(), function() {
         $(component.getDOMNode()).stop();
       });
     }
@@ -94,13 +94,13 @@ var Settings = React.createClass({
       oldUsername = component.props.loggedInUser.username;
     }
 
-    var onChangeUsername = debounce(component, function(event) {
+    var onChangeUsername = debounce(component.getDOMNode, function(event) {
       var username = component.refs.usernameForm.refs.username.getValue();
 
       if (/^\s*$/.test(username)) {
         component.setState({ usernameBtw: 'You can always change it later.' });
       } else {
-        window.api('/api/check_username', component, {
+        window.api('/api/check_username', component.getDOMNode(), {
           username: username,
           oldUsername: oldUsername
         }, function(data) {
