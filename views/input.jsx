@@ -11,7 +11,7 @@ var Input = React.createClass({
   getInitialState: function() {
     return {
       error: null,
-      id: 'input-' + Math.random().toString(36).slice(2),
+      id: 'input-' + window.createGUID(),
       form: null,
       disabled: false
     };

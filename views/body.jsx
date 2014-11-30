@@ -17,7 +17,7 @@ var Body = React.createClass({
   componentDidMount: function() {
     var component = this;
     if (/sessionId/.test(document.cookie)) {
-      window.api('/api/get_user_data', { }, function(data) {
+      window.api('/api/get_user_data', component, { }, function(data) {
         component.setState({
           loggedInUser: data.user,
           waitingForAuthData: false
@@ -34,6 +34,9 @@ var Body = React.createClass({
         waitingForAuthData: false
       });
     }
+  },
+  componentWillUnmount: function() {
+    window.stopAsyncTasks(this);
   },
   componentDidUpdate: function(prevProps, prevState) {
     // After logging in or out, do a virtual page reload.

@@ -7,6 +7,7 @@ var LogIn = React.createClass({
   componentDidMount: function() {
     $(this.getDOMNode()).hide();
   },
+  componentWillUnmount: window.stopAsyncTasks,
   toggle: function(callback) {
     var component = this;
     if (component.state.isOpen) {

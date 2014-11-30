@@ -8,6 +8,9 @@ var SignUp = React.createClass({
   componentDidMount: function() {
     $(this.getDOMNode()).hide();
   },
+  componentWillUnmount: function() {
+    window.stopAsyncTasks(this);
+  },
   toggle: function(callback) {
     var component = this;
     if (component.state.isOpen) {
@@ -54,13 +57,13 @@ var SignUp = React.createClass({
       window.bodyComponent.setState({ loggedInUser: data.user });
     };
 
-    var onChangeUsername = debounce(function(event) {
+    var onChangeUsername = debounce(component, function(event) {
       var username = component.refs.form.refs.username.getValue();
 
       if (/^\s*$/.test(username)) {
         component.setState({ usernameBtw: 'You can always change it later.' });
       } else {
-        window.api('/api/check_username', {
+        window.api('/api/check_username', component, {
           username: username
         }, function(data) {
           component.setState({ usernameBtw: 'Looks good!' });

@@ -1,4 +1,4 @@
-window.debounce = function(callback, delay) {
+window.debounce = function(asyncGroup, callback, delay) {
   if (typeof delay === 'undefined') {
     delay = 300;
   }
@@ -12,5 +12,8 @@ window.debounce = function(callback, delay) {
       callback.apply(this, args);
       timeout = null;
     }), delay);
+    window.registerAsyncTask(delay, asyncGroup, function() {
+      clearInterval(timeout);
+    });
   };
 };

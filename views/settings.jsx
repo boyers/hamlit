@@ -12,6 +12,9 @@ var Settings = React.createClass({
   componentDidMount: function() {
     $(this.getDOMNode()).hide();
   },
+  componentWillUnmount: function() {
+    window.stopAsyncTasks(this);
+  },
   reset: function() {
     this.refs.usernameForm.reset();
     this.refs.passwordForm.reset();
@@ -82,13 +85,13 @@ var Settings = React.createClass({
       oldUsername = component.props.loggedInUser.username;
     }
 
-    var onChangeUsername = debounce(function(event) {
+    var onChangeUsername = debounce(component, function(event) {
       var username = component.refs.usernameForm.refs.username.getValue();
 
       if (/^\s*$/.test(username)) {
         component.setState({ usernameBtw: 'You can always change it later.' });
       } else {
-        window.api('/api/check_username', {
+        window.api('/api/check_username', component, {
           username: username,
           oldUsername: oldUsername
         }, function(data) {

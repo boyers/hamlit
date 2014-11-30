@@ -25,6 +25,9 @@ var Form = React.createClass({
       this.refs[field].setDisabled(this.props.disabled === true);
     }
   },
+  componentWillUnmount: function() {
+    window.stopAsyncTasks(this);
+  },
   componentDidUpdate: function(prevProps, prevState) {
     for (var i = 0; i < this.props.fields.length; i++) {
       var field = this.props.fields[i].props.id;
@@ -79,7 +82,7 @@ var Form = React.createClass({
         $(component.refs.submit.getDOMNode()).blur();
       };
 
-      window.api(component.props.endpoint, data, function(data) {
+      window.api(component.props.endpoint, component, data, function(data) {
         always();
         component.reset();
         if (component.props.onSuccess) {

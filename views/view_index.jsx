@@ -1,8 +1,0 @@
-var ViewIndex = React.createClass({
-  render: function() {
-    return (
-      <div>
-      </div>
-    );
-  }
-});

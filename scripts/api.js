@@ -1,5 +1,6 @@
-window.api = function(endpoint, data, success, error) {
-  $.ajax({
+window.api = function(endpoint, asyncGroup, data, success, error) {
+  var cancelled = false;
+  var xhr = $.ajax({
     type: 'POST',
     url: endpoint,
     data: data
@@ -18,8 +19,12 @@ window.api = function(endpoint, data, success, error) {
       }
     }
   }).fail(function() {
-    if (error) {
+    if (error && !cancelled) {
       error(null);
     }
+  });
+  window.registerAsyncTask(60000, asyncGroup, function() {
+    cancelled = true;
+    xhr.abort();
   });
 };

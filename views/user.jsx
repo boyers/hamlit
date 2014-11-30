@@ -11,7 +11,7 @@ var User = React.createClass({
   },
   componentDidMount: function() {
     var component = this;
-    window.api('/api/user', {
+    window.api('/api/user', component, {
       username: this.props.normalizedUsername
     }, function(data) {
       component.setState({ loading: false, user: data.user });
@@ -20,10 +20,13 @@ var User = React.createClass({
       component.setState({ loading: false, user: null });
     });
   },
+  componentWillUnmount: function() {
+    window.stopAsyncTasks(this);
+  },
   componentDidUpdate: function(prevProps, prevState) {
     var component = this;
     if (!_.isEqual(prevProps, component.props)) {
-      window.api('/api/user', {
+      window.api('/api/user', component, {
         username: this.props.normalizedUsername
       }, function(data) {
         component.setState({ loading: false, user: data.user });

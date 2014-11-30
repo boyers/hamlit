@@ -1,6 +1,6 @@
 var Spinner = React.createClass({
   componentDidMount: function() {
-    $(this.getDOMNode()).hide().fadeIn(window.constants.animationDuration);
+    $(this.getDOMNode()).hide().fadeIn(500);
   },
   render: function() {
     return (

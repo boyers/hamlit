@@ -11,6 +11,9 @@ var Header = React.createClass({
       loggingOut: false
     };
   },
+  componentWillUnmount: function() {
+    window.stopAsyncTasks(this);
+  },
   render: function() {
     var component = this;
 
@@ -19,7 +22,7 @@ var Header = React.createClass({
         component.setState({
           loggingOut: true
         });
-        window.api('/api/log_out', { }, function(data) {
+        window.api('/api/log_out', component, { }, function(data) {
           if (data.error === null) {
             window.bodyComponent.setState({ loggedInUser: null });
           }
