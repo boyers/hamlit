@@ -42,11 +42,12 @@ var Form = React.createClass({
     this.setState({ error: null });
   },
   reset: function() {
+    window.stopAsyncTasks(this);
     for (i = 0; i < this.props.fields.length; i++) {
       var field = this.props.fields[i].props.id;
       this.refs[field].reset();
     }
-    this.setState({ error: null });
+    this.setState({ submitted: false, error: null });
   },
   submit: function(event) {
     if (this.props.disabled === true) {
@@ -137,7 +138,7 @@ var Form = React.createClass({
         { (this.state.error) ? <div className="form-error">{ this.state.error }</div> : null }
         { fields }
         <div className="form-row form-row-submit align-right">
-          <input type="submit" ref="submit" value={ this.props.submitText } />
+          <input type="submit" ref="submit" value={ this.props.submitText } disabled={ this.props.disabled === true || this.state.submitted } />
         </div>
       </form>
     );

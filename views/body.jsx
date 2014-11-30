@@ -47,7 +47,7 @@ var Body = React.createClass({
   render: function() {
     var component = this;
 
-    var view = <Spinner />;
+    var view = <div className="big-spinner-container"><Spinner /></div>;
     if (this.state.relativeURL !== null) {
       if (this.state.relativeURL === '/') {
         view = React.createElement(Feed, {
