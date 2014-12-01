@@ -13,7 +13,7 @@ var output = template({
 });
 fs.writeFile('./public/assets/application.html', output, function(err) {
   if (err) {
-    console.error(err);
+    console.error(err.stack);
     process.exit(1);
   }
 

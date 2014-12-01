@@ -41,7 +41,7 @@ exports.connect = function(done) {
   });
 
   mongoose.connection.on('error', function(err) {
-    console.error('Database error:', err);
+    console.error('Database error:', err.stack);
   });
 
   mongoose.connection.on('fullsetup', function() {

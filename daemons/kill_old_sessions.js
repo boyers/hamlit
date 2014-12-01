@@ -11,7 +11,7 @@ function killOldSessions() {
     lastAccessed: { $lte: killDate }
   }, function(err, count) {
     if (err) {
-      console.error(err);
+      console.error(err.stack);
     } else {
       console.log('Killed ' + String(count) + ' sessions.');
     }

@@ -6,7 +6,7 @@ exports.getUserData = function(user) {
 };
 
 exports.internalError = function(res, err) {
-  console.error(err);
+  console.error(err.stack);
   return res.json({
     error: 'Oops, something went wrong.'
   });
