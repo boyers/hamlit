@@ -11,14 +11,40 @@ exports.connect = function(done) {
 
   var mongoose = require('mongoose');
   mongoose.connect(database_url);
-  var db = mongoose.connection;
 
-  db.on('error', function(err) {
-    console.error('Database error:', err);
-    process.exit(1);
+  mongoose.connection.on('connecting', function() {
+    console.log('Database connecting...');
   });
 
-  db.once('open', function() {
+  mongoose.connection.on('connected', function() {
+    console.log('Database connected.');
+  });
+
+  mongoose.connection.once('open', function() {
     done();
+  });
+
+  mongoose.connection.on('disconnecting', function() {
+    console.log('Database disconnecting...');
+  });
+
+  mongoose.connection.on('disconnected', function() {
+    console.log('Database disconnected.');
+  });
+
+  mongoose.connection.on('close', function() {
+    console.log('Database closed.');
+  });
+
+  mongoose.connection.on('reconnected', function() {
+    console.log('Database reconnected.');
+  });
+
+  mongoose.connection.on('error', function(err) {
+    console.error('Database error:', err);
+  });
+
+  mongoose.connection.on('fullsetup', function() {
+    console.log('Database connected to all replicas.');
   });
 };

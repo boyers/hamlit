@@ -3,6 +3,7 @@ var unorm = require('unorm');
 var assets = require('./assets');
 var models = require('../models/user');
 var helpers = require('../helpers');
+var errorPages = require('./error_pages');
 
 exports.config = function(app) {
   app.get('/', function(req, res) {
@@ -21,7 +22,7 @@ exports.config = function(app) {
 
     models.User.findOne({ normalizedUsername: username }, function(err, user) {
       if (err) {
-        throw err;
+        return errorPages.render500(req, res, err);
       }
 
       if (user) {

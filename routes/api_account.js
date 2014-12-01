@@ -12,7 +12,7 @@ exports.auth = function(req, res, callback) {
   if (req.signedCookies.sessionId) {
     models.Session.findOne({ _id: req.signedCookies.sessionId }, function(err, session) {
       if (err) {
-        throw err;
+        return apiHelpers.internalError(res, err);
       }
 
       if (!session) {
@@ -28,7 +28,7 @@ exports.auth = function(req, res, callback) {
       if (session.data.userId) {
         models.User.findOne({ _id: session.data.userId }, function(err, user) {
           if (err) {
-            throw err;
+            return apiHelpers.internalError(res, err);
           }
 
           if (!user) {
@@ -90,7 +90,7 @@ exports.config = function(app) {
         normalizedUsername: models.User.getNormalizedUsername(username)
       }, function(err, existingUser) {
       if (err) {
-        throw err;
+        return apiHelpers.internalError(res, err);
       }
 
       if (existingUser) {
@@ -131,12 +131,12 @@ exports.config = function(app) {
 
       bcrypt.genSalt(constants.bcryptRounds, function(err, salt) {
         if (err) {
-          throw err;
+          return apiHelpers.internalError(res, err);
         }
 
         bcrypt.hash(password, salt, function(err, hash) {
           if (err) {
-            throw err;
+            return apiHelpers.internalError(res, err);
           }
 
           var user = new models.User({
@@ -157,7 +157,7 @@ exports.config = function(app) {
                 });
               }
 
-              throw err;
+              return apiHelpers.internalError(res, err);
             }
 
             var session = new models.Session({
@@ -166,7 +166,7 @@ exports.config = function(app) {
 
             session.save(function(err) {
               if (err) {
-                throw err;
+                return apiHelpers.internalError(res, err);
               }
 
               res.cookie('sessionId', session.id, {
@@ -216,7 +216,7 @@ exports.config = function(app) {
 
     models.User.findOne({ normalizedUsername: models.User.getNormalizedUsername(username) }, function(err, user) {
       if (err) {
-        throw err;
+        return apiHelpers.internalError(res, err);
       }
 
       if (!user) {
@@ -227,7 +227,7 @@ exports.config = function(app) {
 
       bcrypt.compare(password, user.passwordHash, function(err, result) {
         if (err) {
-          throw err;
+          return apiHelpers.internalError(res, err);
         }
 
         if (result) {
@@ -237,7 +237,7 @@ exports.config = function(app) {
 
           session.save(function(err) {
             if (err) {
-              throw err;
+              return apiHelpers.internalError(res, err);
             }
 
             res.cookie('sessionId', session.id, {
@@ -263,7 +263,7 @@ exports.config = function(app) {
     if (req.signedCookies.sessionId) {
       models.Session.remove({ _id: req.signedCookies.sessionId }, function(err) {
         if (err) {
-          throw err;
+          return apiHelpers.internalError(res, err);
         }
 
         res.clearCookie('sessionId');
@@ -303,7 +303,7 @@ exports.config = function(app) {
         normalizedUsername: models.User.getNormalizedUsername(username)
     }, function(err, user) {
       if (err) {
-        throw err;
+        return apiHelpers.internalError(res, err);
       }
 
       if (user) {
@@ -355,7 +355,7 @@ exports.config = function(app) {
             });
           }
 
-          throw err;
+          return apiHelpers.internalError(res, err);
         }
 
         return res.json({
@@ -410,18 +410,18 @@ exports.config = function(app) {
 
       bcrypt.compare(oldPassword, user.passwordHash, function(err, result) {
         if (err) {
-          throw err;
+          return apiHelpers.internalError(res, err);
         }
 
         if (result) {
           bcrypt.genSalt(constants.bcryptRounds, function(err, salt) {
             if (err) {
-              throw err;
+              return apiHelpers.internalError(res, err);
             }
 
             bcrypt.hash(newPassword, salt, function(err, hash) {
               if (err) {
-                throw err;
+                return apiHelpers.internalError(res, err);
               }
 
               user.passwordHash = hash;
@@ -429,7 +429,7 @@ exports.config = function(app) {
 
               user.save(function(err) {
                 if (err) {
-                  throw err;
+                  return apiHelpers.internalError(res, err);
                 }
 
                 return res.json({
@@ -455,12 +455,12 @@ exports.config = function(app) {
     exports.auth(req, res, function(session, user) {
       session.remove(function(err) {
         if (err) {
-          throw err;
+          return apiHelpers.internalError(res, err);
         }
 
         user.remove(function(err) {
           if (err) {
-            throw err;
+            return apiHelpers.internalError(res, err);
           }
 
           return res.json({

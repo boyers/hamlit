@@ -22,7 +22,7 @@ exports.config = function(app) {
 
       models.User.findOne({ normalizedUsername: username }, function(err, user) {
         if (err) {
-          throw err;
+          return apiHelpers.internalError(res, err);
         }
 
         if (user) {
