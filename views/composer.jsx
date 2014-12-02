@@ -11,36 +11,22 @@ var Composer = React.createClass({
     return {
       error: null,
       id: 'input-' + window.createGUID(),
-      form: null,
       disabled: false
     };
   },
   componentDidMount: function() {
     var component = this;
-    if (component.refs.label) {
-      $(component.refs.label.getDOMNode()).click(component.focus);
+    if (this.refs.label) {
+      $(this.refs.label.getDOMNode()).click(this.focus);
     }
-    $(component.refs.input.getDOMNode()).text(component.props.defaultValue);
-    $(component.refs.input.getDOMNode()).change(function(event) {
+    $(this.refs.input.getDOMNode()).text(this.props.defaultValue);
+    $(this.refs.input.getDOMNode()).change(function(event) {
       component.setState({ error: null });
-
-      var range = component.getSelectionRange();
-      $(component.refs.input.getDOMNode()).text($(component.refs.input.getDOMNode()).text());
-      component.setSelectionRange(range.start, range.end);
 
       if (component.props.onChange) {
         component.props.onChange(event);
       }
-
-      if (component.state.form) {
-        component.state.form.clearFormError();
-      }
-
-      return true;
     });
-  },
-  setForm: function(form) {
-    this.setState({ form: form });
   },
   getSelectionRange: function() {
     var selection = rangy.getSelection();
@@ -132,11 +118,11 @@ var Composer = React.createClass({
     selection.removeAllRanges();
     selection.addRange(range);
   },
-  setDisabled: function(disabled) {
-    this.setState({ disabled: disabled });
-  },
   focus: function() {
     return $(this.refs.input.getDOMNode()).focus();
+  },
+  setDisabled: function(disabled) {
+    this.setState({ disabled: disabled });
   },
   setError: function(error) {
     this.setState({ error: error });

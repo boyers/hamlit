@@ -21,7 +21,6 @@ var Form = React.createClass({
   componentDidMount: function() {
     for (var i = 0; i < this.props.fields.length; i++) {
       var field = this.props.fields[i].props.id;
-      this.refs[field].setForm(this);
       this.refs[field].setDisabled(this.props.disabled === true);
     }
   },
@@ -37,9 +36,6 @@ var Form = React.createClass({
   focus: function() {
     var firstFieldRef = this.props.fields[0].props.id;
     this.refs[firstFieldRef].focus();
-  },
-  clearFormError: function() {
-    this.setState({ error: null });
   },
   reset: function() {
     window.stopAsyncTasks(this.getDOMNode());
@@ -59,18 +55,18 @@ var Form = React.createClass({
     event.preventDefault();
     event.stopPropagation();
 
-    if (!component.state.submitted) {
-      for (i = 0; i < component.props.fields.length; i++) {
-        field = component.props.fields[i].props.id;
-        component.refs[field].setDisabled(true);
+    if (!this.state.submitted) {
+      for (i = 0; i < this.props.fields.length; i++) {
+        field = this.props.fields[i].props.id;
+        this.refs[field].setDisabled(true);
       }
-      component.setState({ submitted: true, error: null });
+      this.setState({ submitted: true, error: null });
 
       var data = {};
-      for (i = 0; i < component.props.fields.length; i++) {
-        field = component.props.fields[i].props.id;
-        var name = component.refs[field].props.id;
-        var value = component.refs[field].getValue();
+      for (i = 0; i < this.props.fields.length; i++) {
+        field = this.props.fields[i].props.id;
+        var name = this.refs[field].props.id;
+        var value = this.refs[field].getValue();
         data[name] = value;
       }
 
@@ -83,7 +79,7 @@ var Form = React.createClass({
         $(component.refs.submit.getDOMNode()).blur();
       };
 
-      window.api(component.props.endpoint, component.getDOMNode(), data, function(data) {
+      window.api(this.props.endpoint, this.getDOMNode(), data, function(data) {
         always();
         component.reset();
         if (component.props.onSuccess) {
@@ -118,10 +114,21 @@ var Form = React.createClass({
     }
   },
   render: function() {
+    var component = this;
+
     var fields = _.map(this.props.fields, function(field) {
+      var onChange = field.props.onChange;
+
       return React.addons.cloneWithProps(field, {
         key: field.props.id,
-        ref: field.props.id
+        ref: field.props.id,
+        onChange: function(event) {
+          component.setState({ error: null });
+
+          if (onChange) {
+            onChange(event);
+          }
+        }
       });
     });
 

@@ -12,12 +12,8 @@ var Input = React.createClass({
     return {
       error: null,
       id: 'input-' + window.createGUID(),
-      form: null,
       disabled: false
     };
-  },
-  setForm: function(form) {
-    this.setState({ form: form });
   },
   focus: function() {
     return $(this.refs.input.getDOMNode()).focus();
@@ -44,18 +40,14 @@ var Input = React.createClass({
       if (component.props.onChange) {
         component.props.onChange(event);
       }
-
-      if (component.state.form) {
-        component.state.form.clearFormError();
-      }
     };
 
     return (
       <div className="form-row">
-        { component.props.label ? <label htmlFor={ component.state.id }>{ component.props.label }</label> : null }
-        <div className="form-btw" dangerouslySetInnerHTML={{ __html: component.props.btw }} />
-        <input id={ component.state.id } ref="input" type={ component.props.type || 'text' } defaultValue={ component.props.defaultValue } onChange={ onChange } placeholder={ component.props.placeholder || '' } disabled={ component.state.disabled } />
-        { component.state.error ? <div className="form-error" dangerouslySetInnerHTML={{ __html: component.state.error }} /> : null }
+        { this.props.label ? <label htmlFor={ this.state.id }>{ this.props.label }</label> : null }
+        <div className="form-btw" dangerouslySetInnerHTML={{ __html: this.props.btw }} />
+        <input id={ this.state.id } ref="input" type={ this.props.type || 'text' } defaultValue={ this.props.defaultValue } onChange={ onChange } placeholder={ this.props.placeholder || '' } disabled={ this.state.disabled } />
+        { this.state.error ? <div className="form-error" dangerouslySetInnerHTML={{ __html: this.state.error }} /> : null }
       </div>
     );
   }

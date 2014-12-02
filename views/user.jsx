@@ -11,7 +11,7 @@ var User = React.createClass({
   },
   componentDidMount: function() {
     var component = this;
-    window.api('/api/user', component.getDOMNode(), {
+    window.api('/api/user', this.getDOMNode(), {
       username: this.props.normalizedUsername
     }, function(data) {
       component.setState({ loading: false, user: data.user });
@@ -25,8 +25,8 @@ var User = React.createClass({
   },
   componentDidUpdate: function(prevProps, prevState) {
     var component = this;
-    if (!_.isEqual(prevProps, component.props)) {
-      window.api('/api/user', component.getDOMNode(), {
+    if (!_.isEqual(prevProps, this.props)) {
+      window.api('/api/user', this.getDOMNode(), {
         username: this.props.normalizedUsername
       }, function(data) {
         component.setState({ loading: false, user: data.user });
@@ -65,7 +65,7 @@ var User = React.createClass({
                     />
                   </div>
                   <Form ref="form" submitText="Post" endpoint="/api/submit" onSuccess={ function() { } } fields={[
-                    <Composer id="content" placeholder="Hello, world!" />
+                    <Composer id="content" placeholder="Got something to share?" />
                   ]} />
                 </div>
               </div>

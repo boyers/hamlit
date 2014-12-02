@@ -10,7 +10,7 @@ var Feed = React.createClass({
   },
   componentDidMount: function() {
     var component = this;
-    window.api('/api/home', component.getDOMNode(), { }, function(data) {
+    window.api('/api/home', this.getDOMNode(), { }, function(data) {
       component.setState({ loading: false, broken: false });
     }, function() {
       component.setState({ loading: false, broken: true });
@@ -21,8 +21,8 @@ var Feed = React.createClass({
   },
   componentDidUpdate: function(prevProps, prevState) {
     var component = this;
-    if (!_.isEqual(prevProps, component.props)) {
-      window.api('/api/home', component.getDOMNode(), { }, function(data) {
+    if (!_.isEqual(prevProps, this.props)) {
+      window.api('/api/home', this.getDOMNode(), { }, function(data) {
         component.setState({ loading: false, broken: false });
       }, function() {
         component.setState({ loading: false, broken: true });

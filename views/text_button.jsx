@@ -4,8 +4,8 @@ var TextButton = React.createClass({
   },
   render: function() {
     var component = this;
-    var className = component.props.className || '';
-    var other = _.omit(component.props, 'className', 'tabIndex', 'onSubmit', 'onClick', 'onKeyDown');
+    var className = this.props.className || '';
+    var other = _.omit(this.props, 'className', 'tabIndex', 'onSubmit', 'onClick', 'onKeyDown');
     var onClick = function(e) {
       component.props.onSubmit();
       e.preventDefault();

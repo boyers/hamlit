@@ -1,8 +1,8 @@
 var Spinner = React.createClass({
   componentDidMount: function() {
     var component = this;
-    $(component.getDOMNode()).hide().fadeIn(500);
-    window.registerAsyncTask(500, component.getDOMNode(), function() {
+    $(this.getDOMNode()).hide().fadeIn(500);
+    window.registerAsyncTask(500, this.getDOMNode(), function() {
       $(component.getDOMNode()).stop();
     });
   },

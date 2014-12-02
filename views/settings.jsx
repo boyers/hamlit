@@ -25,28 +25,28 @@ var Settings = React.createClass({
   },
   toggle: function(callback) {
     var component = this;
-    if (component.state.isOpen) {
-      $(component.getDOMNode()).stop().slideUp(window.constants.animationDuration, function() {
+    if (this.state.isOpen) {
+      $(this.getDOMNode()).stop().slideUp(window.constants.animationDuration, function() {
         component.reset();
         if (callback) {
           callback();
         }
       });
-      window.registerAsyncTask(window.constants.animationDuration, component.getDOMNode(), function() {
+      window.registerAsyncTask(window.constants.animationDuration, this.getDOMNode(), function() {
         $(component.getDOMNode()).stop();
       });
     } else {
-      $(component.getDOMNode()).stop().slideDown(window.constants.animationDuration, function() {
+      $(this.getDOMNode()).stop().slideDown(window.constants.animationDuration, function() {
         component.refs.usernameForm.focus();
         if (callback) {
           callback();
         }
       });
-      window.registerAsyncTask(window.constants.animationDuration, component.getDOMNode(), function() {
+      window.registerAsyncTask(window.constants.animationDuration, this.getDOMNode(), function() {
         $(component.getDOMNode()).stop();
       });
     }
-    component.setState({ isOpen: !component.state.isOpen });
+    this.setState({ isOpen: !this.state.isOpen });
   },
   close: function(callback) {
     var component = this;
@@ -56,15 +56,15 @@ var Settings = React.createClass({
         callback();
       }
     };
-    if ($(component.getDOMNode()).css('display').toLowerCase() === 'none') {
+    if ($(this.getDOMNode()).css('display').toLowerCase() === 'none') {
       done();
     } else {
-      $(component.getDOMNode()).stop().slideUp(window.constants.animationDuration, done);
-      window.registerAsyncTask(window.constants.animationDuration, component.getDOMNode(), function() {
+      $(this.getDOMNode()).stop().slideUp(window.constants.animationDuration, done);
+      window.registerAsyncTask(window.constants.animationDuration, this.getDOMNode(), function() {
         $(component.getDOMNode()).stop();
       });
     }
-    component.setState({ isOpen: false });
+    this.setState({ isOpen: false });
   },
   closeImmediately: function() {
     this.reset();
@@ -90,11 +90,11 @@ var Settings = React.createClass({
     };
 
     var oldUsername = null;
-    if (component.props.loggedInUser) {
-      oldUsername = component.props.loggedInUser.username;
+    if (this.props.loggedInUser) {
+      oldUsername = this.props.loggedInUser.username;
     }
 
-    var onChangeUsername = debounce(component.getDOMNode, function(event) {
+    var onChangeUsername = debounce(this.getDOMNode, function(event) {
       var username = component.refs.usernameForm.refs.username.getValue();
 
       if (/^\s*$/.test(username)) {
@@ -136,7 +136,7 @@ var Settings = React.createClass({
           <div className="row">
             <div className="span4 offset2">
               <Form ref="usernameForm" submitText="Save username" endpoint="/api/update_username" onSuccess={ onComplete } fields={[
-                <Input id="username" label="Username" onChange={ onChangeUsername } placeholder={ oldUsername } defaultValue={ oldUsername } btw={ component.state.usernameBtw } />
+                <Input id="username" label="Username" onChange={ onChangeUsername } placeholder={ oldUsername } defaultValue={ oldUsername } btw={ this.state.usernameBtw } />
               ]} />
               <hr />
               <p>
@@ -144,7 +144,7 @@ var Settings = React.createClass({
                   component.setState({ confirmingAccountDeletion: !component.state.confirmingAccountDeletion });
                 } }>here</TextButton>.
               </p>
-              <Form ref="deleteAccountForm" submitText="Confirm account deletion" endpoint="/api/delete_account" disabled={ !component.state.confirmingAccountDeletion } onSuccess={ onCompleteDeleteAccount } fields={ [] } />
+              <Form ref="deleteAccountForm" submitText="Confirm account deletion" endpoint="/api/delete_account" disabled={ !this.state.confirmingAccountDeletion } onSuccess={ onCompleteDeleteAccount } fields={ [] } />
             </div>
             <div className="span4">
               <Form ref="passwordForm" submitText="Save password" endpoint="/api/update_password" onSuccess={ onComplete } fields={[

@@ -39,22 +39,22 @@ var Header = React.createClass({
 
     var nav = <span className="nav-spinner"><Spinner /></span>;
     if (!this.props.waitingForAuthData) {
-      if (component.props.loggedInUser) {
+      if (this.props.loggedInUser) {
         nav = (
           <span>
             <Username
-              username={ component.props.loggedInUser.username }
-              normalizedUsername={ component.props.loggedInUser.normalizedUsername }
+              username={ this.props.loggedInUser.username }
+              normalizedUsername={ this.props.loggedInUser.normalizedUsername }
             />
-            <TextButton onSubmit={ component.props.clickSettings }>Settings</TextButton>
-            <TextButton className={ component.state.loggingOut ? 'disabled' : '' } onSubmit={ clickLogOut }>Log out</TextButton>
+            <TextButton onSubmit={ this.props.clickSettings }>Settings</TextButton>
+            <TextButton className={ this.state.loggingOut ? 'disabled' : '' } onSubmit={ clickLogOut }>Log out</TextButton>
           </span>
         );
       } else {
         nav = (
           <span>
-            <TextButton onSubmit={ component.props.clickLogIn }>Log in</TextButton>
-            <TextButton onSubmit={ component.props.clickSignUp }>Sign up</TextButton>
+            <TextButton onSubmit={ this.props.clickLogIn }>Log in</TextButton>
+            <TextButton onSubmit={ this.props.clickSignUp }>Sign up</TextButton>
           </span>
         );
       }

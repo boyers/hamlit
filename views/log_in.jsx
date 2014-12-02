@@ -12,28 +12,28 @@ var LogIn = React.createClass({
   },
   toggle: function(callback) {
     var component = this;
-    if (component.state.isOpen) {
-      $(component.getDOMNode()).stop().slideUp(window.constants.animationDuration, function() {
+    if (this.state.isOpen) {
+      $(this.getDOMNode()).stop().slideUp(window.constants.animationDuration, function() {
         component.refs.form.reset();
         if (callback) {
           callback();
         }
       });
-      window.registerAsyncTask(window.constants.animationDuration, component.getDOMNode(), function() {
+      window.registerAsyncTask(window.constants.animationDuration, this.getDOMNode(), function() {
         $(component.getDOMNode()).stop();
       });
     } else {
-      $(component.getDOMNode()).stop().slideDown(window.constants.animationDuration, function() {
+      $(this.getDOMNode()).stop().slideDown(window.constants.animationDuration, function() {
         component.refs.form.focus();
         if (callback) {
           callback();
         }
       });
-      window.registerAsyncTask(window.constants.animationDuration, component.getDOMNode(), function() {
+      window.registerAsyncTask(window.constants.animationDuration, this.getDOMNode(), function() {
         $(component.getDOMNode()).stop();
       });
     }
-    component.setState({ isOpen: !component.state.isOpen });
+    this.setState({ isOpen: !this.state.isOpen });
   },
   close: function(callback) {
     var component = this;
@@ -43,15 +43,15 @@ var LogIn = React.createClass({
         callback();
       }
     };
-    if ($(component.getDOMNode()).css('display').toLowerCase() === 'none') {
+    if ($(this.getDOMNode()).css('display').toLowerCase() === 'none') {
       done();
     } else {
-      $(component.getDOMNode()).stop().slideUp(window.constants.animationDuration, done);
-      window.registerAsyncTask(window.constants.animationDuration, component.getDOMNode(), function() {
+      $(this.getDOMNode()).stop().slideUp(window.constants.animationDuration, done);
+      window.registerAsyncTask(window.constants.animationDuration, this.getDOMNode(), function() {
         $(component.getDOMNode()).stop();
       });
     }
-    component.setState({ isOpen: false });
+    this.setState({ isOpen: false });
   },
   closeImmediately: function() {
     this.refs.form.reset();

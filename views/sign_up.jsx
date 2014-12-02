@@ -13,28 +13,28 @@ var SignUp = React.createClass({
   },
   toggle: function(callback) {
     var component = this;
-    if (component.state.isOpen) {
-      $(component.getDOMNode()).stop().slideUp(window.constants.animationDuration, function() {
+    if (this.state.isOpen) {
+      $(this.getDOMNode()).stop().slideUp(window.constants.animationDuration, function() {
         component.refs.form.reset();
         if (callback) {
           callback();
         }
       });
-      window.registerAsyncTask(window.constants.animationDuration, component.getDOMNode(), function() {
+      window.registerAsyncTask(window.constants.animationDuration, this.getDOMNode(), function() {
         $(component.getDOMNode()).stop();
       });
     } else {
-      $(component.getDOMNode()).stop().slideDown(window.constants.animationDuration, function() {
+      $(this.getDOMNode()).stop().slideDown(window.constants.animationDuration, function() {
         component.refs.form.focus();
         if (callback) {
           callback();
         }
       });
-      window.registerAsyncTask(window.constants.animationDuration, component.getDOMNode(), function() {
+      window.registerAsyncTask(window.constants.animationDuration, this.getDOMNode(), function() {
         $(component.getDOMNode()).stop();
       });
     }
-    component.setState({ isOpen: !component.state.isOpen });
+    this.setState({ isOpen: !this.state.isOpen });
   },
   close: function(callback) {
     var component = this;
@@ -44,15 +44,15 @@ var SignUp = React.createClass({
         callback();
       }
     };
-    if ($(component.getDOMNode()).css('display').toLowerCase() === 'none') {
+    if ($(this.getDOMNode()).css('display').toLowerCase() === 'none') {
       done();
     } else {
-      $(component.getDOMNode()).stop().slideUp(window.constants.animationDuration, done);
-      window.registerAsyncTask(window.constants.animationDuration, component.getDOMNode(), function() {
+      $(this.getDOMNode()).stop().slideUp(window.constants.animationDuration, done);
+      window.registerAsyncTask(window.constants.animationDuration, this.getDOMNode(), function() {
         $(component.getDOMNode()).stop();
       });
     }
-    component.setState({ isOpen: false });
+    this.setState({ isOpen: false });
   },
   closeImmediately: function() {
     this.refs.form.reset();
@@ -66,7 +66,7 @@ var SignUp = React.createClass({
       window.bodyComponent.setState({ loggedInUser: data.user });
     };
 
-    var onChangeUsername = debounce(component.getDOMNode, function(event) {
+    var onChangeUsername = debounce(this.getDOMNode, function(event) {
       var username = component.refs.form.refs.username.getValue();
 
       if (/^\s*$/.test(username)) {
@@ -97,7 +97,7 @@ var SignUp = React.createClass({
           <div className="row">
             <div className="span4 offset4">
               <Form ref="form" title="Welcome to Hamlit!" submitText="Sign up" endpoint="/api/sign_up" onSuccess={ onComplete } fields={[
-                <Input id="username" label="Username" onChange={ onChangeUsername } placeholder="piggy" btw={ component.state.usernameBtw } />,
+                <Input id="username" label="Username" onChange={ onChangeUsername } placeholder="piggy" btw={ this.state.usernameBtw } />,
                 <Input id="password" label="Password" type="password" placeholder="l0rd 0f th3 fl13s" btw="Please pick a good one." />,
                 <Input id="verifyPassword" label="Verify password" type="password" placeholder="l0rd 0f th3 fl13s" btw="Just to make sure you got it right." />
               ]} />

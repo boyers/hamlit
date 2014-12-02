@@ -132,6 +132,7 @@ form {
     .composer {
       min-height: 42px;
       cursor: text;
+      white-space: pre-wrap;
 
       &:empty {
         &:before {
@@ -148,6 +149,7 @@ form {
     input[type=submit] {
       display: inline-block;
       vertical-align: middle;
+      min-width: 72px;
       font-weight: 400;
       font-size: 0.9em;
       @include border-radius(2px);

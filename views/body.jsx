@@ -17,7 +17,7 @@ var Body = React.createClass({
   componentDidMount: function() {
     var component = this;
     if (/sessionId/.test(document.cookie)) {
-      window.api('/api/get_user_data', component.getDOMNode(), { }, function(data) {
+      window.api('/api/get_user_data', this.getDOMNode(), { }, function(data) {
         component.setState({
           loggedInUser: data.user,
           waitingForAuthData: false
@@ -29,7 +29,7 @@ var Body = React.createClass({
         });
       });
     } else {
-      component.setState({
+      this.setState({
         loggedInUser: null,
         waitingForAuthData: false
       });
@@ -69,12 +69,12 @@ var Body = React.createClass({
             clickLogIn={ function() { component.refs.signUp.close(function() { component.refs.logIn.toggle(); }); } }
             clickSignUp={ function() { component.refs.logIn.close(function() { component.refs.signUp.toggle(); }); } }
             clickSettings={ function() { component.refs.settings.toggle(); } }
-            loggedInUser={ component.state.loggedInUser }
-            waitingForAuthData={ component.state.waitingForAuthData }
+            loggedInUser={ this.state.loggedInUser }
+            waitingForAuthData={ this.state.waitingForAuthData }
           />
           <LogIn ref="logIn" />
           <SignUp ref="signUp" />
-          <Settings ref="settings" loggedInUser={ component.state.loggedInUser } />
+          <Settings ref="settings" loggedInUser={ this.state.loggedInUser } />
         </div>
         { view }
       </div>
