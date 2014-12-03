@@ -19,15 +19,15 @@
 }
 
 .fixed-top {
-  width: 100%;
-  position: fixed;
   left: 0;
+  position: fixed;
   top: 0;
+  width: 100%;
 }
 
 .vertical-margin {
-  margin-top: 48px;
   margin-bottom: 48px;
+  margin-top: 48px;
 }
 
 .align-right {
@@ -41,9 +41,9 @@ hr {
 }
 
 h2 {
-  margin: 0 0 24px 0;
   font-size: 2em;
   font-weight: 400;
+  margin: 0 0 24px 0;
 }
 
 p {
@@ -51,21 +51,21 @@ p {
 }
 
 .user-to-user {
+  color: #ccc;
   display: inline-block;
   margin: 0 8px;
-  color: #ccc;
 }
 
 .big-spinner-container {
-  text-align: center;
   font-size: 10em;
-  opacity: 0.1;
   margin: 64px 0;
+  opacity: 0.1;
+  text-align: center;
 }
 
 .blue {
-  color: #59666c;
   background-color: #f3fbff;
+  color: #59666c;
 
   hr {
     border-color: #d9edf7;

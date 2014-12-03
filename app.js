@@ -12,14 +12,14 @@ database.connect(function() {
   app.set('view engine', 'html');
   app.engine('html', require('garnet').__express);
 
-  app.use(function(req, res, next) {
-    if (process.env.NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === 'production') {
+    app.use(function(req, res, next) {
       if (req.protocol.toLowerCase() !== 'https') {
         return res.redirect(301, 'https://' + req.hostname + req.url);
       }
-    }
-    next();
-  });
+      next();
+    });
+  }
 
   var morgan = require('morgan');
   app.use(morgan('short'));

@@ -6,7 +6,7 @@ exports.render404 = function(req, res) {
   console.error('['+ (new Date()).toUTCString() +'] 404: ' + req.path);
   res.status(404);
   if (process.env.NODE_ENV === 'production') {
-    return res.sendFile(path.resolve(__dirname, '..', 'public/assets/application.html'));
+    return res.sendFile(path.resolve(__dirname, '..', 'build/application.html'));
   } else {
     return res.render('application', {
       styles: assets.getStyles(),

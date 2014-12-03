@@ -2,8 +2,8 @@
 
 .text-button {
   @include disable-text-selection;
-  font-weight: 600;
   cursor: pointer;
+  font-weight: 600;
 
   &:hover {
     color: $anchor-color;

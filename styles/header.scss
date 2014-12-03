@@ -12,15 +12,15 @@ $header-height: 56px;
   font-size: 0.9em;
 
   .brand {
+    display: block;
     font-size: inherit;
     line-height: $header-height;
-    display: block;
     margin: 0;
 
     a {
       display: block;
-      width: 73px;
       margin-left: -20px;
+      width: 73px;
 
       .sprite {
         &:hover {
@@ -39,8 +39,8 @@ $header-height: 56px;
   }
 
   .nav {
-    text-align: right;
     font-size: 0.9em;
+    text-align: right;
 
     @media (max-width: ($stack-width - 1)) {
       text-align: center;
@@ -48,8 +48,8 @@ $header-height: 56px;
 
     .nav-spinner {
       display: inline-block;
-      margin-left: 24px;
       line-height: $header-height;
+      margin-left: 24px;
 
       &:first-child {
         margin-left: 0;
@@ -58,9 +58,9 @@ $header-height: 56px;
 
     a, .text-button {
       display: inline-block;
-      margin-left: 24px;
-      line-height: $header-height;
       font-weight: 400;
+      line-height: $header-height;
+      margin-left: 24px;
 
       &:hover {
         color: #ceefff;

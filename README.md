@@ -22,7 +22,7 @@ Development:
 
 ## How to run
 
-Install the dependencies listed above and make sure MongoDB is running. You can run the server in development or production mode. In production mode, assets are precompiled (via `grunt`) and served from `public/assets`. In development mode, assets are re-generated on every request (except sprites).
+Install the dependencies listed above and make sure MongoDB is running. You can run the server in development or production mode. In production mode, assets are pre-compiled via `grunt`. In development mode, assets are re-generated on every request (except sprites, which are pre-compiled).
 
 Development:
 

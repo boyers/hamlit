@@ -1,14 +1,18 @@
 @mixin clearfix {
-  *zoom: 1;
+  // IE6/7 doesn't support :after, which is used below.
+  // So we create a new block formatting context in IE6/7
+  // by triggering IE's hasLayout mechanism via this hack:
+  zoom: 1;
 
-  &:before,
-  &:after {
-    display: table;
-    content: '';
+  &:after, &:before {
+    content: ' '; // The space fixes an Opera bug that happens when contenteditable is present anywhere.
+    display: table; // Creates a new block formatting context to contain margins.
+    font-size: 0; // Prevent the space from showing up.
+    visibility: hidden; // Prevent the space from showing up.
   }
 
   &:after {
-    clear: both;
+    clear: both; // The meat and potatoes.
   }
 }
 
@@ -47,4 +51,12 @@
   -ms-transition-duration: $duration;
   -o-transition-duration: $duration;
   transition-duration: $duration;
+}
+
+@mixin transition-property($property) {
+  -webkit-transition-property: $property;
+  -moz-transition-property: $property;
+  -ms-transition-property: $property;
+  -o-transition-property: $property;
+  transition-property: $property;
 }

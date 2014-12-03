@@ -14,7 +14,7 @@
   display: inline-block;
   width: $sprite-icon-hover-width;
   height: $sprite-icon-hover-height;
-  background-image: url('/assets/sprites.png');
+  background-image: url('/sprites.png');
   background-position: $sprite-icon-hover-offset-x $sprite-icon-hover-offset-y;
   background-size: $total-width $total-height;
 }
@@ -39,7 +39,7 @@
   display: inline-block;
   width: $sprite-icon-width;
   height: $sprite-icon-height;
-  background-image: url('/assets/sprites.png');
+  background-image: url('/sprites.png');
   background-position: $sprite-icon-offset-x $sprite-icon-offset-y;
   background-size: $total-width $total-height;
 }

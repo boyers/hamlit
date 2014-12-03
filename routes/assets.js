@@ -1,13 +1,16 @@
+var _ = require('lodash');
 var fs = require('fs');
 var path = require('path');
 var express = require('express');
 
 exports.getStyles = function() {
+  // In production mode, we just inline the compiled CSS.
   if (process.env.NODE_ENV === 'production') {
-    return ['/assets/application.css'];
+    return fs.readFileSync('tmp/application.css', { encoding: 'utf8' });
   }
 
-  var styles = []; // If any styles must be included first, put them here.
+  // In development mode, we link to the styles in the HTML and compile them whenever they are requested.
+  var styles = [];
 
   var files = [];
   fs.readdirSync('styles/vendor').forEach(function(name) {
@@ -18,19 +21,12 @@ exports.getStyles = function() {
   });
 
   files.forEach(function(name) {
-    var found = false;
     var ext = path.extname(name);
     if (ext === '.css' || name === '/assets/application.scss') {
       if (ext !== '.css') {
         name += '.css';
       }
-      for (var i = 0; i < styles.length; i += 1) {
-        if (styles[i] === name) {
-          found = true;
-          break;
-        }
-      }
-      if (!found) {
+      if (!_.contains(styles, name)) {
         styles.push(name);
       }
     }
@@ -40,11 +36,13 @@ exports.getStyles = function() {
 };
 
 exports.getScripts = function() {
+  // In production mode, we just inline the compiled JavaScript.
   if (process.env.NODE_ENV === 'production') {
-    return ['/assets/application.js'];
+    return fs.readFileSync('tmp/application.js', { encoding: 'utf8' });
   }
 
-  var scripts = []; // If any scripts must be included first, put them here.
+  // In development mode, we link to the scripts in the HTML and compile them whenever they are requested.
+  var scripts = [];
 
   var files = [];
   fs.readdirSync('scripts/vendor/development').forEach(function(name) {
@@ -66,14 +64,7 @@ exports.getScripts = function() {
       if (ext !== '.js') {
         name += '.js';
       }
-      var found = false;
-      for (var i = 0; i < scripts.length; i += 1) {
-        if (scripts[i] === name) {
-          found = true;
-          break;
-        }
-      }
-      if (!found) {
+      if (!_.contains(scripts, name)) {
         scripts.push(name);
       }
     }
@@ -83,6 +74,8 @@ exports.getScripts = function() {
 };
 
 exports.config = function(app) {
+  // In development mode, we have to serve CSS and JavaScript,
+  // which may need to be compiled on the fly.
   if (process.env.NODE_ENV !== 'production') {
     var sass = require('node-sass');
     var reactTools = require('react-tools');

@@ -7,13 +7,13 @@
 
 // Add the "container" class to a block element (e.g., a div) to create a fluid container.
 .container {
-  width: 100%;
-  max-width: $container-max-width;
-  padding-left: $container-gutter;
-  padding-right: $container-gutter;
   @include box-sizing(border-box);
   margin-left: auto;
   margin-right: auto;
+  max-width: $container-max-width;
+  padding-left: $container-gutter;
+  padding-right: $container-gutter;
+  width: 100%;
 }
 
 // ----------------------
@@ -29,15 +29,15 @@
 // Add ".offsetX" to ".spanX" elements to skip X columns of empty space.
 @for $i from 1 through $num-columns {
   .span#{$i} {
-    float: left;
     @include clearfix;
+    float: left;
   }
 }
 
 @for $i from 1 through $num-columns {
   .row > .span#{$i} {
-    width: (100% + $column-gutter-width) * ($i / $num-columns) - $column-gutter-width;
     margin-left: $column-gutter-width;
+    width: (100% + $column-gutter-width) * ($i / $num-columns) - $column-gutter-width;
 
     &:first-child {
       margin-left: 0;
@@ -59,8 +59,8 @@
   @for $j from 1 through ($i - 1) {
     .span#{$i} > .span#{$j} {
       $scale-factor: 100% / ((100% + $column-gutter-width) * ($i / $num-columns) - $column-gutter-width);
-      width: ((100% + $column-gutter-width) * ($j / $num-columns) - $column-gutter-width) * $scale-factor;
       margin-left: $column-gutter-width * $scale-factor;
+      width: ((100% + $column-gutter-width) * ($j / $num-columns) - $column-gutter-width) * $scale-factor;
 
       &:first-child {
         margin-left: 0;
@@ -86,8 +86,8 @@
 @media (max-width: ($stack-width - 1)) {
   @for $i from 1 through $num-columns {
     .span#{$i} {
-      margin-top: inherit;
       margin-bottom: inherit;
+      margin-top: inherit;
 
       &:first-child {
         margin-top: 0;
@@ -101,8 +101,8 @@
 
   @for $i from 1 through $num-columns {
     .row > .span#{$i} {
-      width: 100%;
       margin-left: 0;
+      width: 100%;
     }
   }
 
@@ -119,8 +119,8 @@
   @for $i from 1 through $num-columns {
     @for $j from 1 through ($i - 1) {
       .span#{$i} > .span#{$j} {
-        width: 100%;
         margin-left: 0;
+        width: 100%;
       }
     }
   }

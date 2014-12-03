@@ -5,7 +5,6 @@ module.exports = function(grunt) {
         src: 'sprites/*.png',
         destImg: 'tmp/sprites.png',
         destCSS: 'styles/sprites.scss',
-        imgPath: '/assets/sprites.png',
         engine: 'pngsmith',
         algorithm: 'binary-tree',
         padding: 2,
@@ -15,7 +14,7 @@ module.exports = function(grunt) {
     },
     shell: {
       pngcrush: {
-        command: 'mkdir public/assets && pngcrush -brute tmp/sprites.png public/assets/sprites.png'
+        command: 'pngcrush -brute tmp/sprites.png public/sprites.png'
       },
       compilehtml: {
         command: 'node tasks/compile_html.js'
@@ -42,9 +41,12 @@ module.exports = function(grunt) {
       }
     },
     cssmin: {
+      options: {
+        keepSpecialComments: 0
+      },
       dist: {
         files: {
-          'public/assets/application.css': ['styles/vendor/*.css', 'styles/*.css', 'tmp/application.css']
+          'tmp/application.css': ['styles/vendor/*.css', 'styles/*.css', 'tmp/application.css']
         }
       }
     },
@@ -63,12 +65,12 @@ module.exports = function(grunt) {
     uglify: {
       dist: {
         files: {
-          'public/assets/application.js': ['scripts/vendor/production/*.js', 'scripts/vendor/all/*.js', 'scripts/*.js', 'tmp/templates.js']
+          'tmp/application.js': ['scripts/vendor/production/*.js', 'scripts/vendor/all/*.js', 'scripts/*.js', 'tmp/templates.js']
         }
       }
     },
     clean: {
-      before: ['public/assets'],
+      before: ['build/application.html', 'styles/sprites.scss', 'public/sprites.png'],
       after: ['tmp', '.sass-cache']
     }
   });
@@ -83,5 +85,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.registerTask('default', ['clean:before', 'sprite', 'shell:pngcrush', 'shell:compilehtml', 'scsslint', 'csslint', 'sass', 'cssmin', 'react', 'jshint', 'uglify', 'clean:after']);
+  grunt.registerTask('default', ['clean:before', 'sprite', 'shell:pngcrush', 'scsslint', 'csslint', 'sass', 'cssmin', 'react', 'jshint', 'uglify', 'shell:compilehtml', 'clean:after']);
 };

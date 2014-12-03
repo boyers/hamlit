@@ -7,9 +7,9 @@ $input-height: 40px;
 
 form {
   .form-error {
-    margin-top: 6px;
     color: #cd4545;
     font-size: 0.9em;
+    margin-top: 6px;
   }
 
   h2 {
@@ -34,35 +34,29 @@ form {
     }
 
     label {
-      display: block;
       cursor: pointer;
+      display: block;
       font-size: 0.9em;
       font-weight: 600;
     }
 
     .form-btw {
-      margin-top: 6px;
       color: #999;
       font-size: 0.9em;
+      margin-top: 6px;
     }
 
     input[type=text], input[type=password], .composer {
+      @include appearance(none);
+      @include border-radius(2px);
+      @include transition-duration(0.5s);
+      @include transition-property(border-color);
+      background-color: #fff;
+      border: 2px solid #ddd;
       display: block;
-      width: 100%;
       margin-top: 6px;
       padding: 8px 12px;
-      border: 2px solid #ddd;
-      @include border-radius(2px);
-
-      @include appearance(none);
-      background-color: #fff;
-
-      -webkit-transition-property: border-color;
-      -moz-transition-property: border-color;
-      -ms-transition-property: border-color;
-      -o-transition-property: border-color;
-      transition-property: border-color;
-      @include transition-duration(0.5s);
+      width: 100%;
 
       &::-webkit-input-placeholder {
         color: $placeholder-color;
@@ -130,14 +124,14 @@ form {
     }
 
     .composer {
-      min-height: 42px;
       cursor: text;
+      min-height: 42px;
       white-space: pre-wrap;
 
       &:empty {
         &:before {
-          content: attr(data-placeholder);
           color: $placeholder-color;
+          content: attr(data-placeholder);
         }
 
         &:focus:before {
@@ -147,18 +141,18 @@ form {
     }
 
     input[type=submit] {
-      display: inline-block;
-      vertical-align: middle;
-      min-width: 72px;
-      font-weight: 400;
-      font-size: 0.9em;
       @include border-radius(2px);
-      border-style: none;
-      padding: 8px 16px;
-      cursor: pointer;
       background-color: $anchor-color;
       border-bottom: 3px solid $anchor-color * 0.75;
+      border-style: none;
       color: $anchor-color * 0.1 + #eee;
+      cursor: pointer;
+      display: inline-block;
+      font-size: 0.9em;
+      font-weight: 400;
+      min-width: 72px;
+      padding: 8px 16px;
+      vertical-align: middle;
 
       &:hover {
         background-color: $anchor-color * 1.1;
@@ -173,10 +167,10 @@ form {
       }
 
       &:disabled {
-        cursor: default;
         background-color: $anchor-color-active * 0.2 + #999;
         border-bottom: 3px solid $anchor-color-active * 0.2 + #888;
         color: $anchor-color * 0.05 + #ddd;
+        cursor: default;
       }
     }
 

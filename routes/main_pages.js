@@ -8,7 +8,7 @@ var errorPages = require('./error_pages');
 exports.config = function(app) {
   app.get('/', function(req, res) {
     if (process.env.NODE_ENV === 'production') {
-      res.sendFile(path.resolve(__dirname, '..', 'public/assets/application.html'));
+      res.sendFile(path.resolve(__dirname, '..', 'build/application.html'));
     } else {
       res.render('application', {
         styles: assets.getStyles(),
@@ -32,7 +32,7 @@ exports.config = function(app) {
         }
 
         if (process.env.NODE_ENV === 'production') {
-          res.sendFile(path.resolve(__dirname, '..', 'public/assets/application.html'));
+          res.sendFile(path.resolve(__dirname, '..', 'build/application.html'));
         } else {
           return res.render('application', {
             styles: assets.getStyles(),
