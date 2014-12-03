@@ -10,6 +10,7 @@ var Feed = React.createClass({
   },
   componentDidMount: function() {
     var component = this;
+    this.setState({ loading: true });
     window.api('/api/home', this.getDOMNode(), { }, function(data) {
       component.setState({ loading: false, broken: false });
     }, function() {
@@ -22,6 +23,7 @@ var Feed = React.createClass({
   componentDidUpdate: function(prevProps, prevState) {
     var component = this;
     if (!_.isEqual(prevProps, this.props)) {
+      this.setState({ loading: true });
       window.api('/api/home', this.getDOMNode(), { }, function(data) {
         component.setState({ loading: false, broken: false });
       }, function() {
@@ -30,12 +32,12 @@ var Feed = React.createClass({
     }
   },
   render: function() {
-    if (this.state.broken) {
-      return <Error500 />;
-    }
-
     if (this.state.loading) {
       return <div className="big-spinner-container"><Spinner /></div>;
+    }
+
+    if (this.state.broken) {
+      return <Error500 />;
     }
 
     return (

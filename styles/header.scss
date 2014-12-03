@@ -62,16 +62,20 @@ $header-height: 56px;
       line-height: $header-height;
       margin-left: 24px;
 
-      &:hover {
-        color: #ceefff;
-      }
-
       &:first-child {
         margin-left: 0;
       }
 
+      &:hover {
+        color: #ceefff;
+      }
+
+      &:active {
+        color: #a8e3ff;
+      }
+
       &.disabled {
-        color: #e2e2e2;
+        color: #aad5eb;
       }
     }
   }

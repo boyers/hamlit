@@ -11,6 +11,7 @@ var User = React.createClass({
   },
   componentDidMount: function() {
     var component = this;
+    this.setState({ loading: true });
     window.api('/api/user', this.getDOMNode(), {
       username: this.props.normalizedUsername
     }, function(data) {
@@ -26,6 +27,7 @@ var User = React.createClass({
   componentDidUpdate: function(prevProps, prevState) {
     var component = this;
     if (!_.isEqual(prevProps, this.props)) {
+      this.setState({ loading: true });
       window.api('/api/user', this.getDOMNode(), {
         username: this.props.normalizedUsername
       }, function(data) {
