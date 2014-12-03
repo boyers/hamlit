@@ -16,7 +16,6 @@ Development:
 - [Node.js](http://nodejs.org/)
 - [Grunt](http://gruntjs.com/)
 - [Pngcrush](http://pmt.sourceforge.net/pngcrush/)
-- [Ruby](https://www.ruby-lang.org/en/)
 - [Sass](http://sass-lang.com/)
 - [SCSS-lint](https://github.com/causes/scss-lint)
 - `sudo npm install -g react-tools grunt-cli`
