@@ -463,6 +463,7 @@ exports.config = function(app) {
             return apiHelpers.internalError(res, err);
           }
 
+          res.clearCookie('sessionId');
           return res.json({
             error: null
           });
