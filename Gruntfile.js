@@ -69,6 +69,17 @@ module.exports = function(grunt) {
         }
       }
     },
+    htmlmin: {
+      dist: {
+        options: {
+          removeComments: true,
+          collapseWhitespace: true
+        },
+        files: {
+          'build/application.html': ['tmp/application.html']
+        }
+      }
+    },
     clean: {
       before: ['build/application.html', 'styles/sprites.scss', 'public/sprites.png'],
       after: ['tmp', '.sass-cache']
@@ -84,6 +95,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-react');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-htmlmin');
   grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.registerTask('default', ['clean:before', 'sprite', 'shell:pngcrush', 'scsslint', 'csslint', 'sass', 'cssmin', 'react', 'jshint', 'uglify', 'shell:compilehtml', 'clean:after']);
+  grunt.registerTask('default', ['clean:before', 'sprite', 'shell:pngcrush', 'scsslint', 'csslint', 'sass', 'cssmin', 'react', 'jshint', 'uglify', 'shell:compilehtml', 'htmlmin', 'clean:after']);
 };
