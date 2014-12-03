@@ -143,8 +143,8 @@ form {
     input[type=submit] {
       @include border-radius(2px);
       background-color: $anchor-color;
-      border-bottom: 3px solid $anchor-color * 0.75;
       border-style: none;
+      border-bottom: 3px solid $anchor-color * 0.75;
       color: $anchor-color * 0.1 + #eee;
       cursor: pointer;
       display: inline-block;
