@@ -1,50 +1,85 @@
+// Load in dependencies
+var yaml = require('js-yaml');
+
 // Define our grunt file
 module.exports = function (grunt) {
   // Configure the spritesheet
   grunt.initConfig({
     sprite: {
-      styl: {
+      spritesheet: {
         src: ['fork.png', 'github.png', 'twitter.png'],
-        destImg: 'spritesheet.png',
-        destCSS: 'main.styl',
+        dest: 'spritesheet.png',
+        destCss: 'spritesheet.styl',
         algorithm: 'binary-tree'
       },
-      css: {
+      algorithm: {
         src: ['fork.png', 'github.png', 'twitter.png'],
-        destImg: 'spritesheet.css.png',
-        destCSS: 'main.css'
-      },
-
-      'top-down': {
-        src: ['fork.png', 'github.png', 'twitter.png'],
-        destImg: 'top-down.png',
-        destCSS: 'top-down.css',
-        algorithm: 'top-down'
-      },
-      'left-right': {
-        src: ['fork.png', 'github.png', 'twitter.png'],
-        destImg: 'left-right.png',
-        destCSS: 'left-right.css',
-        algorithm: 'left-right'
-      },
-      'diagonal': {
-        src: ['fork.png', 'github.png', 'twitter.png'],
-        destImg: 'diagonal.png',
-        destCSS: 'diagonal.css',
-        algorithm: 'diagonal'
-      },
-      'alt-diagonal': {
-        src: ['fork.png', 'github.png', 'twitter.png'],
-        destImg: 'alt-diagonal.png',
-        destCSS: 'alt-diagonal.css',
+        dest: 'spritesheet.algorithm.png',
+        destCss: 'spritesheet.algorithm.styl',
         algorithm: 'alt-diagonal'
       },
-      'binary-tree': {
+      engine: {
         src: ['fork.png', 'github.png', 'twitter.png'],
-        destImg: 'binary-tree.png',
-        destCSS: 'binary-tree.css',
-        algorithm: 'binary-tree'
+        dest: 'spritesheet.engine.png',
+        destCss: 'spritesheet.engine.styl',
+        engine: 'gmsmith'
       },
+      padding: {
+        src: ['fork.png', 'github.png', 'twitter.png'],
+        dest: 'spritesheet.padding.png',
+        destCss: 'spritesheet.padding.styl',
+        padding: 20 // Exaggerated for visibility, normal usage is 1 or 2
+      },
+      retina: {
+        // We have `fork.png`, `fork@2x.png`, ...
+        src: ['fork*.png', 'github*.png', 'twitter*.png'],
+        // This will filter out `fork@2x.png`, `github@2x.png`, ... for our retina spritesheet
+        //   The normal spritesheet will now receive `fork.png`, `github.png`, ...
+        retinaSrcFilter: ['*@2x.png'],
+        dest: 'spritesheet.retina.png',
+        retinaDest: 'spritesheet.retina@2x.png',
+        destCss: 'spritesheet.retina.styl'
+      },
+      cssVarMap: {
+        src: ['fork.png', 'github.png', 'twitter.png'],
+        dest: 'spritesheet.cssVarMap.png',
+        destCss: 'spritesheet.cssVarMap.styl',
+        cssVarMap: function (sprite) {
+          sprite.name = 'sprite_' + sprite.name;
+        }
+      },
+      handlebarsStr: {
+        src: ['fork.png', 'github.png', 'twitter.png'],
+        dest: 'spritesheet.handlebarsStr.png',
+        destCss: 'spritesheet.handlebarsStr.css',
+        cssTemplate: __dirname + '/handlebarsStr.css.handlebars'
+      },
+      handlebarsInheritance: {
+        src: ['fork.png', 'github.png', 'twitter.png'],
+        dest: 'spritesheet.handlebarsInheritance.png',
+        destCss: 'spritesheet.handlebarsInheritance.scss',
+        cssTemplate: 'handlebarsInheritance.scss.handlebars'
+      },
+      yamlTemplate: {
+        src: ['fork.png', 'github.png', 'twitter.png'],
+        dest: 'spritesheet.yamlTemplate.png',
+        destCss: 'spritesheet.yamlTemplate.yml',
+        cssTemplate: function (data) {
+          // Convert sprites from an array into an object
+          var spriteObj = {};
+          data.sprites.forEach(function (sprite) {
+            // Grab the name and store the sprite under it
+            var name = sprite.name;
+            spriteObj[name] = sprite;
+
+            // Delete the name from the sprite
+            delete sprite.name;
+          });
+
+          // Return stringified spriteObj
+          return yaml.safeDump(spriteObj);
+        }
+      }
     }
   });
 
