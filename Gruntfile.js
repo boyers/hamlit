@@ -3,8 +3,8 @@ module.exports = function(grunt) {
     sprite: {
       dist: {
         src: 'sprites/*.png',
-        destImg: 'tmp/sprites.png',
-        destCSS: 'styles/sprites.scss',
+        dest: 'tmp/sprites.png',
+        destCss: 'styles/sprites.scss',
         engine: 'pngsmith',
         algorithm: 'binary-tree',
         padding: 2,
